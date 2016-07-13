@@ -1,5 +1,6 @@
 /*
  * This file is part of the libopencm3_cpp_extensions project.
+ * hosted at http://github.com/thirdpin/libopencm3_cpp_extensions
  *
  * Copyright (C) 2016  Third Pin LLC
  * Written by Anastasiia Lazareva <a.lazareva@thirdpin.ru>
