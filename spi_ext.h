@@ -121,6 +121,7 @@ namespace SPI_CPP_Extension
 	class SPI_ext
 	{
 	public:
+		uint32_t _spi;
 		SPI_ext();
 		SPI_ext(SPI_Conf spi_conf);
 
@@ -142,20 +143,20 @@ namespace SPI_CPP_Extension
 		}
 		void write(uint16_t data)
 		{
-			spi_write(_spi, data);
+			while(!get_flag_status(Flag::TRANSMIT_BUFFER_EMPTY));
+			SPI_DR(_spi) = data;
 		}
-		void send(uint16_t data)
+		void write_end()
 		{
-			spi_send(_spi, data);
+			while(!get_flag_status(Flag::RECEIVE_BUFFER_NOT_EMPTY));
+			(void)SPI_DR(_spi);
 		}
-		uint16_t read()
+		uint16_t read(uint16_t data)
 		{
-			spi_send(_spi, 0xFF);
-			return (spi_read(_spi));
-		}
-		uint16_t xfer(uint16_t data)
-		{
-			spi_xfer(_spi, data);
+			while(!get_flag_status(Flag::TRANSMIT_BUFFER_EMPTY));
+			SPI_DR(_spi) = data;
+			while(!get_flag_status(Flag::RECEIVE_BUFFER_NOT_EMPTY));
+			return SPI_DR(_spi);
 		}
 		void set_master_mode()
 		{
@@ -263,7 +264,7 @@ namespace SPI_CPP_Extension
 		bool get_flag_status(Flag flag);
 
 	private:
-		uint32_t _spi;
+
 
 	};
 }

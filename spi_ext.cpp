@@ -39,15 +39,15 @@ SPI_ext::SPI_ext(SPI_Conf spi_conf)
 
 	GPIO_ext mosi(spi_conf.mosi_pin);
 	mosi.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-	mosi.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::FAST_50MHz);
+	mosi.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::HIGH_SPEED_100MHz);
 
 	GPIO_ext miso(spi_conf.miso_pin);
 	miso.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-	miso.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::FAST_50MHz);
+	miso.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::HIGH_SPEED_100MHz);
 
 	GPIO_ext scl(spi_conf.scl_pin);
 	scl.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-	scl.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::FAST_50MHz);
+	scl.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::HIGH_SPEED_100MHz);
 
 	switch(_spi)
 	{
