@@ -46,10 +46,11 @@ typedef struct {
 	uint16_t parity;
 	uint16_t mode;
 	uint16_t flow_control;
+	uint8_t  nvic_priority;
 }USART_Settings;
 
 typedef struct {
-	uint32_t number;
+    uint32_t number;
 	Pinout tx;
 	Pinout rx;
 }USART_Struct;
@@ -73,6 +74,12 @@ public:
 	void start_send()
 	{
 		usart_enable_tx_interrupt(_usart);
+	}
+    void enable_irq() {
+        nvic_enable_irq(_usart_nvic);
+    }
+	void disable_irq() {
+	    nvic_disable_irq(_usart_nvic);
 	}
 	void receive_handler()
 	{
@@ -99,5 +106,6 @@ public:
 
 private:
 	uint32_t _usart;
+	uint32_t _usart_nvic;
 };
 #endif

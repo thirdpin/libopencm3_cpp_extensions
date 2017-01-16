@@ -59,26 +59,33 @@ USART_ext::USART_ext(USART_Struct usart, USART_Settings settings, RoundBuffer rb
 
 	switch (usart.number)
 	{
-		case 1: _usart = USART1;
-				nvic_enable_irq(NVIC_USART1_IRQ);
-				break;
-		case 2: _usart = USART2;
-				nvic_enable_irq(NVIC_USART2_IRQ);
-				break;
-		case 3: _usart = USART3;
-				nvic_enable_irq(NVIC_USART3_IRQ);
-				break;
-		case 4: _usart = UART4;
-			    nvic_enable_irq(NVIC_UART4_IRQ);
-				break;
-		case 5: _usart = UART5;
-				nvic_enable_irq(NVIC_UART5_IRQ);
-				break;
-		case 6: _usart = USART6;
-				nvic_enable_irq(NVIC_USART6_IRQ);
-				break;
+		case 1:
+		    _usart = USART1;
+			_usart_nvic = NVIC_USART1_IRQ;
+        break;
+		case 2:
+		    _usart = USART2;
+		    _usart_nvic = NVIC_USART2_IRQ;
+        break;
+		case 3:
+		    _usart = USART3;
+		    _usart_nvic = NVIC_USART3_IRQ;
+        break;
+		case 4:
+		    _usart = UART4;
+		    _usart_nvic = NVIC_UART4_IRQ;
+        break;
+		case 5:
+		    _usart = UART5;
+		    _usart_nvic = NVIC_UART5_IRQ;
+        break;
+		case 6:
+		    _usart = USART6;
+		    _usart_nvic = NVIC_USART6_IRQ;
+        break;
 	}
 
+	// USART config
 	usart_set_baudrate(_usart, settings.baud_rate);
 	usart_set_databits(_usart, settings.word_length);
 	usart_set_stopbits(_usart, settings.stop_bits);
@@ -90,4 +97,8 @@ USART_ext::USART_ext(USART_Struct usart, USART_Settings settings, RoundBuffer rb
 		usart_enable_rx_interrupt(_usart);
 
 	usart_enable(_usart);
+
+    // NVIC config
+    nvic_set_priority(_usart_nvic, settings.nvic_priority);
+    nvic_enable_irq(_usart_nvic);
 }
