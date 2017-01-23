@@ -63,30 +63,33 @@ public:
 
 	USART_ext(USART_Struct usart, USART_Settings settings, RoundBuffer rb_in_size, RoundBuffer rb_out_size);
 
-	bool interrupt_source_RXNE()
-	{
+	bool interrupt_source_RXNE() {
 		return (((USART_CR1(_usart) & USART_CR1_RXNEIE) != 0) && usart_get_flag(_usart, USART_SR_RXNE));
 	}
-	bool interrupt_source_TXE()
-	{
+
+	bool interrupt_source_TXE() {
 		return (((USART_CR1(_usart) & USART_CR1_TXEIE) != 0) && usart_get_flag(_usart, USART_SR_TXE));
 	}
-	void start_send()
-	{
+
+	void start_send() {
 		usart_enable_tx_interrupt(_usart);
 	}
+
     void enable_irq() {
         nvic_enable_irq(_usart_nvic);
     }
+
 	void disable_irq() {
 	    nvic_disable_irq(_usart_nvic);
 	}
+
 	void receive_handler()
 	{
 		if (interrupt_source_RXNE()) {
-			rb_in->push(usart_recv(_usart));
+			rb_in->push(uart_read());
 		}
 	}
+
 	void transmit_handler()
 	{
 		if (interrupt_source_TXE()) {
@@ -98,6 +101,19 @@ public:
 			}
 		}
 	}
+
+	void uart_write_blocking(uint16_t data) {
+	    usart_send_blocking(_usart, data);
+	}
+
+    void uart_write(uint16_t data) {
+        usart_send(_usart, data);
+    }
+
+	uint16_t uart_read() {
+	    return usart_recv(_usart);
+	}
+
 	void inirq()
 	{
 		receive_handler();
