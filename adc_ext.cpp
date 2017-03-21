@@ -124,30 +124,40 @@ void ADC_ext::set_channel_sampling_time_selection(ADC_SamplingTime time, ADC_Cha
 	}
 }
 
-void ADC_ext::set_conversion_number_in_sequence(ADC_Rank rank, ADC_Channel channel)
+void ADC_ext::set_conversion_number_in_sequence(uint8_t length, ADC_Channel *channel)
 {
-	uint32_t offset;
+	uint32_t fifth6 = 0;
+	uint32_t fourth6 = 0;
+	uint32_t third6 = 0;
+	uint32_t second6 = 0;
+	uint32_t first6 = 0;
+	uint8_t i = 0;
 
-	if (rank < RANK_7)
-	{
-		offset = (rank - RANK_1) * ADC_SQR_MASK;
-		ADC_SQR3(_adc) &= ~(ADC_SQR_MASK << offset);
-		ADC_SQR3(_adc) |= ((uint8_t)channel << offset);
+	if (length > 16) {
+		return;
 	}
 
-	else if (rank < RANK_13)
-	{
-		offset = (rank - RANK_7) * ADC_SQR_MASK;
-		ADC_SQR2(_adc) &= ~(ADC_SQR_MASK << offset);
-		ADC_SQR2(_adc) |= ((uint8_t)channel << offset);
+	for (i = 1; i <= length; i++) {
+		if (i <= 6) {
+			first6 |= (channel[i - 1] << ((i - 1) * 5));
+		}
+		if ((i > 6) & (i <= 12)) {
+			second6 |= (channel[i - 1] << ((i - 6 - 1) * 5));
+		}
+		if ((i > 12) & (i <= 18)) {
+			third6 |= (channel[i - 1] << ((i - 12 - 1) * 5));
+		}
+		if ((i > 18) & (i <= 24)) {
+			fourth6 |= (channel[i - 1] << ((i - 18 - 1) * 5));
+		}
+		if ((i > 24) & (i <= 28)) {
+			fifth6 |= (channel[i - 1] << ((i - 24 - 1) * 5));
+		}
 	}
 
-	else
-	{
-		offset = (rank - RANK_13) * ADC_SQR_MASK;
-		ADC_SQR1(_adc) &= ~(ADC_SQR_MASK << offset);
-		ADC_SQR1(_adc) |= ((uint8_t)channel << offset);
-	}
+	ADC_SQR1(_adc) = third6 | ((length - 1) << 20);
+	ADC_SQR2(_adc) = second6;
+	ADC_SQR3(_adc) = first6;
 }
 
 void ADC_ext::set_prescaler(ADC_Prescaler prescaler)
@@ -172,4 +182,14 @@ void ADC_ext::set_multi_mode(ADC_MultiMode mode)
 {
 	ADC_CCR &= ~ADC_CCR_MULTI_MASK;
 	ADC_CCR |= (uint32_t)mode;
+}
+
+void ADC_ext::enable_temp_sensor()
+{
+	ADC_CCR |= ADC_CCR_TSVREFE_MASK;
+}
+
+void ADC_ext::disable_temp_sensor()
+{
+	ADC_CCR &= ~ADC_CCR_TSVREFE_MASK;
 }

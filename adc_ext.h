@@ -115,6 +115,7 @@
 #define ADC_CCR_DMA_MASK                (uint32_t)(0x3 << 14)
 #define ADC_CCR_DELAY_MASK              (uint32_t)(0xF << 8)
 #define ADC_CCR_MULTI_MASK              (uint32_t)(0x1F)
+#define ADC_CCR_TSVREFE_MASK            (uint32_t)(0x1 << 23)
 
 typedef enum
 {
@@ -304,7 +305,7 @@ public:
 
 	void set_channel_sampling_time_selection(ADC_SamplingTime time, ADC_Channel channel);
 
-	void set_conversion_number_in_sequence(ADC_Rank rank, ADC_Channel channel);
+	void set_conversion_number_in_sequence(uint8_t length, ADC_Channel *channel);
 
 	void set_prescaler(ADC_Prescaler prescaler);
 
@@ -313,6 +314,10 @@ public:
 	void set_delay_between_two_samples(ADC_Delay delay);
 
 	void set_multi_mode(ADC_MultiMode mode);
+
+	void enable_temp_sensor();
+
+	void disable_temp_sensor();
 
 	uint32_t get_base_address()
 	{

@@ -19,7 +19,7 @@ typedef struct
 class AdcDma
 {
 public:
-	AdcDma(AdcDma_DMA_Conf dma, AdcDma_ADC_Conf adc);
+	AdcDma(AdcDma_DMA_Conf dma, AdcDma_ADC_Conf adc, bool temp_sensor);
     uint16_t get_value(uint8_t index);
 
 private:

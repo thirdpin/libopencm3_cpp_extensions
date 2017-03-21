@@ -1,6 +1,6 @@
 #include "adc_dma.h"
 
-AdcDma::AdcDma(AdcDma_DMA_Conf dma, AdcDma_ADC_Conf adc)
+AdcDma::AdcDma(AdcDma_DMA_Conf dma, AdcDma_ADC_Conf adc, bool temp_sensor)
 {
 	_adc = new ADC_ext(adc.number);
 	_data = new uint16_t[adc.channels_count];
@@ -24,6 +24,9 @@ AdcDma::AdcDma(AdcDma_DMA_Conf dma, AdcDma_ADC_Conf adc)
 	dma_set_peripheral_burst(dma.number, dma.stream, DMA_SxCR_PBURST_SINGLE);
 	dma_enable_stream(dma.number, dma.stream);
 
+	if (temp_sensor) {
+		_adc->enable_temp_sensor();
+	}
 	_adc->set_multi_mode(ADC_MultiMode::MODE_INDEPENDENT);
 	_adc->set_prescaler(ADC_Prescaler::PRESCALER_2);
 	_adc->set_dma_mode(ADC_DMA_Mode::MODE_NONE);
@@ -34,11 +37,10 @@ AdcDma::AdcDma(AdcDma_DMA_Conf dma, AdcDma_ADC_Conf adc)
 	_adc->set_external_trigger_polarity_for_regular_group(ADC_RegularGroupTriggerPolarity::TRIGGER_NONE);
 	_adc->set_external_trigger_for_regular_group(ADC_RegularGroupTrigger::T1_CC1);
 	_adc->set_data_alignment(ADC_Alignment::RIGHT_ALIGN);
-	_adc->set_number_of_conversions(adc.channels_count);
+	_adc->set_conversion_number_in_sequence(adc.channels_count, adc.channels);
 
 	for(int i = 0; i < adc.channels_count; i++) {
 		_adc->set_channel_sampling_time_selection(ADC_SamplingTime::CYCLES_480, adc.channels[i]);
-		_adc->set_conversion_number_in_sequence((ADC_Rank)(i+1), adc.channels[i]);
 	}
 
 	_adc->enable_dma_request();
