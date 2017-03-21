@@ -398,6 +398,10 @@ Result TIMER_ext::clear_flag_status(Flag flag)
 
 	return OK;
 }
+void TIMER_ext::update_generation()
+{
+	TIM_EGR(_timer) |= TIM_EGR_UG;
+}
 //9,12
 Result TIMER_ext::set_capture_compare_1_mode(CC_Mode mode)
 {

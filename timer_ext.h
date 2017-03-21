@@ -249,6 +249,7 @@ namespace TIMER_CPP_Extension
 		bool get_flag_status(Flag flag);
 		Result clear_flag_status(Flag flag);
 		//EGR//////////////////////////////////////////////////////
+		void update_generation();
 		//CCMR1////////////////////////////////////////////////////
 		Result set_capture_compare_1_mode(CC_Mode mode);
 		Result set_capture_compare_2_mode(CC_Mode mode);
