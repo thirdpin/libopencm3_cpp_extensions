@@ -330,6 +330,29 @@ Result TIMER_ext::disable_capture_compare_2_interrupt()
 	TIM_DIER(_timer) &= ~TIM_DIER_CC2IE;
 	return OK;
 }
+Result TIMER_ext::enable_capture_compare_3_interrupt()
+{
+	TIM_DIER(_timer) |= TIM_DIER_CC3IE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::disable_capture_compare_3_interrupt()
+{
+	TIM_DIER(_timer) &= ~TIM_DIER_CC3IE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::enable_capture_compare_4_interrupt()
+{
+	TIM_DIER(_timer) |= TIM_DIER_CC4IE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::disable_capture_compare_4_interrupt()
+{
+	TIM_DIER(_timer) &= ~TIM_DIER_CC4IE;
+	return OK;
+}
 //9,12
 Result TIMER_ext::enable_trigger_interrupt()
 {
@@ -358,6 +381,12 @@ bool TIMER_ext::get_flag_status(Flag flag)
 		case CAPTURE_COMPARE_2_INTERRUPT:
 			status = TIM_SR(_timer) & TIM_SR_CC2IF;
 			break;
+		case CAPTURE_COMPARE_3_INTERRUPT:
+			status = TIM_SR(_timer) & TIM_SR_CC3IF;
+			break;
+		case CAPTURE_COMPARE_4_INTERRUPT:
+			status = TIM_SR(_timer) & TIM_SR_CC4IF;
+			break;
 		case TRIGGER_INTERRUPT:
 			status = TIM_SR(_timer) & TIM_SR_TIF;
 			break;
@@ -366,6 +395,12 @@ bool TIMER_ext::get_flag_status(Flag flag)
 			break;
 		case CAPTURE_COMPARE_2_OVERCAPTURE:
 			status = TIM_SR(_timer) & TIM_SR_CC2OF;
+			break;
+		case CAPTURE_COMPARE_3_OVERCAPTURE:
+			status = TIM_SR(_timer) & TIM_SR_CC3OF;
+			break;
+		case CAPTURE_COMPARE_4_OVERCAPTURE:
+			status = TIM_SR(_timer) & TIM_SR_CC4OF;
 			break;
 	}
 
@@ -385,6 +420,12 @@ Result TIMER_ext::clear_flag_status(Flag flag)
 		case CAPTURE_COMPARE_2_INTERRUPT:
 			TIM_SR(_timer) &= ~TIM_SR_CC2IF;
 			break;
+		case CAPTURE_COMPARE_3_INTERRUPT:
+			TIM_SR(_timer) &= ~TIM_SR_CC3IF;
+			break;
+		case CAPTURE_COMPARE_4_INTERRUPT:
+			TIM_SR(_timer) &= ~TIM_SR_CC4IF;
+			break;
 		case TRIGGER_INTERRUPT:
 			TIM_SR(_timer) &= ~TIM_SR_TIF;
 			break;
@@ -393,6 +434,12 @@ Result TIMER_ext::clear_flag_status(Flag flag)
 			break;
 		case CAPTURE_COMPARE_2_OVERCAPTURE:
 			TIM_SR(_timer) &= ~TIM_SR_CC2OF;
+			break;
+		case CAPTURE_COMPARE_3_OVERCAPTURE:
+			TIM_SR(_timer) &= ~TIM_SR_CC3OF;
+			break;
+		case CAPTURE_COMPARE_4_OVERCAPTURE:
+			TIM_SR(_timer) &= ~TIM_SR_CC4OF;
 			break;
 	}
 
@@ -875,6 +922,478 @@ Result TIMER_ext::set_output_compare_2_mode(OC_Mode mode)
 	return OK;
 }
 //9,12
+Result TIMER_ext::set_capture_compare_3_mode(CC_Mode mode)
+{
+	bool channel_on = TIM_CCER(_timer) & TIM_CCER_CC3E;
+
+	if (channel_on) {
+		return USAGE_ERROR;
+	}
+
+	switch (mode)
+	{
+		case OUTPUT:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_CC3S_MASK) |
+			                     TIM_CCMR2_CC3S_OUT;
+			break;
+		case INPUT_MAPPED_TI3:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_CC3S_MASK) |
+			                     TIM_CCMR2_CC3S_IN_TI3;
+			break;
+		case INPUT_MAPPED_TI4:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_CC3S_MASK) |
+			                     TIM_CCMR2_CC3S_IN_TI4;
+			break;
+		case INPUT_MAPPED_TRC:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_CC3S_MASK) |
+			                     TIM_CCMR2_CC3S_IN_TRC;
+			break;
+	}
+
+	return OK;
+}
+//9,12
+Result TIMER_ext::set_capture_compare_4_mode(CC_Mode mode)
+{
+	bool channel_on = TIM_CCER(_timer) & TIM_CCER_CC4E;
+
+	if (channel_on) {
+		return USAGE_ERROR;
+	}
+
+	switch (mode)
+	{
+		case OUTPUT:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_CC4S_MASK) |
+								 TIM_CCMR2_CC4S_OUT;
+			break;
+		case INPUT_MAPPED_TI3:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_CC4S_MASK) |
+								 TIM_CCMR2_CC4S_IN_TI3;
+			break;
+		case INPUT_MAPPED_TI4:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_CC4S_MASK) |
+								 TIM_CCMR2_CC4S_IN_TI4;
+			break;
+		case INPUT_MAPPED_TRC:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_CC4S_MASK) |
+								 TIM_CCMR2_CC4S_IN_TRC;
+			break;
+	}
+
+	return OK;
+}
+//9,12
+Result TIMER_ext::set_input_capture_3_prescaler(Prescaler prescaler)
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
+
+	if (!channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	switch (prescaler)
+	{
+		case NO_PRESCALER:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_IC3PSC_MASK) |
+			                     TIM_CCMR2_IC3PSC_OFF;
+			break;
+		case CAPTURE_EVERY_2_EVENTS:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_IC3PSC_MASK) |
+			                     TIM_CCMR2_IC3PSC_2;
+			break;
+		case CAPTURE_EVERY_4_EVENTS:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_IC3PSC_MASK) |
+			                     TIM_CCMR2_IC3PSC_4;
+			break;
+		case CAPTURE_EVERY_8_EVENTS:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_IC3PSC_MASK) |
+			                     TIM_CCMR2_IC3PSC_8;
+			break;
+	}
+
+	return OK;
+}
+//9,12
+Result TIMER_ext::set_input_capture_4_prescaler(Prescaler prescaler)
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
+
+	if (!channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	switch (prescaler)
+	{
+		case NO_PRESCALER:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_IC4PSC_MASK) |
+								 TIM_CCMR2_IC4PSC_OFF;
+			break;
+		case CAPTURE_EVERY_2_EVENTS:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_IC4PSC_MASK) |
+								 TIM_CCMR2_IC4PSC_2;
+			break;
+		case CAPTURE_EVERY_4_EVENTS:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_IC4PSC_MASK) |
+								 TIM_CCMR2_IC4PSC_4;
+			break;
+		case CAPTURE_EVERY_8_EVENTS:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_IC4PSC_MASK) |
+								 TIM_CCMR2_IC4PSC_8;
+			break;
+	}
+
+	return OK;
+}
+//9,12
+Result TIMER_ext::set_input_capture_3_filter(Filter filter)
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
+
+	if (!channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	switch (filter)
+	{
+		case NO_FILTER:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_OFF;
+			break;
+		case CK_INT_N_2:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_CK_INT_N_2;
+			break;
+		case CK_INT_N_4:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_CK_INT_N_4;
+			break;
+		case CK_INT_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_CK_INT_N_8;
+			break;
+		case DTF_DIV_2_N_6:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_2_N_6;
+			break;
+		case DTF_DIV_2_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_2_N_8;
+			break;
+		case TF_DIV_4_N_6:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_4_N_6;
+			break;
+		case DTF_DIV_4_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_4_N_8;
+			break;
+		case DTF_DIV_8_N_6:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_8_N_6;
+			break;
+		case DTF_DIV_8_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_8_N_8;
+			break;
+		case DTF_DIV_16_N_5:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_16_N_5;
+			break;
+		case DTF_DIV_16_N_6:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_16_N_6;
+			break;
+		case DTF_DIV_16_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_16_N_8;
+			break;
+		case DTF_DIV_32_N_5:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_32_N_5;
+			break;
+		case DTF_DIV_32_N_6:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_32_N_6;
+			break;
+		case DTF_DIV_32_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC3F_MASK) |
+			TIM_CCMR2_IC3F_DTF_DIV_32_N_8;
+			break;
+	}
+
+	return OK;
+}
+//9,12
+Result TIMER_ext::set_input_capture_4_filter(Filter filter)
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
+
+	if (!channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	switch (filter)
+	{
+		case NO_FILTER:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_OFF;
+			break;
+		case CK_INT_N_2:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_CK_INT_N_2;
+			break;
+		case CK_INT_N_4:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_CK_INT_N_4;
+			break;
+		case CK_INT_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_CK_INT_N_8;
+			break;
+		case DTF_DIV_2_N_6:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_2_N_6;
+			break;
+		case DTF_DIV_2_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_2_N_8;
+			break;
+		case TF_DIV_4_N_6:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_4_N_6;
+			break;
+		case DTF_DIV_4_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_4_N_8;
+			break;
+		case DTF_DIV_8_N_6:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_8_N_6;
+			break;
+		case DTF_DIV_8_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_8_N_8;
+			break;
+		case DTF_DIV_16_N_5:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_16_N_5;
+			break;
+		case DTF_DIV_16_N_6:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_16_N_6;
+			break;
+		case DTF_DIV_16_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_16_N_8;
+			break;
+		case DTF_DIV_32_N_5:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_32_N_5;
+			break;
+		case DTF_DIV_32_N_6:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_32_N_6;
+			break;
+		case DTF_DIV_32_N_8:
+			TIM_CCMR2(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR2_IC4F_MASK) |
+			TIM_CCMR2_IC4F_DTF_DIV_32_N_8;
+			break;
+	}
+
+	return OK;
+}
+//9,12
+Result TIMER_ext::enable_fast_output_compare_3()
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
+
+	if (channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	TIM_CCMR2(_timer) |= TIM_CCMR2_OC3FE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::disable_fast_output_compare_3()
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
+
+	if (channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	TIM_CCMR2(_timer) &= ~TIM_CCMR2_OC3FE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::enable_fast_output_compare_4()
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
+
+	if (channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	TIM_CCMR2(_timer) |= TIM_CCMR2_OC4FE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::disable_fast_output_compare_4()
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
+
+	if (channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	TIM_CCMR2(_timer) &= ~TIM_CCMR2_OC4FE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::enable_output_compare_3_preload()
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
+
+	if (channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	TIM_CCMR2(_timer) |= TIM_CCMR2_OC3PE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::disable_output_compare_3_preload()
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
+
+	if (channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	TIM_CCMR2(_timer) &= ~TIM_CCMR2_OC3PE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::enable_output_compare_4_preload()
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
+
+	if (channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	TIM_CCMR2(_timer) |= TIM_CCMR2_OC4PE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::disable_output_compare_4_preload()
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
+
+	if (channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	TIM_CCMR2(_timer) &= ~TIM_CCMR2_OC4PE;
+	return OK;
+}
+//9,12
+Result TIMER_ext::set_output_compare_3_mode(OC_Mode mode)
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
+
+	if (channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	switch (mode)
+	{
+		case FROZEN:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC3M_MASK) |
+			TIM_CCMR2_OC3M_FROZEN;
+			break;
+		case ACTIVE_LEVEL_ON_MATCH:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC3M_MASK) |
+			TIM_CCMR2_OC3M_ACTIVE;
+			break;
+		case INACTIVE_LEVEL_ON_MATCH:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC3M_MASK) |
+			TIM_CCMR2_OC3M_INACTIVE;
+			break;
+		case TOGGLE:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC3M_MASK) |
+			TIM_CCMR2_OC3M_TOGGLE;
+			break;
+		case FORCE_INACTIVE_LEVEL:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC3M_MASK) |
+			TIM_CCMR2_OC3M_FORCE_LOW;
+			break;
+		case FORCE_ACTIVE_LEVEL:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC3M_MASK) |
+			TIM_CCMR2_OC3M_FORCE_HIGH;
+			break;
+		case PWM_MODE_1:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC3M_MASK) |
+			TIM_CCMR2_OC3M_PWM1;
+			break;
+		case PWM_MODE_2:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC3M_MASK) |
+			TIM_CCMR2_OC3M_PWM2;
+			break;
+	}
+
+	return OK;
+}
+//9,12
+Result TIMER_ext::set_output_compare_4_mode(OC_Mode mode)
+{
+	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
+
+	if (channel_is_input) {
+		return USAGE_ERROR;
+	}
+
+	switch (mode)
+	{
+		case FROZEN:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC4M_MASK) |
+			TIM_CCMR2_OC4M_FROZEN;
+			break;
+		case ACTIVE_LEVEL_ON_MATCH:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC4M_MASK) |
+			TIM_CCMR2_OC4M_ACTIVE;
+			break;
+		case INACTIVE_LEVEL_ON_MATCH:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC4M_MASK) |
+			TIM_CCMR2_OC4M_INACTIVE;
+			break;
+		case TOGGLE:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC4M_MASK) |
+			TIM_CCMR2_OC4M_TOGGLE;
+			break;
+		case FORCE_INACTIVE_LEVEL:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC4M_MASK) |
+			TIM_CCMR2_OC4M_FORCE_LOW;
+			break;
+		case FORCE_ACTIVE_LEVEL:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC4M_MASK) |
+			TIM_CCMR2_OC4M_FORCE_HIGH;
+			break;
+		case PWM_MODE_1:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC4M_MASK) |
+			TIM_CCMR2_OC4M_PWM1;
+			break;
+		case PWM_MODE_2:
+			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_OC4M_MASK) |
+			TIM_CCMR2_OC4M_PWM2;
+			break;
+	}
+
+	return OK;
+}
+//9,12
 Result TIMER_ext::enable_capture_compare_1()
 {
 	TIM_CCER(_timer) |= TIM_CCER_CC1E;
@@ -923,6 +1442,59 @@ Result TIMER_ext::set_capture_compare_2_polarity(Polarity polarity)
 			break;
 		case HI_RISING_EDGE:
 			TIM_CCER(_timer) &= ~TIM_CCER_CC2P;
+			break;
+	}
+
+	return OK;
+}
+Result TIMER_ext::enable_capture_compare_3()
+{
+	TIM_CCER(_timer) |= TIM_CCER_CC3E;
+	return OK;
+}
+//9,12
+Result TIMER_ext::disable_capture_compare_3()
+{
+	TIM_CCER(_timer) &= ~TIM_CCER_CC3E;
+	return OK;
+}
+//9,12
+Result TIMER_ext::set_capture_compare_3_polarity(Polarity polarity)
+{
+	switch (polarity)
+	{
+		case LO_FALLING_EDGE:
+			TIM_CCER(_timer) |= TIM_CCER_CC3P;
+			break;
+		case HI_RISING_EDGE:
+			TIM_CCER(_timer) &= ~TIM_CCER_CC3P;
+			break;
+	}
+
+	return OK;
+}
+//9,12
+Result TIMER_ext::enable_capture_compare_4()
+{
+	TIM_CCER(_timer) |= TIM_CCER_CC4E;
+	return OK;
+}
+//9,12
+Result TIMER_ext::disable_capture_compare_4()
+{
+	TIM_CCER(_timer) &= ~TIM_CCER_CC4E;
+	return OK;
+}
+//9,12
+Result TIMER_ext::set_capture_compare_4_polarity(Polarity polarity)
+{
+	switch (polarity)
+	{
+		case LO_FALLING_EDGE:
+			TIM_CCER(_timer) |= TIM_CCER_CC4P;
+			break;
+		case HI_RISING_EDGE:
+			TIM_CCER(_timer) &= ~TIM_CCER_CC4P;
 			break;
 	}
 

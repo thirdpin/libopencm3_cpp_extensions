@@ -96,15 +96,21 @@ namespace TIMER_CPP_Extension
 		UPDATE_INTERRUPT,
 		CAPTURE_COMPARE_1_INTERRUPT,
 		CAPTURE_COMPARE_2_INTERRUPT,
+		CAPTURE_COMPARE_3_INTERRUPT,
+		CAPTURE_COMPARE_4_INTERRUPT,
 		TRIGGER_INTERRUPT,
 		CAPTURE_COMPARE_1_OVERCAPTURE,
-		CAPTURE_COMPARE_2_OVERCAPTURE
+		CAPTURE_COMPARE_2_OVERCAPTURE,
+		CAPTURE_COMPARE_3_OVERCAPTURE,
+		CAPTURE_COMPARE_4_OVERCAPTURE
 	} Flag;
 
 	typedef enum {
 		OUTPUT,
 		INPUT_MAPPED_TI1,
 		INPUT_MAPPED_TI2,
+		INPUT_MAPPED_TI3,
+		INPUT_MAPPED_TI4,
 		INPUT_MAPPED_TRC
 	} CC_Mode;
 
@@ -243,6 +249,10 @@ namespace TIMER_CPP_Extension
 		Result disable_capture_compare_1_interrupt();
 		Result enable_capture_compare_2_interrupt();
 		Result disable_capture_compare_2_interrupt();
+		Result enable_capture_compare_3_interrupt();
+		Result disable_capture_compare_3_interrupt();
+		Result enable_capture_compare_4_interrupt();
+		Result disable_capture_compare_4_interrupt();
 		Result enable_trigger_interrupt();
 		Result disable_trigger_interrupt();
 		//SR///////////////////////////////////////////////////////
@@ -267,6 +277,23 @@ namespace TIMER_CPP_Extension
 		Result disable_output_compare_2_preload();
 		Result set_output_compare_1_mode(OC_Mode mode);
 		Result set_output_compare_2_mode(OC_Mode mode);
+		//CCMR2////////////////////////////////////////////////////
+		Result set_capture_compare_3_mode(CC_Mode mode);
+		Result set_capture_compare_4_mode(CC_Mode mode);
+		Result set_input_capture_3_prescaler(Prescaler prescaler);
+		Result set_input_capture_4_prescaler(Prescaler prescaler);
+		Result set_input_capture_3_filter(Filter filter);
+		Result set_input_capture_4_filter(Filter filter);
+		Result enable_fast_output_compare_3();
+		Result disable_fast_output_compare_3();
+		Result enable_fast_output_compare_4();
+		Result disable_fast_output_compare_4();
+		Result enable_output_compare_3_preload();
+		Result disable_output_compare_3_preload();
+		Result enable_output_compare_4_preload();
+		Result disable_output_compare_4_preload();
+		Result set_output_compare_3_mode(OC_Mode mode);
+		Result set_output_compare_4_mode(OC_Mode mode);
 		//CCER/////////////////////////////////////////////////////
 		Result enable_capture_compare_1();
 		Result disable_capture_compare_1();
@@ -274,7 +301,12 @@ namespace TIMER_CPP_Extension
 		Result enable_capture_compare_2();
 		Result disable_capture_compare_2();
 		Result set_capture_compare_2_polarity(Polarity polarity);
-
+		Result enable_capture_compare_3();
+		Result disable_capture_compare_3();
+		Result set_capture_compare_3_polarity(Polarity polarity);
+		Result enable_capture_compare_4();
+		Result disable_capture_compare_4();
+		Result set_capture_compare_4_polarity(Polarity polarity);
 		//CNT//////////////////////////////////////////////////////
 		uint16_t get_counter_value();
 		void set_counter_value(uint16_t value);
