@@ -1473,6 +1473,20 @@ Result TIMER_ext::set_capture_compare_3_polarity(Polarity polarity)
 
 	return OK;
 }
+Result TIMER_ext::set_capture_compare_3_com_polarity(Polarity polarity)
+{
+	switch (polarity)
+	{
+		case LO_FALLING_EDGE:
+			TIM_CCER(_timer) |= TIM_CCER_CC3NP;
+			break;
+		case HI_RISING_EDGE:
+			TIM_CCER(_timer) &= ~TIM_CCER_CC3NP;
+			break;
+	}
+
+	return OK;
+}
 //9,12
 Result TIMER_ext::enable_capture_compare_4()
 {
@@ -1549,4 +1563,24 @@ uint16_t TIMER_ext::get_capture_compare_2_value()
 void TIMER_ext::set_capture_compare_2_value(uint32_t value)
 {
 	TIM_CCR2(_timer) = value;
+}
+
+uint16_t TIMER_ext::get_capture_compare_3_value()
+{
+	return TIM_CCR3(_timer);
+}
+//9,12
+void TIMER_ext::set_capture_compare_3_value(uint32_t value)
+{
+	TIM_CCR3(_timer) = value;
+}
+//9,12
+uint16_t TIMER_ext::get_capture_compare_4_value()
+{
+	return TIM_CCR4(_timer);
+}
+//9,12
+void TIMER_ext::set_capture_compare_4_value(uint32_t value)
+{
+	TIM_CCR4(_timer) = value;
 }

@@ -30,7 +30,7 @@ SYSTICK implementation, public interface
 #include <libopencm3/cm3/systick.h>
 
 //must be changed according to your RCC configuration
-#define SYSTEM_CORE_CLOCK						(uint32_t)168000000
+#define SYSTEM_CORE_CLOCK						(uint32_t)120000000
 #define SYSTEM_CORE_CLOCK_DIV                   (uint32_t)1000
 
 extern "C" void sys_tick_handler(void);
