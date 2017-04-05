@@ -28,9 +28,9 @@ AdcDma::AdcDma(AdcDma_DMA_Conf dma, AdcDma_ADC_Conf adc, bool temp_sensor)
 		_adc->enable_temp_sensor();
 	}
 	_adc->set_multi_mode(ADC_MultiMode::MODE_INDEPENDENT);
-	_adc->set_prescaler(ADC_Prescaler::PRESCALER_2);
+	_adc->set_prescaler(ADC_Prescaler::PRESCALER_8);
 	_adc->set_dma_mode(ADC_DMA_Mode::MODE_NONE);
-	_adc->set_delay_between_two_samples(ADC_Delay::DELAY_CYCLES_5);
+	_adc->set_delay_between_two_samples(ADC_Delay::DELAY_CYCLES_20);
 	_adc->set_resolution(ADC_Resolution::RES_12_BIT);
 	_adc->enable_scan_mode();
 	_adc->set_conversion_mode(ADC_ConversionMode::CONTINUOUS_CONV);
