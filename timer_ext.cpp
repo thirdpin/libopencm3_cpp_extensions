@@ -1420,6 +1420,20 @@ Result TIMER_ext::set_capture_compare_1_polarity(Polarity polarity)
 
 	return OK;
 }
+Result TIMER_ext::set_capture_compare_1_com_polarity(Polarity polarity)
+{
+	switch (polarity)
+	{
+		case LO_FALLING_EDGE:
+			TIM_CCER(_timer) |= TIM_CCER_CC1NP;
+			break;
+		case HI_RISING_EDGE:
+			TIM_CCER(_timer) &= ~TIM_CCER_CC1NP;
+			break;
+	}
+
+	return OK;
+}
 //9,12
 Result TIMER_ext::enable_capture_compare_2()
 {
@@ -1509,6 +1523,20 @@ Result TIMER_ext::set_capture_compare_4_polarity(Polarity polarity)
 			break;
 		case HI_RISING_EDGE:
 			TIM_CCER(_timer) &= ~TIM_CCER_CC4P;
+			break;
+	}
+
+	return OK;
+}
+Result TIMER_ext::set_capture_compare_4_com_polarity(Polarity polarity)
+{
+	switch (polarity)
+	{
+		case LO_FALLING_EDGE:
+			TIM_CCER(_timer) |= (1<<15);
+			break;
+		case HI_RISING_EDGE:
+			TIM_CCER(_timer) &= ~(1<<15);
 			break;
 	}
 

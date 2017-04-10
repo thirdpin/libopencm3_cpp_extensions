@@ -298,6 +298,7 @@ namespace TIMER_CPP_Extension
 		Result enable_capture_compare_1();
 		Result disable_capture_compare_1();
 		Result set_capture_compare_1_polarity(Polarity polarity);
+		Result set_capture_compare_1_com_polarity(Polarity polarity);
 		Result enable_capture_compare_2();
 		Result disable_capture_compare_2();
 		Result set_capture_compare_2_polarity(Polarity polarity);
@@ -308,6 +309,7 @@ namespace TIMER_CPP_Extension
 		Result enable_capture_compare_4();
 		Result disable_capture_compare_4();
 		Result set_capture_compare_4_polarity(Polarity polarity);
+		Result set_capture_compare_4_com_polarity(Polarity polarity);
 		//CNT//////////////////////////////////////////////////////
 		uint16_t get_counter_value();
 		void set_counter_value(uint16_t value);
