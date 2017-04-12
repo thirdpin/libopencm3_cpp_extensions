@@ -87,6 +87,7 @@ bool TimerMs::timeout()
 				_saved_ms = counter_ms;
 				return true;
 			case ONE_SHOT:
+				stop();
 				return true;
 		}
 	}
