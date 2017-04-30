@@ -24,12 +24,25 @@ SYSTICK implementation, public interface
 */
 
 #include "systick_ext.h"
+#if ENABLE_CUSTOM_SYSTICK_SOURCE == 1
+extern "C" {
+    void SYS_TICK_INT_FUNC(void);
+}
+#include "libopencm3/stm32/timer.h"
+#endif
 
 volatile uint32_t counter_ms;
 
-void sys_tick_handler(void)
+void SYS_TICK_INT_FUNC(void)
 {
-	counter_ms++;
+#if ENABLE_CUSTOM_SYSTICK_SOURCE == 1
+    if (timer_get_flag(INT_SOURCE, TIM_SR_UIF)) {
+        timer_clear_flag(INT_SOURCE, TIM_SR_UIF);
+        counter_ms++;
+    }
+#else
+    counter_ms++;
+#endif
 }
 
 void delay_nop(uint32_t count)
