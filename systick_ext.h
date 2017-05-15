@@ -28,7 +28,7 @@ SYSTICK implementation, public interface
 
 #include <stdint.h>
 #include <libopencm3/cm3/systick.h>
-#include <Cm3ExtConfig.h>
+//#include <Cm3ExtConfig.h>
 
 //must be changed according to your RCC configuration
 #define SYSTEM_CORE_CLOCK						(uint32_t)120000000
