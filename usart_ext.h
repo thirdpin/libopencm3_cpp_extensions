@@ -62,10 +62,11 @@ typedef struct {
 class USART_ext
 {
 public:
-	RoundBuffer *rb_in;
-	RoundBuffer *rb_out;
+	utils::RoundBuffer *rb_in;
+	utils::RoundBuffer *rb_out;
 
-	USART_ext(USART_Struct usart, USART_Settings settings, RoundBuffer rb_in_size, RoundBuffer rb_out_size);
+	USART_ext(USART_Struct usart, USART_Settings settings,
+			  utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size);
 
 	bool interrupt_source_RXNE() {
 		return (((USART_CR1(_usart) & USART_CR1_RXNEIE) != 0) && usart_get_flag(_usart, USART_SR_RXNE));

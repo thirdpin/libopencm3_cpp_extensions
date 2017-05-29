@@ -26,6 +26,12 @@ ROUND BUFFER implementation, public interface
 
 #include "round_buffer.h"
 
+
+namespace cm3ext {
+
+namespace utils {
+
+
 RoundBuffer::RoundBuffer()
 {
 	init(ROUND_BUFFER_DEFAULT_SIZE);
@@ -128,3 +134,8 @@ int RoundBuffer::mem_search(  void *buffer, uint32_t sizebuf)
 	}
 	return(-2);
 }
+
+
+}  // namespace utils
+
+}  // namespace cm3ext

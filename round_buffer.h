@@ -29,7 +29,13 @@ ROUND BUFFER implementation, public interface
 
 #include "stdint.h"
 
-#define ROUND_BUFFER_DEFAULT_SIZE			1000
+namespace cm3ext {
+
+namespace utils {
+
+
+constexpr uint32_t ROUND_BUFFER_DEFAULT_SIZE = 1000;
+
 /**
 @brief Initializes a new instance of the TplRoundBuffer class
        that is empty and has the specified initial size.
@@ -89,6 +95,12 @@ public:
            that is empty and has no initial size.
 	*/
 	RoundBuffer();
+
+	/**
+	@brief Prevent memory leak.
+	*/
+	~RoundBuffer() = delete;
+
 	/**
     @brief Initializes a new instance of the TplRoundBuffer class
 	that is empty and has the specified initial size.
@@ -247,5 +259,10 @@ private:
 			*par -= _size;
 	}
 };
+
+
+}  // namespace utils
+
+}  // namespace cm3ext
 
 #endif

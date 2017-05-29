@@ -62,10 +62,11 @@ typedef struct {
 class RS485
 {
 public:
-	RoundBuffer *rb_in;
-	RoundBuffer *rb_out;
+	utils::RoundBuffer *rb_in;
+	utils::RoundBuffer *rb_out;
 
-	RS485(RS485_Struct rs485, RS485_Settings settings, RoundBuffer rb_in_size, RoundBuffer rb_out_size);
+	RS485(RS485_Struct rs485, RS485_Settings settings,
+		  utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size);
 
 	void usart_enable_tc_interrupt()
 	{
