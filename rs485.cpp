@@ -28,7 +28,7 @@ RS485 implementation, public interface
 namespace cm3ext {
 
 
-RS485::RS485(RS485_Struct rs485, RS485_Settings settings,
+RS485::RS485(Struct rs485, Settings settings,
 			 utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size)
 {
 	rb_in = new utils::RoundBuffer(rb_in_size);

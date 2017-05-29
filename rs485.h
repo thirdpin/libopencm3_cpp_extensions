@@ -43,62 +43,73 @@ RS485 implementation, public interface
 namespace cm3ext {
 
 
-typedef struct {
-	uint32_t baud_rate;
-	uint16_t word_length;
-	uint16_t stop_bits;
-	uint16_t parity;
-	uint16_t mode;
-	uint16_t flow_control;
-}RS485_Settings;
-
-typedef struct {
-	uint32_t number;
-	gpio::Pinout tx;
-	gpio::Pinout rx;
-	gpio::Pinout de;
-}RS485_Struct;
-
 class RS485
 {
 public:
+	struct Settings {
+		uint32_t baud_rate;
+		uint16_t word_length;
+		uint16_t stop_bits;
+		uint16_t parity;
+		uint16_t mode;
+		uint16_t flow_control;
+	};
+
+	struct Struct {
+		uint32_t number;
+		gpio::Pinout tx;
+		gpio::Pinout rx;
+		gpio::Pinout de;
+	};
+
 	utils::RoundBuffer *rb_in;
 	utils::RoundBuffer *rb_out;
 
-	RS485(RS485_Struct rs485, RS485_Settings settings,
+	RS485(Struct rs485, Settings settings,
 		  utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size);
+	~RS485() = delete;
 
 	void usart_enable_tc_interrupt()
 	{
 		USART_CR1(_rs485) |= USART_CR1_TCIE;
 	}
+
 	void usart_disable_tc_interrupt()
 	{
 		USART_CR1(_rs485) &= ~USART_CR1_TCIE;
 	}
+
 	bool interrupt_source_RXNE()
 	{
-		return (((USART_CR1(_rs485) & USART_CR1_RXNEIE) != 0) && usart_get_flag(_rs485, USART_SR_RXNE));
+		return (((USART_CR1(_rs485) & USART_CR1_RXNEIE) != 0) &&
+				  usart_get_flag(_rs485, USART_SR_RXNE));
 	}
+
 	bool interrupt_source_TXE()
 	{
-		return (((USART_CR1(_rs485) & USART_CR1_TXEIE) != 0) && usart_get_flag(_rs485, USART_SR_TXE));
+		return (((USART_CR1(_rs485) & USART_CR1_TXEIE) != 0) &&
+				  usart_get_flag(_rs485, USART_SR_TXE));
 	}
+
 	bool interrupt_source_TC()
 	{
-		return (((USART_CR1(_rs485) & USART_CR1_TCIE) != 0) && usart_get_flag(_rs485, USART_SR_TC));
+		return (((USART_CR1(_rs485) & USART_CR1_TCIE) != 0) &&
+				  usart_get_flag(_rs485, USART_SR_TC));
 	}
+
 	void start_send()
 	{
 		_de->set();
 		usart_enable_tx_interrupt(_rs485);
 	}
+
 	void receive_handler()
 	{
 		if (interrupt_source_RXNE()) {
 			rb_in->push(usart_recv(_rs485));
 		}
 	}
+
 	void transmit_handler()
 	{
 		if (interrupt_source_TXE()) {
@@ -115,6 +126,7 @@ public:
 			usart_disable_tc_interrupt();
 		}
 	}
+
 	void inirq()
 	{
 		receive_handler();
