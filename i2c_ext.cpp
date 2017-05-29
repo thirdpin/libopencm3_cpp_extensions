@@ -27,10 +27,10 @@ I2C C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 
 namespace cm3ext {
 
+namespace i2c {
 
-using namespace I2C_CPP_Extension;
 
-I2C_ext::I2C_ext(I2C_Conf i2c_conf)
+I2c::I2c(Config i2c_conf)
 {
 	switch(i2c_conf.i2c_number)
 	{
@@ -52,7 +52,7 @@ I2C_ext::I2C_ext(I2C_Conf i2c_conf)
 	_timer = new TimerMs(TimerMode::ONE_SHOT, MAX_TRANSMIT_TIME_MS);
 }
 
-bool I2C_ext::master_transfer(I2C_MasterTransferCfg cfg)
+bool I2c::master_transfer(MasterTransferCfg cfg)
 {
 	uint32_t reg __attribute__((unused));
 	bool timeout_error = false;
@@ -141,5 +141,8 @@ bool I2C_ext::master_transfer(I2C_MasterTransferCfg cfg)
     	return false;
     return true;
 }
+
+
+}  // namespace i2c
 
 }  // namespace cm3ext
