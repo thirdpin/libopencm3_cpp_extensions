@@ -191,78 +191,86 @@ GPIO C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #define PI14										PINOUT_CTOR(I, 14)
 #define PI15										PINOUT_CTOR(I, 15)
 
-namespace GPIO_CPP_Extension
+namespace cm3ext {
+
+namespace gpio {
+
+
+struct Pinout {
+	uint32_t port;
+	uint16_t pin;
+};
+
+enum Mode {
+	INPUT,
+	OUTPUT,
+	ALTERNATE_FUNCTION,
+	ANALOG
+};
+
+enum PullMode {
+	NO_PULL,
+	PULL_UP,
+	PULL_DOWN
+};
+
+enum OutputType {
+	PUSH_PULL,
+	OPEN_DRAIN
+};
+
+enum Speed {
+	LOW_2MHz,
+	MEDIUM_25MHz,
+	FAST_50MHz,
+	HIGH_SPEED_100MHz
+};
+
+enum AltFuncNumber {
+	AF0,
+	AF1,
+	AF2,
+	AF3,
+	AF4,
+	AF5,
+	AF6,
+	AF7,
+	AF8,
+	AF9,
+	AF10,
+	AF11,
+	AF12,
+	AF13,
+	AF14,
+	AF15
+};
+
+class Gpio
 {
-	typedef struct  {
-		uint32_t port;
-		uint16_t pin;
-	}Pinout;
+public:
+	Gpio() {}
+	Gpio(Pinout pinout);
 
-	typedef enum {
-		INPUT,
-		OUTPUT,
-		ALTERNATE_FUNCTION,
-		ANALOG
-	}Mode;
+	void init(Pinout pinout);
+	void set();
+	void clear();
+	uint16_t get();
+	void toggle();
+	uint16_t port_read();
+	void port_write(uint16_t data);
+	void port_config_lock();
+	void mode_setup(Mode mode, PullMode pull_mode);
+	void set_output_options(OutputType type, Speed speed);
+	void set_af(AltFuncNumber af_num);
+	void set_exti_irq(enum exti_trigger_type trigger, uint8_t nvic);
+	void clear_exti_pending_bit();
 
-	typedef enum {
-		NO_PULL,
-		PULL_UP,
-		PULL_DOWN
-	}PullMode;
+private:
+	Pinout _pinout;
+};
 
-	typedef enum {
-		PUSH_PULL,
-		OPEN_DRAIN
-	}OutputType;
 
-	typedef enum {
-		LOW_2MHz,
-		MEDIUM_25MHz,
-		FAST_50MHz,
-		HIGH_SPEED_100MHz
-	}Speed;
+} // namespace gpio
 
-	typedef enum {
-		AF0,
-		AF1,
-		AF2,
-		AF3,
-		AF4,
-		AF5,
-		AF6,
-		AF7,
-		AF8,
-		AF9,
-		AF10,
-		AF11,
-		AF12,
-		AF13,
-		AF14,
-		AF15
-	}AF_Number;
-
-	class GPIO_ext
-	{
-	public:
-		GPIO_ext() {}
-		GPIO_ext(Pinout pinout);
-		void init(Pinout pinout);
-		void set();
-		void clear();
-		uint16_t get();
-		void toggle();
-		uint16_t port_read();
-		void port_write(uint16_t data);
-		void port_config_lock();
-		void mode_setup(Mode mode, PullMode pull_mode);
-		void set_output_options(OutputType type, Speed speed);
-		void set_af(AF_Number af_num);
-		void set_exti_irq(enum exti_trigger_type trigger, uint8_t nvic);
-		void clear_exti_pending_bit();
-
-	private:
-		Pinout _pinout;
-	};
-}
+} // namespace cm3ext
 #endif

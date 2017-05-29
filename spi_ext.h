@@ -28,9 +28,11 @@ SPI C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #define SPI_EXT_H
 
 #include <libopencm3/stm32/spi.h>
+
 #include "gpio_ext.h"
 
-using namespace GPIO_CPP_Extension;
+namespace cm3ext {
+
 
 namespace SPI_CPP_Extension
 {
@@ -48,9 +50,9 @@ namespace SPI_CPP_Extension
 
     typedef struct {
         uint8_t spi_number;
-		Pinout mosi_pin;
-		Pinout miso_pin;
-		Pinout scl_pin;
+		gpio::Pinout mosi_pin;
+		gpio::Pinout miso_pin;
+		gpio::Pinout scl_pin;
 	}SPI_Conf;
 
 	typedef enum {
@@ -268,5 +270,8 @@ namespace SPI_CPP_Extension
 
 	};
 }
+
+
+} // namespace cm3ext
 
 #endif

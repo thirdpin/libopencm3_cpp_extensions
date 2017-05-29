@@ -25,6 +25,9 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 
 #include "usart_ext.h"
 
+namespace cm3ext {
+
+
 USART_ext::USART_ext(USART_Struct usart, USART_Settings settings, RoundBuffer rb_in_size, RoundBuffer rb_out_size)
 {
 	rb_in = new RoundBuffer(rb_in_size);
@@ -32,28 +35,28 @@ USART_ext::USART_ext(USART_Struct usart, USART_Settings settings, RoundBuffer rb
 
 	if (usart.rx.pin)
 	{
-		GPIO_ext rx(usart.rx);
-		rx.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-		rx.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::MEDIUM_25MHz);
+		gpio::Gpio rx(usart.rx);
+		rx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+		rx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
 
 		if ((usart.number >= 1) && (usart.number <= 3)) {
-			rx.set_af(GPIO_CPP_Extension::AF_Number::AF7);
+			rx.set_af(gpio::AltFuncNumber::AF7);
 		}
 		if ((usart.number >= 4) && (usart.number <= 6)) {
-			rx.set_af(GPIO_CPP_Extension::AF_Number::AF8);
+			rx.set_af(gpio::AltFuncNumber::AF8);
 		}
 	}
 
 	if (usart.tx.pin)
 	{
-		GPIO_ext tx(usart.tx);
-		tx.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-		tx.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::MEDIUM_25MHz);
+		gpio::Gpio tx(usart.tx);
+		tx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+		tx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
 		if ((usart.number >= 1) && (usart.number <= 3)) {
-			tx.set_af(GPIO_CPP_Extension::AF_Number::AF7);
+			tx.set_af(gpio::AltFuncNumber::AF7);
 		}
 		if ((usart.number >= 4) && (usart.number <= 6)) {
-			tx.set_af(GPIO_CPP_Extension::AF_Number::AF8);
+			tx.set_af(gpio::AltFuncNumber::AF8);
 		}
 	}
 
@@ -102,3 +105,6 @@ USART_ext::USART_ext(USART_Struct usart, USART_Settings settings, RoundBuffer rb
     nvic_set_priority(_usart_nvic, settings.nvic_priority);
     nvic_enable_irq(_usart_nvic);
 }
+
+
+} // namespace cm3ext

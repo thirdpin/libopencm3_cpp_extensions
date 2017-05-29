@@ -25,6 +25,10 @@ SPI C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 */
 
 #include "spi_ext.h"
+
+namespace cm3ext {
+
+
 using namespace SPI_CPP_Extension;
 
 SPI_ext::SPI_ext(SPI_Conf spi_conf)
@@ -37,31 +41,31 @@ SPI_ext::SPI_ext(SPI_Conf spi_conf)
 		default: break;
 	}
 
-	GPIO_ext mosi(spi_conf.mosi_pin);
-	mosi.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-	mosi.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::HIGH_SPEED_100MHz);
+	gpio::Gpio mosi(spi_conf.mosi_pin);
+	mosi.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+	mosi.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::HIGH_SPEED_100MHz);
 
-	GPIO_ext miso(spi_conf.miso_pin);
-	miso.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-	miso.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::HIGH_SPEED_100MHz);
+	gpio::Gpio miso(spi_conf.miso_pin);
+	miso.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+	miso.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::HIGH_SPEED_100MHz);
 
-	GPIO_ext scl(spi_conf.scl_pin);
-	scl.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-	scl.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::HIGH_SPEED_100MHz);
+	gpio::Gpio scl(spi_conf.scl_pin);
+	scl.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+	scl.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::HIGH_SPEED_100MHz);
 
 	switch(_spi)
 	{
 		case SPI1:
 		case SPI2:
-			mosi.set_af(GPIO_CPP_Extension::AF_Number::AF5);
-			miso.set_af(GPIO_CPP_Extension::AF_Number::AF5);
-			scl.set_af(GPIO_CPP_Extension::AF_Number::AF5);
+			mosi.set_af(gpio::AltFuncNumber::AF5);
+			miso.set_af(gpio::AltFuncNumber::AF5);
+			scl.set_af(gpio::AltFuncNumber::AF5);
 			break;
 
 		case SPI3 :
-			mosi.set_af(GPIO_CPP_Extension::AF_Number::AF6);
-			miso.set_af(GPIO_CPP_Extension::AF_Number::AF6);
-			scl.set_af(GPIO_CPP_Extension::AF_Number::AF6);
+			mosi.set_af(gpio::AltFuncNumber::AF6);
+			miso.set_af(gpio::AltFuncNumber::AF6);
+			scl.set_af(gpio::AltFuncNumber::AF6);
 			break;
 
 		default: break;
@@ -217,3 +221,6 @@ bool SPI_ext::get_flag_status(Flag flag)
 	}
 	return (result);
 }
+
+
+} // namespace cm3ext

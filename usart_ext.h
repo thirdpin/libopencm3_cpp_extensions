@@ -26,10 +26,9 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #ifndef USART_EXT_H
 #define USART_EXT_H
 
+
 #include <stdint.h>
 #include <libopencm3/stm32/usart.h>
-#include "round_buffer.h"
-#include "gpio_ext.h"
 #ifdef STM32F2
 #include <libopencm3/stm32/f2/nvic.h>
 #endif
@@ -37,7 +36,12 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #include <libopencm3/stm32/f4/nvic.h>
 #endif
 
-using namespace GPIO_CPP_Extension;
+#include "round_buffer.h"
+#include "gpio_ext.h"
+
+
+namespace cm3ext {
+
 
 typedef struct {
 	uint32_t baud_rate;
@@ -51,8 +55,8 @@ typedef struct {
 
 typedef struct {
     uint32_t number;
-	Pinout tx;
-	Pinout rx;
+	gpio::Pinout tx;
+	gpio::Pinout rx;
 }USART_Struct;
 
 class USART_ext
@@ -124,4 +128,8 @@ private:
 	uint32_t _usart;
 	uint32_t _usart_nvic;
 };
+
+
+} // namespace cm3ext
+
 #endif

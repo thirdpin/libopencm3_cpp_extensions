@@ -27,9 +27,8 @@ RS485 implementation, public interface
 #define RS_485_H
 
 #include <stdint.h>
+
 #include <libopencm3/stm32/usart.h>
-#include "round_buffer.h"
-#include "gpio_ext.h"
 #ifdef STM32F2
 #include <libopencm3/stm32/f2/nvic.h>
 #endif
@@ -37,7 +36,12 @@ RS485 implementation, public interface
 #include <libopencm3/stm32/f4/nvic.h>
 #endif
 
-using namespace GPIO_CPP_Extension;
+#include "gpio_ext.h"
+#include "round_buffer.h"
+
+
+namespace cm3ext {
+
 
 typedef struct {
 	uint32_t baud_rate;
@@ -50,9 +54,9 @@ typedef struct {
 
 typedef struct {
 	uint32_t number;
-	Pinout tx;
-	Pinout rx;
-	Pinout de;
+	gpio::Pinout tx;
+	gpio::Pinout rx;
+	gpio::Pinout de;
 }RS485_Struct;
 
 class RS485
@@ -118,6 +122,9 @@ public:
 
 private:
 	uint32_t _rs485;
-	GPIO_ext *_de;
+	gpio::Gpio* _de;
 };
+
+
+} // namespace cm3ext
 #endif

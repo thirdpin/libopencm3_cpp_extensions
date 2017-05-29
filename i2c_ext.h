@@ -26,11 +26,13 @@ I2C C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #ifndef I2C_EXT_H
 #define I2C_EXT_H
 
-#include <libopencm3/stm32/i2c.h>
-#include "gpio_ext.h"
-#include "systick_ext.h"
 
-using namespace GPIO_CPP_Extension;
+#include <libopencm3/stm32/i2c.h>
+#include "systick_ext.h"
+#include "gpio_ext.h"
+
+namespace cm3ext {
+
 
 namespace I2C_CPP_Extension
 {
@@ -48,8 +50,8 @@ namespace I2C_CPP_Extension
 
 	typedef struct {
 		uint8_t i2c_number;
-		Pinout scl_pin;
-		Pinout sda_pin;
+		gpio::Pinout scl_pin;
+		gpio::Pinout sda_pin;
 	}I2C_Conf;
 
 	typedef struct {
@@ -356,5 +358,8 @@ namespace I2C_CPP_Extension
 		}
 	};
 }
+
+
+}  // namespace cm3ext
 
 #endif

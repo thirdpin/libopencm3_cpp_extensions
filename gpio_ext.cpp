@@ -23,46 +23,59 @@
 GPIO C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#include "gpio_ext.h"
-using namespace GPIO_CPP_Extension;
+#include <gpio_ext.h>
 
-GPIO_ext::GPIO_ext(Pinout pinout)
+namespace cm3ext {
+
+namespace gpio {
+
+
+Gpio::Gpio(Pinout pinout)
 {
 	_pinout = pinout;
 }
-void GPIO_ext::init(Pinout pinout)
+
+void Gpio::init(Pinout pinout)
 {
 	_pinout = pinout;
 }
-void GPIO_ext::set()
+
+void Gpio::set()
 {
 	gpio_set(_pinout.port, _pinout.pin);
 }
-void GPIO_ext::clear()
+
+void Gpio::clear()
 {
 	gpio_clear(_pinout.port, _pinout.pin);
 }
-uint16_t GPIO_ext::get()
+
+uint16_t Gpio::get()
 {
 	return gpio_get(_pinout.port, _pinout.pin);
 }
-void GPIO_ext::toggle()
+
+void Gpio::toggle()
 {
 	gpio_toggle(_pinout.port, _pinout.pin);
 }
-uint16_t GPIO_ext::port_read()
+
+uint16_t Gpio::port_read()
 {
 	return gpio_port_read(_pinout.port);
 }
-void GPIO_ext::port_write(uint16_t data)
+
+void Gpio::port_write(uint16_t data)
 {
 	gpio_port_write(_pinout.port, data);
 }
-void GPIO_ext::port_config_lock()
+
+void Gpio::port_config_lock()
 {
 	gpio_port_config_lock (_pinout.port, _pinout.pin);
 }
-void GPIO_ext::mode_setup(Mode mode, PullMode pull_mode)
+
+void Gpio::mode_setup(Mode mode, PullMode pull_mode)
 {
 	uint8_t _mode;
 	uint8_t _pull_mode;
@@ -98,7 +111,8 @@ void GPIO_ext::mode_setup(Mode mode, PullMode pull_mode)
 
 	gpio_mode_setup(_pinout.port, _mode, _pull_mode, _pinout.pin);
 }
-void GPIO_ext::set_output_options(OutputType type, Speed speed)
+
+void Gpio::set_output_options(OutputType type, Speed speed)
 {
 	uint8_t _type;
 	uint8_t _speed;
@@ -132,7 +146,7 @@ void GPIO_ext::set_output_options(OutputType type, Speed speed)
 	gpio_set_output_options(_pinout.port, _type, _speed, _pinout.pin);
 }
 
-void GPIO_ext::set_af(AF_Number af_num)
+void Gpio::set_af(AltFuncNumber af_num)
 {
 	uint8_t _af;
 	switch (af_num)
@@ -190,7 +204,7 @@ void GPIO_ext::set_af(AF_Number af_num)
 	gpio_set_af(_pinout.port, _af, _pinout.pin);
 }
 
-void GPIO_ext::set_exti_irq(exti_trigger_type trigger, uint8_t nvic)
+void Gpio::set_exti_irq(exti_trigger_type trigger, uint8_t nvic)
 {
 	nvic_enable_irq(nvic);
 	exti_select_source(_pinout.pin, _pinout.port);
@@ -198,7 +212,12 @@ void GPIO_ext::set_exti_irq(exti_trigger_type trigger, uint8_t nvic)
 	exti_enable_request(_pinout.pin);
 }
 
-void GPIO_ext::clear_exti_pending_bit()
+void Gpio::clear_exti_pending_bit()
 {
 	exti_reset_request(_pinout.pin);
 }
+
+
+} // namespace gpio
+
+} // namespace cm3ext

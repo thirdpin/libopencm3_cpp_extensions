@@ -25,6 +25,9 @@ RS485 implementation, public interface
 
 #include "rs485.h"
 
+namespace cm3ext {
+
+
 RS485::RS485(RS485_Struct rs485, RS485_Settings settings, RoundBuffer rb_in_size, RoundBuffer rb_out_size)
 {
 	rb_in = new RoundBuffer(rb_in_size);
@@ -32,23 +35,23 @@ RS485::RS485(RS485_Struct rs485, RS485_Settings settings, RoundBuffer rb_in_size
 
 	if (rs485.rx.pin)
 	{
-		GPIO_ext rx(rs485.rx);
-		rx.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-		rx.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::MEDIUM_25MHz);
-		rx.set_af(GPIO_CPP_Extension::AF_Number::AF7);
+		gpio::Gpio rx(rs485.rx);
+		rx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+		rx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
+		rx.set_af(gpio::AltFuncNumber::AF7);
 	}
 
 	if (rs485.tx.pin)
 	{
-		GPIO_ext tx(rs485.tx);
-		tx.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-		tx.set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::MEDIUM_25MHz);
-		tx.set_af(GPIO_CPP_Extension::AF_Number::AF7);
+		gpio::Gpio tx(rs485.tx);
+		tx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+		tx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
+		tx.set_af(gpio::AltFuncNumber::AF7);
 	}
 
-	_de = new GPIO_ext(rs485.de);
-	_de->mode_setup(GPIO_CPP_Extension::Mode::OUTPUT, GPIO_CPP_Extension::PullMode::NO_PULL);
-	_de->set_output_options(GPIO_CPP_Extension::OutputType::PUSH_PULL, GPIO_CPP_Extension::Speed::MEDIUM_25MHz);
+	_de = new gpio::Gpio(rs485.de);
+	_de->mode_setup(gpio::Mode::OUTPUT, gpio::PullMode::NO_PULL);
+	_de->set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
 	_de->clear();
 
 	switch (rs485.number)
@@ -76,3 +79,7 @@ RS485::RS485(RS485_Struct rs485, RS485_Settings settings, RoundBuffer rb_in_size
 
 		usart_enable(_rs485);
 }
+
+
+} // namespace cm3ext
+

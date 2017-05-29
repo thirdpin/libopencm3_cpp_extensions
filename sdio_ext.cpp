@@ -1,5 +1,7 @@
 #include <sdio_ext.h>
 
+namespace cm3ext {
+
 namespace SDIO_CPP_Extension {
 
 namespace cfg = config;
@@ -29,7 +31,7 @@ void SDIO_ext::_init_gpio()
     // PD2  - SDIO_CMD
 
 	// Data pins
-	gpio::GPIO_ext data_pins[cfg::COUNT_OF_DATA_PINS];
+	gpio::Gpio data_pins[cfg::COUNT_OF_DATA_PINS];
 	for (int i = 0; i < cfg::COUNT_OF_DATA_PINS; ++i) {
 		data_pins[i].init(cfg::DATA_PINS[i]);
 		data_pins[i].mode_setup(gpio::Mode::ALTERNATE_FUNCTION,
@@ -40,7 +42,7 @@ void SDIO_ext::_init_gpio()
 	}
 
 	// Command pin
-	gpio::GPIO_ext cmd_pin(cfg::CMD_PIN);
+	gpio::Gpio cmd_pin(cfg::CMD_PIN);
 	cmd_pin.mode_setup(gpio::Mode::ALTERNATE_FUNCTION,
 					   gpio::PullMode::NO_PULL);
 	cmd_pin.set_output_options(gpio::OutputType::PUSH_PULL,
@@ -48,7 +50,7 @@ void SDIO_ext::_init_gpio()
 	cmd_pin.set_af(cfg::SDIO_ALTERNATIVE_FUNC_NUMBER);
 
 	// Clock pin
-	gpio::GPIO_ext clk_pin(cfg::CLK_PIN);
+	gpio::Gpio clk_pin(cfg::CLK_PIN);
 	clk_pin.mode_setup(gpio::Mode::ALTERNATE_FUNCTION,
 					   gpio::PullMode::NO_PULL);
 	clk_pin.set_output_options(gpio::OutputType::PUSH_PULL,
@@ -56,4 +58,7 @@ void SDIO_ext::_init_gpio()
 	clk_pin.set_af(cfg::SDIO_ALTERNATIVE_FUNC_NUMBER);
 }
 
-} /* namespace hw */
+
+}
+
+} // namespace cm3ext

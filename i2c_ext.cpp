@@ -24,6 +24,10 @@ I2C C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 */
 
 #include "i2c_ext.h"
+
+namespace cm3ext {
+
+
 using namespace I2C_CPP_Extension;
 
 I2C_ext::I2C_ext(I2C_Conf i2c_conf)
@@ -35,15 +39,15 @@ I2C_ext::I2C_ext(I2C_Conf i2c_conf)
 		default: break;
 	}
 
-	GPIO_ext scl(i2c_conf.scl_pin);
-	scl.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-	scl.set_output_options(GPIO_CPP_Extension::OutputType::OPEN_DRAIN, GPIO_CPP_Extension::Speed::LOW_2MHz);
-	scl.set_af(GPIO_CPP_Extension::AF_Number::AF4);
+	gpio::Gpio scl(i2c_conf.scl_pin);
+	scl.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+	scl.set_output_options(gpio::OutputType::OPEN_DRAIN, gpio::Speed::LOW_2MHz);
+	scl.set_af(gpio::AltFuncNumber::AF4);
 
-	GPIO_ext sda(i2c_conf.sda_pin);
-	sda.mode_setup(GPIO_CPP_Extension::Mode::ALTERNATE_FUNCTION, GPIO_CPP_Extension::PullMode::NO_PULL);
-	sda.set_output_options(GPIO_CPP_Extension::OutputType::OPEN_DRAIN, GPIO_CPP_Extension::Speed::LOW_2MHz);
-	sda.set_af(GPIO_CPP_Extension::AF_Number::AF4);
+	gpio::Gpio sda(i2c_conf.sda_pin);
+	sda.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+	sda.set_output_options(gpio::OutputType::OPEN_DRAIN, gpio::Speed::LOW_2MHz);
+	sda.set_af(gpio::AltFuncNumber::AF4);
 
 	_timer = new TimerMs(TimerMode::ONE_SHOT, MAX_TRANSMIT_TIME_MS);
 }
@@ -137,3 +141,5 @@ bool I2C_ext::master_transfer(I2C_MasterTransferCfg cfg)
     	return false;
     return true;
 }
+
+}  // namespace cm3ext
