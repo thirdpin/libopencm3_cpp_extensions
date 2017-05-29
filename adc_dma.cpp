@@ -1,8 +1,13 @@
 #include "adc_dma.h"
 
-AdcDma::AdcDma(AdcDma_DMA_Conf dma, AdcDma_ADC_Conf adc, bool temp_sensor)
+namespace cm3ext {
+
+namespace adc {
+
+
+AdcDma::AdcDma(DmaConf dma, AdcConf adc, bool is_temp_sensor)
 {
-	_adc = new ADC_ext(adc.number);
+	_adc = new Adc(adc.number);
 	_data = new uint16_t[adc.channels_count];
 	memset(_data, 0, (adc.channels_count * sizeof(uint16_t)));
 
@@ -24,23 +29,23 @@ AdcDma::AdcDma(AdcDma_DMA_Conf dma, AdcDma_ADC_Conf adc, bool temp_sensor)
 	dma_set_peripheral_burst(dma.number, dma.stream, DMA_SxCR_PBURST_SINGLE);
 	dma_enable_stream(dma.number, dma.stream);
 
-	if (temp_sensor) {
+	if (is_temp_sensor) {
 		_adc->enable_temp_sensor();
 	}
-	_adc->set_multi_mode(ADC_MultiMode::MODE_INDEPENDENT);
-	_adc->set_prescaler(ADC_Prescaler::PRESCALER_8);
-	_adc->set_dma_mode(ADC_DMA_Mode::MODE_NONE);
-	_adc->set_delay_between_two_samples(ADC_Delay::DELAY_CYCLES_20);
-	_adc->set_resolution(ADC_Resolution::RES_12_BIT);
+	_adc->set_multi_mode(MultiMode::MODE_INDEPENDENT);
+	_adc->set_prescaler(Prescaler::PRESCALER_8);
+	_adc->set_dma_mode(DmaMode::MODE_NONE);
+	_adc->set_delay_between_two_samples(Delay::DELAY_CYCLES_20);
+	_adc->set_resolution(Resolution::RES_12_BIT);
 	_adc->enable_scan_mode();
-	_adc->set_conversion_mode(ADC_ConversionMode::CONTINUOUS_CONV);
-	_adc->set_external_trigger_polarity_for_regular_group(ADC_RegularGroupTriggerPolarity::TRIGGER_NONE);
-	_adc->set_external_trigger_for_regular_group(ADC_RegularGroupTrigger::T1_CC1);
-	_adc->set_data_alignment(ADC_Alignment::RIGHT_ALIGN);
+	_adc->set_conversion_mode(ConversionMode::CONTINUOUS_CONV);
+	_adc->set_external_trigger_polarity_for_regular_group(RegularGroupTriggerPolarity::TRIGGER_NONE);
+	_adc->set_external_trigger_for_regular_group(RegularGroupTrigger::T1_CC1);
+	_adc->set_data_alignment(Alignment::RIGHT_ALIGN);
 	_adc->set_conversion_number_in_sequence(adc.channels_count, adc.channels);
 
-	for(int i = 0; i < adc.channels_count; i++) {
-		_adc->set_channel_sampling_time_selection(ADC_SamplingTime::CYCLES_480, adc.channels[i]);
+	for(int i = 0; i < adc.channels_count; ++i) {
+		_adc->set_channel_sampling_time_selection(SamplingTime::CYCLES_480, adc.channels[i]);
 	}
 
 	_adc->enable_dma_request();
@@ -53,3 +58,8 @@ uint16_t AdcDma::get_value(uint8_t index)
 {
     return(_data[index]);
 }
+
+
+}  // namespace adc
+
+}  // namespace cm3ext

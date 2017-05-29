@@ -1,9 +1,9 @@
 #ifndef ADC_EXT_H
 #define ADC_EXT_H
 
+#include <stdint.h>
 #include <libopencm3/cm3/common.h>
 #include <libopencm3/stm32/memorymap.h>
-#include "stdint.h"
 
 #define ADC1			(PERIPH_BASE_APB2 + 0x2000)
 #define ADC2			(PERIPH_BASE_APB2 + 0x2100)
@@ -117,28 +117,33 @@
 #define ADC_CCR_MULTI_MASK              (uint32_t)(0x1F)
 #define ADC_CCR_TSVREFE_MASK            (uint32_t)(0x1 << 23)
 
-typedef enum
+namespace cm3ext {
+
+namespace adc {
+
+
+enum Number
 {
 	ADC_1,
 	ADC_2,
 	ADC_3,
-}ADC_Number;
+};
 
-typedef enum
+enum Resolution
 {
 	RES_12_BIT = (uint32_t)(0 << 24),
 	RES_10_BIT = (uint32_t)(1 << 24),
 	RES_08_BIT = (uint32_t)(2 << 24),
 	RES_06_BIT = (uint32_t)(3 << 24),
-}ADC_Resolution;
+};
 
-typedef enum
+enum Alignment
 {
 	RIGHT_ALIGN,
 	LEFT_ALIGN,
-}ADC_Alignment;
+};
 
-typedef enum
+enum RegularGroupTrigger
 {
 	T1_CC1 = (uint32_t)(0 << 24),
 	T1_CC2 = (uint32_t)(1 << 24),
@@ -156,28 +161,28 @@ typedef enum
 	T8_CC1 = (uint32_t)(13 << 24),
 	T8_TRGO = (uint32_t)(14 << 24),
 	EXTI_LINE_11 = (uint32_t)(15 << 24),
-}ADC_RegularGroupTrigger;
+};
 
-typedef enum
+enum RegularGroupTriggerPolarity
 {
 	TRIGGER_NONE       = (uint32_t)(0 << 28),
 	TRIGGER_ON_RISING  = (uint32_t)(1 << 28),
 	TRIGGER_ON_FALLING = (uint32_t)(2 << 28),
 	TRIGGER_ON_BOTH    = (uint32_t)(3 << 28),
-}ADC_RegularGroupTriggerPolarity;
+};
 
-typedef enum
+enum ConversionMode
 {
 	CONTINUOUS_CONV,
 	SINGLE_CONV,
-}ADC_ConversionMode;
+};
 
-typedef enum
+enum MultiMode
 {
 	MODE_INDEPENDENT = 0,
-}ADC_MultiMode;
+};
 
-typedef enum
+enum SamplingTime
 {
 	CYCLES_3   = 0,
 	CYCLES_15  = 1,
@@ -187,9 +192,9 @@ typedef enum
 	CYCLES_112 = 5,
 	CYCLES_144 = 6,
 	CYCLES_480 = 7,
-}ADC_SamplingTime;
+};
 
-typedef enum
+enum Channel
 {
 	ADC_CHANNEL0	= 0x00,
 	ADC_CHANNEL1	= 0x01,
@@ -210,9 +215,9 @@ typedef enum
 	ADC_CHANNEL16   = 0x10,
 	ADC_CHANNEL17   = 0x11,
 	ADC_CHANNEL18   = 0x12,
-}ADC_Channel;
+};
 
-typedef enum
+enum Rank
 {
 	RANK_1 = 1,
 	RANK_2 = 2,
@@ -230,25 +235,25 @@ typedef enum
 	RANK_14 = 14,
 	RANK_15 = 15,
 	RANK_16 = 16,
-}ADC_Rank;
+};
 
-typedef enum
+enum Prescaler
 {
 	PRESCALER_2 = (uint32_t)(0 << 16),
 	PRESCALER_4 = (uint32_t)(1 << 16),
 	PRESCALER_6 = (uint32_t)(2 << 16),
 	PRESCALER_8 = (uint32_t)(3 << 16),
-}ADC_Prescaler;
+};
 
-typedef enum
+enum DmaMode
 {
 	MODE_NONE = (uint32_t)(0 << 14),
 	MODE_1    = (uint32_t)(1 << 14),
 	MODE_2    = (uint32_t)(2 << 14),
 	MODE_3    = (uint32_t)(3 << 14),
-}ADC_DMA_Mode;
+};
 
-typedef enum
+enum Delay
 {
 	DELAY_CYCLES_5  = (uint32_t)(0 << 8),
 	DELAY_CYCLES_6  = (uint32_t)(1 << 8),
@@ -266,64 +271,56 @@ typedef enum
 	DELAY_CYCLES_18 = (uint32_t)(13 << 8),
 	DELAY_CYCLES_19 = (uint32_t)(14 << 8),
 	DELAY_CYCLES_20 = (uint32_t)(15 << 8),
-}ADC_Delay;
+};
 
-class ADC_ext
+class Adc
 {
 public:
-	ADC_ext(ADC_Number adc);
+	Adc(Number adc);
 
-	void set_resolution(ADC_Resolution res);
+	void set_resolution(Resolution res);
 
 	void enable_scan_mode();
-
 	void disable_scan_mode();
 
-	void set_data_alignment(ADC_Alignment align);
-
-	void set_external_trigger_for_regular_group(ADC_RegularGroupTrigger trigger);
-
-	void set_external_trigger_polarity_for_regular_group(ADC_RegularGroupTriggerPolarity polarity);
-
-	void set_conversion_mode(ADC_ConversionMode mode);
+	void set_data_alignment(Alignment align);
+	void set_external_trigger_for_regular_group(RegularGroupTrigger trigger);
+	void set_external_trigger_polarity_for_regular_group(RegularGroupTriggerPolarity polarity);
+	void set_conversion_mode(ConversionMode mode);
 
 	void enable_dma_request();
-
 	void disable_dma_request();
 
 	void enable_dma();
-
 	void disable_dma();
 
 	void enable();
-
 	void disable();
 
 	void start_conversion();
 
 	void set_number_of_conversions(uint8_t number);
-
-	void set_channel_sampling_time_selection(ADC_SamplingTime time, ADC_Channel channel);
-
-	void set_conversion_number_in_sequence(uint8_t length, ADC_Channel *channel);
-
-	void set_prescaler(ADC_Prescaler prescaler);
-
-	void set_dma_mode(ADC_DMA_Mode mode);
-
-	void set_delay_between_two_samples(ADC_Delay delay);
-
-	void set_multi_mode(ADC_MultiMode mode);
+	void set_channel_sampling_time_selection(SamplingTime time, Channel channel);
+	void set_conversion_number_in_sequence(uint8_t length, Channel *channel);
+	void set_prescaler(Prescaler prescaler);
+	void set_dma_mode(DmaMode mode);
+	void set_delay_between_two_samples(Delay delay);
+	void set_multi_mode(MultiMode mode);
 
 	void enable_temp_sensor();
-
 	void disable_temp_sensor();
 
-	uint32_t get_base_address()
-	{
+	uint32_t get_base_address() {
 		return (_adc);
 	}
+
 private:
 	uint32_t _adc;
 };
+
+
+}  // namespace adc
+
+}  // namespace cm3ext
+
 #endif

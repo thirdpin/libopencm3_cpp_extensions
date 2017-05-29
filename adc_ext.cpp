@@ -1,6 +1,11 @@
-#include "adc_ext.h"
+#include <adc_ext.h>
 
-ADC_ext::ADC_ext(ADC_Number adc)
+namespace cm3ext {
+
+namespace adc {
+
+
+Adc::Adc(Number adc)
 {
 	switch(adc)
 	{
@@ -10,23 +15,23 @@ ADC_ext::ADC_ext(ADC_Number adc)
 	}
 }
 
-void ADC_ext::set_resolution(ADC_Resolution res)
+void Adc::set_resolution(Resolution res)
 {
 	ADC_CR1(_adc) &= ~ADC_CR1_RES_MASK;
 	ADC_CR1(_adc) |= (uint32_t)res;
 }
 
-void ADC_ext::enable_scan_mode()
+void Adc::enable_scan_mode()
 {
 	ADC_CR1(_adc) |= ADC_CR1_SCAN_MASK;
 }
 
-void ADC_ext::disable_scan_mode()
+void Adc::disable_scan_mode()
 {
 	ADC_CR1(_adc) &= ~ADC_CR1_SCAN_MASK;
 }
 
-void ADC_ext::set_data_alignment(ADC_Alignment align)
+void Adc::set_data_alignment(Alignment align)
 {
 	switch(align)
 	{
@@ -39,19 +44,19 @@ void ADC_ext::set_data_alignment(ADC_Alignment align)
 	}
 }
 
-void ADC_ext::set_external_trigger_for_regular_group(ADC_RegularGroupTrigger trigger)
+void Adc::set_external_trigger_for_regular_group(RegularGroupTrigger trigger)
 {
 	ADC_CR2(_adc) &= ~ADC_CR2_EXTSEL_MASK;
 	ADC_CR2(_adc) |= (uint32_t)trigger;
 }
 
-void ADC_ext::set_external_trigger_polarity_for_regular_group(ADC_RegularGroupTriggerPolarity polarity)
+void Adc::set_external_trigger_polarity_for_regular_group(RegularGroupTriggerPolarity polarity)
 {
 	ADC_CR2(_adc) &= ~ADC_CR2_EXTEN_MASK;
 	ADC_CR2(_adc) |= (uint32_t)polarity;
 }
 
-void ADC_ext::set_conversion_mode(ADC_ConversionMode mode)
+void Adc::set_conversion_mode(ConversionMode mode)
 {
 	switch(mode)
 	{
@@ -64,48 +69,48 @@ void ADC_ext::set_conversion_mode(ADC_ConversionMode mode)
 	}
 }
 
-void ADC_ext::enable_dma_request()
+void Adc::enable_dma_request()
 {
 	ADC_CR2(_adc) |= ADC_CR2_DDS_MASK;
 }
 
-void ADC_ext::disable_dma_request()
+void Adc::disable_dma_request()
 {
 	ADC_CR2(_adc) &= ~ADC_CR2_DDS_MASK;
 }
 
-void ADC_ext::enable_dma()
+void Adc::enable_dma()
 {
 	ADC_CR2(_adc) |= ADC_CR2_DMA_MASK;
 }
 
-void ADC_ext::disable_dma()
+void Adc::disable_dma()
 {
 	ADC_CR2(_adc) &= ~ADC_CR2_DMA_MASK;
 }
 
-void ADC_ext::enable()
+void Adc::enable()
 {
 	ADC_CR2(_adc) |= ADC_CR2_ADON_MASK;
 }
 
-void ADC_ext::disable()
+void Adc::disable()
 {
 	ADC_CR2(_adc) &= ~ADC_CR2_ADON_MASK;
 }
 
-void ADC_ext::start_conversion()
+void Adc::start_conversion()
 {
 	ADC_CR2(_adc) |= ADC_CR2_SWSTART_MASK;
 }
 
-void ADC_ext::set_number_of_conversions(uint8_t number)
+void Adc::set_number_of_conversions(uint8_t number)
 {
 	ADC_SQR1(_adc) &= ~ADC_SQR1_L_MASK;
 	ADC_SQR1(_adc) |= (uint32_t)((number - 1) & 0x0F);
 }
 
-void ADC_ext::set_channel_sampling_time_selection(ADC_SamplingTime time, ADC_Channel channel)
+void Adc::set_channel_sampling_time_selection(SamplingTime time, Channel channel)
 {
 	uint32_t offset;
 
@@ -124,7 +129,7 @@ void ADC_ext::set_channel_sampling_time_selection(ADC_SamplingTime time, ADC_Cha
 	}
 }
 
-void ADC_ext::set_conversion_number_in_sequence(uint8_t length, ADC_Channel *channel)
+void Adc::set_conversion_number_in_sequence(uint8_t length, Channel *channel)
 {
 	uint32_t fifth6 = 0;
 	uint32_t fourth6 = 0;
@@ -160,36 +165,41 @@ void ADC_ext::set_conversion_number_in_sequence(uint8_t length, ADC_Channel *cha
 	ADC_SQR3(_adc) = first6;
 }
 
-void ADC_ext::set_prescaler(ADC_Prescaler prescaler)
+void Adc::set_prescaler(Prescaler prescaler)
 {
 	ADC_CCR &= ~ADC_CCR_ADCPRE_MASK;
 	ADC_CCR |= (uint32_t)prescaler;
 }
 
-void ADC_ext::set_dma_mode(ADC_DMA_Mode mode)
+void Adc::set_dma_mode(DmaMode mode)
 {
 	ADC_CCR &= ~ADC_CCR_DMA_MASK;
 	ADC_CCR |= (uint32_t)mode;
 }
 
-void ADC_ext::set_delay_between_two_samples(ADC_Delay delay)
+void Adc::set_delay_between_two_samples(Delay delay)
 {
 	ADC_CCR &= ~ADC_CCR_DELAY_MASK;
 	ADC_CCR |= (uint32_t)delay;
 }
 
-void ADC_ext::set_multi_mode(ADC_MultiMode mode)
+void Adc::set_multi_mode(MultiMode mode)
 {
 	ADC_CCR &= ~ADC_CCR_MULTI_MASK;
 	ADC_CCR |= (uint32_t)mode;
 }
 
-void ADC_ext::enable_temp_sensor()
+void Adc::enable_temp_sensor()
 {
 	ADC_CCR |= ADC_CCR_TSVREFE_MASK;
 }
 
-void ADC_ext::disable_temp_sensor()
+void Adc::disable_temp_sensor()
 {
 	ADC_CCR &= ~ADC_CCR_TSVREFE_MASK;
 }
+
+
+}  // namespace adc
+
+}  // namespace cm3ext
