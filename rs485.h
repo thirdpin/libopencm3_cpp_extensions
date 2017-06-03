@@ -39,7 +39,7 @@ RS485 implementation, public interface
 #include <cm3ext_config.h>
 
 #include "gpio_ext.h"
-#include "round_buffer.h"
+#include "utils/round_buffer.h"
 
 
 namespace cm3ext {

@@ -37,7 +37,7 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #endif
 #include <cm3ext_config.h>
 
-#include "round_buffer.h"
+#include "utils/round_buffer.h"
 #include "gpio_ext.h"
 
 
