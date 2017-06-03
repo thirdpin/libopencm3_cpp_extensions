@@ -24,14 +24,14 @@
 SPI C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#include "spi_ext.h"
+#include <spi_ext.h>
 
 namespace cm3ext {
 
+namespace spi {
 
-using namespace SPI_CPP_Extension;
 
-SPI_ext::SPI_ext(SPI_Conf spi_conf)
+Spi::Spi(Config spi_conf)
 {
 	switch(spi_conf.spi_number)
 	{
@@ -72,7 +72,7 @@ SPI_ext::SPI_ext(SPI_Conf spi_conf)
 	}
 }
 
-void SPI_ext::set_next_tx_from(NextTx next)
+void Spi::set_next_tx_from(NextTx next)
 {
 	switch(next)
 	{
@@ -84,7 +84,8 @@ void SPI_ext::set_next_tx_from(NextTx next)
 			break;
 	}
 }
-void SPI_ext::set_data_drame_format(DataFrameFormat dff)
+
+void Spi::set_data_drame_format(DataFrameFormat dff)
 {
 	switch(dff)
 	{
@@ -97,7 +98,8 @@ void SPI_ext::set_data_drame_format(DataFrameFormat dff)
 
 	}
 }
-void SPI_ext::set_software_slave_management(State state)
+
+void Spi::set_software_slave_management(State state)
 {
 	switch(state)
 	{
@@ -109,7 +111,8 @@ void SPI_ext::set_software_slave_management(State state)
 			break;
 	}
 }
-void SPI_ext::set_nss(NssState nss)
+
+void Spi::set_nss(NssState nss)
 {
 	switch(nss)
 	{
@@ -121,7 +124,8 @@ void SPI_ext::set_nss(NssState nss)
 			break;
 	}
 }
-void SPI_ext::set_bit_position(BitPos pos)
+
+void Spi::set_bit_position(BitPos pos)
 {
 	switch(pos)
 	{
@@ -133,7 +137,8 @@ void SPI_ext::set_bit_position(BitPos pos)
 			break;
 	}
 }
-void SPI_ext::set_clock_polarity(Polarity polarity)
+
+void Spi::set_clock_polarity(Polarity polarity)
 {
 	switch(polarity)
 	{
@@ -145,7 +150,8 @@ void SPI_ext::set_clock_polarity(Polarity polarity)
 			break;
 	}
 }
-void SPI_ext::set_clock_phase(Phase phase)
+
+void Spi::set_clock_phase(Phase phase)
 {
 	switch(phase)
 	{
@@ -157,7 +163,8 @@ void SPI_ext::set_clock_phase(Phase phase)
 			break;
 	}
 }
-bool SPI_ext::get_flag_status(Flag flag)
+
+bool Spi::get_flag_status(Flag flag)
 {
 	bool result = ERROR;
 	uint32_t reg_sr = SPI_SR(_spi);
@@ -222,5 +229,7 @@ bool SPI_ext::get_flag_status(Flag flag)
 	return (result);
 }
 
+
+} // namespace spi
 
 } // namespace cm3ext
