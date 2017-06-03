@@ -51,6 +51,7 @@ struct Config {
 	uint8_t i2c_number;
 	gpio::Pinout scl_pin;
 	gpio::Pinout sda_pin;
+	systick::Counter* counter_ms;
 };
 
 struct MasterTransferCfg {
@@ -269,7 +270,7 @@ public:
 
 private:
 	uint32_t _i2c;
-	TimerMs *_timer;
+	systick::Counter *_counter_ms;
 
 	void send_start() {
 		i2c_send_start(_i2c);

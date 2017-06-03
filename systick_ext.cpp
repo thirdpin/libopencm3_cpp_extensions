@@ -24,24 +24,26 @@ SYSTICK implementation, public interface
 */
 
 #include "systick_ext.h"
-#if ENABLE_CUSTOM_SYSTICK_SOURCE == 1
+#if CM3EXT_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
 extern "C" {
-    void SYS_TICK_INT_FUNC(void);
+    void CM3EXT_SYS_TICK_INT_FUNC(void);
 }
 #include "libopencm3/stm32/timer.h"
+#else
+#define CM3EXT_SYS_TICK_INT_FUNC sys_tick_handler
 #endif
 
-volatile uint32_t counter_ms;
+volatile uint32_t counter;
 
 void SYS_TICK_INT_FUNC(void)
 {
-#if ENABLE_CUSTOM_SYSTICK_SOURCE == 1
-    if (timer_get_flag(INT_SOURCE, TIM_SR_UIF)) {
-        timer_clear_flag(INT_SOURCE, TIM_SR_UIF);
-        counter_ms++;
+#if CM3EXT_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
+    if (timer_get_flag(CM3EXT_INT_SOURCE, TIM_SR_UIF)) {
+        timer_clear_flag(CM3EXT_INT_SOURCE, TIM_SR_UIF);
+        counter++;
     }
 #else
-    counter_ms++;
+    counter++;
 #endif
 }
 
@@ -52,33 +54,43 @@ void delay_nop(uint32_t count)
 	}
 }
 
-void delay_ms(uint32_t ms)
+namespace cm3ext {
+
+namespace systick {
+
+
+void delay_systick(uint32_t ms)
 {
-	uint32_t time = counter_ms;
-	while((counter_ms - time) < ms);
+	uint32_t time = counter;
+	while((counter - time) < ms);
 }
 
 //by default sets up a timer to create 1ms ticks (div = 1000)
 //at system clock 120mhz.
-void systick_init(uint32_t div)
+void init(uint32_t div)
 {
-	counter_ms = 0;
-	systick_set_reload(SYSTEM_CORE_CLOCK / div);
+	counter = 0;
+	systick_set_reload(CM3EXT_SYSTEM_CORE_CLOCK / div);
 	systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
 	systick_counter_enable();
 	systick_interrupt_enable();
 }
 
-uint32_t get_counter_ms()
+uint32_t get_counter()
 {
-	return counter_ms;
+	return counter;
 }
 
-TimerMs::TimerMs(TimerMode mode, uint32_t period_ms)
+Counter::Counter(Mode mode, uint32_t period)
+{
+	init(mode, period);
+}
+
+void Counter::init(Mode mode, uint32_t period)
 {
 	_mode = mode;
-	_saved_ms = get_counter_ms();
-	_period_ms = period_ms;
+	_saved = get_counter();
+	_period = period;
 
 	switch (_mode)
 	{
@@ -91,13 +103,13 @@ TimerMs::TimerMs(TimerMode mode, uint32_t period_ms)
 	}
 }
 
-bool TimerMs::timeout()
+bool Counter::timeout()
 {
-	if (_is_active && ((counter_ms - _saved_ms) >= _period_ms)) {
+	if (_is_active && ((counter - _saved) >= _period)) {
 		switch (_mode)
 		{
 			case CYCLE:
-				_saved_ms = counter_ms;
+				_saved = counter;
 				return true;
 			case ONE_SHOT:
 				return true;
@@ -107,19 +119,24 @@ bool TimerMs::timeout()
 	return false;
 }
 
-bool TimerMs::start()
+bool Counter::start()
 {
 	if(_mode == CYCLE)
 		return false;
-	_saved_ms = counter_ms;
+	_saved = counter;
 	_is_active = true;
 	return true;
 }
 
-bool TimerMs::stop()
+bool Counter::stop()
 {
 	if(_mode == CYCLE)
 		return false;
 	_is_active = false;
 	return true;
 }
+
+
+}  // namespace systick
+
+}  // namespace cm3ext

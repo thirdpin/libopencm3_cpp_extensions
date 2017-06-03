@@ -49,7 +49,9 @@ I2c::I2c(Config i2c_conf)
 	sda.set_output_options(gpio::OutputType::OPEN_DRAIN, gpio::Speed::LOW_2MHz);
 	sda.set_af(gpio::AltFuncNumber::AF4);
 
-	_timer = new TimerMs(TimerMode::ONE_SHOT, MAX_TRANSMIT_TIME_MS);
+	_counter_ms = i2c_conf.counter_ms;
+	_counter_ms->init(systick::Counter::Mode::ONE_SHOT,
+					  MAX_TRANSMIT_TIME_MS);
 }
 
 bool I2c::master_transfer(MasterTransferCfg cfg)
@@ -57,11 +59,11 @@ bool I2c::master_transfer(MasterTransferCfg cfg)
 	uint32_t reg __attribute__((unused));
 	bool timeout_error = false;
 
-	_timer->start();
+	_counter_ms->start();
 
 	send_start();
 	while (!(get_flag_status(MASTER_MODE_SELECTED))) {
-		if(_timer->timeout()) {
+		if(_counter_ms->timeout()) {
 		    timeout_error = true;
 		    break;
 		}
@@ -69,7 +71,7 @@ bool I2c::master_transfer(MasterTransferCfg cfg)
 
 	send_7bit_address(cfg.device_address, WRITE);
 	while (!get_flag_status(MASTER_TRANSMITTER_MODE_SELECTED)) {
-		if(_timer->timeout()) {
+		if(_counter_ms->timeout()) {
 		   timeout_error = true;
 		   break;
 		}
@@ -82,7 +84,7 @@ bool I2c::master_transfer(MasterTransferCfg cfg)
     	send_data(cfg.write_buf[index]);
 
     	while (!(get_flag_status(MASTER_BYTE_TRANSMITTED))) {
-    		if(_timer->timeout()) {
+    		if(_counter_ms->timeout()) {
     			timeout_error = true;
     			break;
     		}
@@ -96,7 +98,7 @@ bool I2c::master_transfer(MasterTransferCfg cfg)
     if(cfg.read_len != 0) {
     	send_start();
     	while (!(get_flag_status(MASTER_MODE_SELECTED))) {
-    		if(_timer->timeout()) {
+    		if(_counter_ms->timeout()) {
     			timeout_error = true;
     			break;
     		}
@@ -106,7 +108,7 @@ bool I2c::master_transfer(MasterTransferCfg cfg)
 
     	send_7bit_address(cfg.device_address, READ);
     	while (!get_flag_status(MASTER_RECEIVER_MODE_SELECTED)) {
-    		if(_timer->timeout()) {
+    		if(_counter_ms->timeout()) {
     			timeout_error = true;
     			break;
     		}
@@ -122,7 +124,7 @@ bool I2c::master_transfer(MasterTransferCfg cfg)
     		if (!size_to_read)
     			disable_ack();
     		while (!get_flag_status(MASTER_BYTE_RECEIVED)) {
-    			if(_timer->timeout()) {
+    			if(_counter_ms->timeout()) {
     				timeout_error = true;
     				break;
     			}
@@ -135,7 +137,7 @@ bool I2c::master_transfer(MasterTransferCfg cfg)
     }
 
     send_stop();
-    _timer->stop();
+    _counter_ms->stop();
 
     if (timeout_error)
     	return false;
