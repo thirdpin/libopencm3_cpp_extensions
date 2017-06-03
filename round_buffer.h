@@ -27,7 +27,8 @@ ROUND BUFFER implementation, public interface
 #ifndef ROUND_BUFFER_H
 #define ROUND_BUFFER_H
 
-#include "stdint.h"
+#include <cstdint>
+#include <cm3ext_config.h>
 
 namespace cm3ext {
 
@@ -99,7 +100,11 @@ public:
 	/**
 	@brief Prevent memory leak.
 	*/
-	~RoundBuffer() = delete;
+#if CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 0
+	~RoundBuffer() = delete; // prevent memory leak
+#else
+	~RoundBuffer() = default;
+#endif
 
 	/**
     @brief Initializes a new instance of the TplRoundBuffer class

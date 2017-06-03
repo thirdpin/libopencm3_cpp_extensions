@@ -1,7 +1,8 @@
-#include <adc_ext.h>
 #include <libopencm3/stm32/dma.h>
-#include <string.h>
+#include <cstring>
 
+#include <cm3ext_config.h>
+#include "adc_ext.h"
 
 namespace cm3ext {
 
@@ -26,7 +27,12 @@ public:
 	};
 
 	AdcDma(DmaConf dma, AdcConf adc, bool is_temp_sensor);
+
+#if CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 0
 	~AdcDma() = delete; // prevent memory leak
+#else
+	~AdcDma() = default;
+#endif
 
     uint16_t get_value(uint8_t index);
 

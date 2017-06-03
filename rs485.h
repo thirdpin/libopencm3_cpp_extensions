@@ -36,6 +36,8 @@ RS485 implementation, public interface
 #include <libopencm3/stm32/f4/nvic.h>
 #endif
 
+#include <cm3ext_config.h>
+
 #include "gpio_ext.h"
 #include "round_buffer.h"
 
@@ -67,7 +69,12 @@ public:
 
 	RS485(Struct rs485, Settings settings,
 		  utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size);
-	~RS485() = delete;
+
+#if CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 0
+	~RS485() = delete; // prevent memory leak
+#else
+	~RS485() = default;
+#endif
 
 	void usart_enable_tc_interrupt()
 	{
