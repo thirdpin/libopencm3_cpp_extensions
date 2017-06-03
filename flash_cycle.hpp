@@ -5,17 +5,21 @@
 #include <libopencm3/stm32/f2/flash.h>
 #include <libopencmsis/core_cm3.h>
 
-typedef enum : uint32_t
-{
-	SECTOR_0 = 0x08000000,
-			SECTOR_1 = 0x08004000,
-			SECTOR_2 = 0x08008000,
-			SECTOR_3 = 0x0800C000,
-			SECTOR_4 = 0x08010000,
-			SECTOR_5 = 0x08020000,
-}FlashSector;
+namespace cm3ext {
 
-constexpr uint32_t USER_FLASH_END_ADDRESS       = 0x080FFFFF;
+namespace flash {
+
+
+enum FlashSector : uint32_t {
+	SECTOR_0 = 0x08000000,
+	SECTOR_1 = 0x08004000,
+	SECTOR_2 = 0x08008000,
+	SECTOR_3 = 0x0800C000,
+	SECTOR_4 = 0x08010000,
+	SECTOR_5 = 0x08020000,
+};
+
+constexpr uint32_t USER_FLASH_END_ADDRESS = 0x080FFFFF;
 
 template <typename T>
 class FlashCycle
@@ -34,8 +38,9 @@ public:
 
 	bool write(T* newContainer)
 	{
-		if(_error)
+		if(_error) {
 			return(false);
+		}
 
 		uint32_t writeTo;
 
@@ -46,7 +51,6 @@ public:
 			writeTo = _startAddr;
 			_ifexist = true;
 		}
-
 		else if((uint32_t)_pLastContainer >= (_endAddr-sizeof(T)))
 		{
 			__disable_irq();
@@ -54,8 +58,9 @@ public:
 			__enable_irq();
 			writeTo = _startAddr;
 		}
-		else
+		else {
 			writeTo = (uint32_t)(_pLastContainer + 1);
+		}
 
 		uint8_t *pContainer = (uint8_t*)newContainer;
 
@@ -76,7 +81,7 @@ public:
 		return(_pLastContainer);
 	}
 
-	bool ifExist(void)
+	bool is_exist(void)
 	{
 		return(_ifexist);
 	}
@@ -89,7 +94,7 @@ private:
 	uint32_t _endAddr;
 	T* _pLastContainer;
 
-	static const uint8_t NUM_SECTORS = 6;
+	static constexpr uint8_t NUM_SECTORS = 6;
 
 	void _getSectorAddrs(void)
 	{
@@ -112,8 +117,9 @@ private:
 
 	T *_searchLastContainer(void)
 	{
-		if(_error)
+		if(_error) {
 			return(0);
+		}
 
 		T* addr = (T*)_startAddr;
 		_ifexist = true;
@@ -137,5 +143,10 @@ private:
 		return(addr - 1);
 	}
 };
+
+
+}  // namespace flash
+
+}  // namespace cm3ext
 
 #endif
