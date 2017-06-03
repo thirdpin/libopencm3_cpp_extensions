@@ -23,35 +23,43 @@
 TIM C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#include "timer_ext.h"
-using namespace TIMER_CPP_Extension;
+#include <timer_ext.h>
+
+namespace cm3ext {
+
+namespace tim {
+
 
 //1,2,3,4,5,6,7,8,9,10,11,12,13,14
-Result TIMER_ext::enable_counter()
+Result Timer::enable_counter()
 {
 	TIM_CR1(_timer) |= TIM_CR1_CEN;
 	return OK;
 }
+
 //1,2,3,4,5,6,7,8,9,10,11,12,13,14
-Result TIMER_ext::disable_counter()
+Result Timer::disable_counter()
 {
 	TIM_CR1(_timer) &= ~TIM_CR1_CEN;
 	return OK;
 }
+
 //1,2,3,4,5,6,7,8,9,10,11,12,13,14
-Result TIMER_ext::enable_update_event_generation()
+Result Timer::enable_update_event_generation()
 {
 	TIM_CR1(_timer) &= ~TIM_CR1_UDIS;
 	return OK;
 }
+
 //1,2,3,4,5,6,7,8,9,10,11,12,13,14
-Result TIMER_ext::disable_update_event_generation()
+Result Timer::disable_update_event_generation()
 {
 	TIM_CR1(_timer) |= TIM_CR1_UDIS;
 	return OK;
 }
+
 //1,2,3,4,5,6,7,8,9,10,11,12,13,14
-Result TIMER_ext::set_update_event_source(UEV_Source source)
+Result Timer::set_update_event_source(UevSource source)
 {
 	switch (source)
 	{
@@ -65,8 +73,9 @@ Result TIMER_ext::set_update_event_source(UEV_Source source)
 
 	return OK;
 }
+
 //1,2,3,4,5,6,7,8,9,10,11,12,13,14
-Result TIMER_ext::set_counter_mode(CounterMode mode)
+Result Timer::set_counter_mode(CounterMode mode)
 {
 	switch (mode)
 	{
@@ -80,8 +89,9 @@ Result TIMER_ext::set_counter_mode(CounterMode mode)
 
 	return OK;
 }
+
 //1,2,3,4,5,8
-Result TIMER_ext::set_counter_direction(CounterDirection dir)
+Result Timer::set_counter_direction(CounterDirection dir)
 {
 	if((_timer != TIM1) && (_timer != TIM2) &&
 	   (_timer != TIM3) && (_timer != TIM4) &&
@@ -101,8 +111,9 @@ Result TIMER_ext::set_counter_direction(CounterDirection dir)
 
 	return OK;
 }
+
 //1,2,3,4,5,8
-Result TIMER_ext::set_alignment(Alignment alignment)
+Result Timer::set_alignment(Alignment alignment)
 {
 	if((_timer != TIM1) && (_timer != TIM2) &&
 	   (_timer != TIM3) && (_timer != TIM4) &&
@@ -143,20 +154,23 @@ Result TIMER_ext::set_alignment(Alignment alignment)
 
 	return NOT_SUPPORTED;
 }
+
 //1,2,3,4,5,6,7,8,9,10,11,12,13,14
-Result TIMER_ext::enable_autoreload_preload()
+Result Timer::enable_autoreload_preload()
 {
 	TIM_CR1(_timer) |= TIM_CR1_ARPE;
 	return OK;
 }
+
 //1,2,3,4,5,6,7,8,9,10,11,12,13,14
-Result TIMER_ext::disable_autoreload_preload()
+Result Timer::disable_autoreload_preload()
 {
 	TIM_CR1(_timer) &= ~TIM_CR1_ARPE;
 	return OK;
 }
+
 //1,2,3,4,5,8,9,10,11,12,13,14
-Result TIMER_ext::set_clock_division(ClockDivision div)
+Result Timer::set_clock_division(ClockDivision div)
 {
 	if((_timer == TIM6) || (_timer == TIM7)) {
 		return USAGE_ERROR;
@@ -180,8 +194,9 @@ Result TIMER_ext::set_clock_division(ClockDivision div)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_master_mode(MasterMode mode)
+Result Timer::set_master_mode(MasterMode mode)
 {
 	switch (mode)
 	{
@@ -213,8 +228,9 @@ Result TIMER_ext::set_master_mode(MasterMode mode)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_slave_mode(SlaveMode mode)
+Result Timer::set_slave_mode(SlaveMode mode)
 {
 	switch (mode)
 	{
@@ -245,8 +261,9 @@ Result TIMER_ext::set_slave_mode(SlaveMode mode)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_trigger(Trigger trigger)
+Result Timer::set_trigger(Trigger trigger)
 {
 	switch (trigger)
 		{
@@ -282,91 +299,106 @@ Result TIMER_ext::set_trigger(Trigger trigger)
 
 		return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_master_slave_mode()
+Result Timer::enable_master_slave_mode()
 {
 	TIM_SMCR(_timer) |= TIM_SMCR_MSM;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_master_slave_mode()
+Result Timer::disable_master_slave_mode()
 {
 	TIM_SMCR(_timer) &= ~TIM_SMCR_MSM;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_update_interrupt()
+Result Timer::enable_update_interrupt()
 {
 	TIM_DIER(_timer) |= TIM_DIER_UIE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_update_interrupt()
+Result Timer::disable_update_interrupt()
 {
 	TIM_DIER(_timer) &= ~TIM_DIER_UIE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_capture_compare_1_interrupt()
+Result Timer::enable_capture_compare_1_interrupt()
 {
 	TIM_DIER(_timer) |= TIM_DIER_CC1IE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_capture_compare_1_interrupt()
+Result Timer::disable_capture_compare_1_interrupt()
 {
 	TIM_DIER(_timer) &= ~TIM_DIER_CC1IE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_capture_compare_2_interrupt()
+Result Timer::enable_capture_compare_2_interrupt()
 {
 	TIM_DIER(_timer) |= TIM_DIER_CC2IE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_capture_compare_2_interrupt()
+Result Timer::disable_capture_compare_2_interrupt()
 {
 	TIM_DIER(_timer) &= ~TIM_DIER_CC2IE;
 	return OK;
 }
-Result TIMER_ext::enable_capture_compare_3_interrupt()
+
+Result Timer::enable_capture_compare_3_interrupt()
 {
 	TIM_DIER(_timer) |= TIM_DIER_CC3IE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_capture_compare_3_interrupt()
+Result Timer::disable_capture_compare_3_interrupt()
 {
 	TIM_DIER(_timer) &= ~TIM_DIER_CC3IE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_capture_compare_4_interrupt()
+Result Timer::enable_capture_compare_4_interrupt()
 {
 	TIM_DIER(_timer) |= TIM_DIER_CC4IE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_capture_compare_4_interrupt()
+Result Timer::disable_capture_compare_4_interrupt()
 {
 	TIM_DIER(_timer) &= ~TIM_DIER_CC4IE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_trigger_interrupt()
+Result Timer::enable_trigger_interrupt()
 {
 	TIM_DIER(_timer) |= TIM_DIER_TIE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_trigger_interrupt()
+Result Timer::disable_trigger_interrupt()
 {
 	TIM_DIER(_timer) &= ~TIM_DIER_TIE;
 	return OK;
 }
+
 //9,12
-bool TIMER_ext::get_flag_status(Flag flag)
+bool Timer::get_flag_status(Flag flag)
 {
 	bool status = false;
 
@@ -406,8 +438,9 @@ bool TIMER_ext::get_flag_status(Flag flag)
 
 	return status;
 }
+
 //9,12
-Result TIMER_ext::clear_flag_status(Flag flag)
+Result Timer::clear_flag_status(Flag flag)
 {
 	switch (flag)
 	{
@@ -445,12 +478,14 @@ Result TIMER_ext::clear_flag_status(Flag flag)
 
 	return OK;
 }
-void TIMER_ext::update_generation()
+
+void Timer::update_generation()
 {
 	TIM_EGR(_timer) |= TIM_EGR_UG;
 }
+
 //9,12
-Result TIMER_ext::set_capture_compare_1_mode(CC_Mode mode)
+Result Timer::set_capture_compare_1_mode(CcMode mode)
 {
 	bool channel_on = TIM_CCER(_timer) & TIM_CCER_CC1E;
 
@@ -480,8 +515,9 @@ Result TIMER_ext::set_capture_compare_1_mode(CC_Mode mode)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_capture_compare_2_mode(CC_Mode mode)
+Result Timer::set_capture_compare_2_mode(CcMode mode)
 {
 	bool channel_on = TIM_CCER(_timer) & TIM_CCER_CC2E;
 
@@ -511,8 +547,9 @@ Result TIMER_ext::set_capture_compare_2_mode(CC_Mode mode)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_input_capture_1_prescaler(Prescaler prescaler)
+Result Timer::set_input_capture_1_prescaler(Prescaler prescaler)
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC1S_MASK;
 
@@ -542,8 +579,9 @@ Result TIMER_ext::set_input_capture_1_prescaler(Prescaler prescaler)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_input_capture_2_prescaler(Prescaler prescaler)
+Result Timer::set_input_capture_2_prescaler(Prescaler prescaler)
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC2S_MASK;
 
@@ -573,8 +611,9 @@ Result TIMER_ext::set_input_capture_2_prescaler(Prescaler prescaler)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_input_capture_1_filter(Filter filter)
+Result Timer::set_input_capture_1_filter(Filter filter)
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC1S_MASK;
 
@@ -652,8 +691,9 @@ Result TIMER_ext::set_input_capture_1_filter(Filter filter)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_input_capture_2_filter(Filter filter)
+Result Timer::set_input_capture_2_filter(Filter filter)
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC2S_MASK;
 
@@ -731,8 +771,9 @@ Result TIMER_ext::set_input_capture_2_filter(Filter filter)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_fast_output_compare_1()
+Result Timer::enable_fast_output_compare_1()
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC1S_MASK;
 
@@ -743,8 +784,9 @@ Result TIMER_ext::enable_fast_output_compare_1()
 	TIM_CCMR1(_timer) |= TIM_CCMR1_OC1FE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_fast_output_compare_1()
+Result Timer::disable_fast_output_compare_1()
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC1S_MASK;
 
@@ -755,8 +797,9 @@ Result TIMER_ext::disable_fast_output_compare_1()
 	TIM_CCMR1(_timer) &= ~TIM_CCMR1_OC1FE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_fast_output_compare_2()
+Result Timer::enable_fast_output_compare_2()
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC2S_MASK;
 
@@ -767,8 +810,9 @@ Result TIMER_ext::enable_fast_output_compare_2()
 	TIM_CCMR1(_timer) |= TIM_CCMR1_OC2FE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_fast_output_compare_2()
+Result Timer::disable_fast_output_compare_2()
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC2S_MASK;
 
@@ -779,8 +823,9 @@ Result TIMER_ext::disable_fast_output_compare_2()
 	TIM_CCMR1(_timer) &= ~TIM_CCMR1_OC2FE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_output_compare_1_preload()
+Result Timer::enable_output_compare_1_preload()
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC1S_MASK;
 
@@ -791,8 +836,9 @@ Result TIMER_ext::enable_output_compare_1_preload()
 	TIM_CCMR1(_timer) |= TIM_CCMR1_OC1PE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_output_compare_1_preload()
+Result Timer::disable_output_compare_1_preload()
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC1S_MASK;
 
@@ -803,8 +849,9 @@ Result TIMER_ext::disable_output_compare_1_preload()
 	TIM_CCMR1(_timer) &= ~TIM_CCMR1_OC1PE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_output_compare_2_preload()
+Result Timer::enable_output_compare_2_preload()
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC2S_MASK;
 
@@ -813,10 +860,12 @@ Result TIMER_ext::enable_output_compare_2_preload()
 	}
 
 	TIM_CCMR1(_timer) |= TIM_CCMR1_OC2PE;
+
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_output_compare_2_preload()
+Result Timer::disable_output_compare_2_preload()
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC2S_MASK;
 
@@ -827,8 +876,9 @@ Result TIMER_ext::disable_output_compare_2_preload()
 	TIM_CCMR1(_timer) &= ~TIM_CCMR1_OC2PE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_output_compare_1_mode(OC_Mode mode)
+Result Timer::set_output_compare_1_mode(OcMode mode)
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC1S_MASK;
 
@@ -874,8 +924,9 @@ Result TIMER_ext::set_output_compare_1_mode(OC_Mode mode)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_output_compare_2_mode(OC_Mode mode)
+Result Timer::set_output_compare_2_mode(OcMode mode)
 {
 	bool channel_is_input = TIM_CCMR1(_timer) & TIM_CCMR1_CC2S_MASK;
 
@@ -921,8 +972,9 @@ Result TIMER_ext::set_output_compare_2_mode(OC_Mode mode)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_capture_compare_3_mode(CC_Mode mode)
+Result Timer::set_capture_compare_3_mode(CcMode mode)
 {
 	bool channel_on = TIM_CCER(_timer) & TIM_CCER_CC3E;
 
@@ -952,8 +1004,9 @@ Result TIMER_ext::set_capture_compare_3_mode(CC_Mode mode)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_capture_compare_4_mode(CC_Mode mode)
+Result Timer::set_capture_compare_4_mode(CcMode mode)
 {
 	bool channel_on = TIM_CCER(_timer) & TIM_CCER_CC4E;
 
@@ -983,8 +1036,9 @@ Result TIMER_ext::set_capture_compare_4_mode(CC_Mode mode)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_input_capture_3_prescaler(Prescaler prescaler)
+Result Timer::set_input_capture_3_prescaler(Prescaler prescaler)
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
 
@@ -1014,8 +1068,9 @@ Result TIMER_ext::set_input_capture_3_prescaler(Prescaler prescaler)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_input_capture_4_prescaler(Prescaler prescaler)
+Result Timer::set_input_capture_4_prescaler(Prescaler prescaler)
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
 
@@ -1045,8 +1100,9 @@ Result TIMER_ext::set_input_capture_4_prescaler(Prescaler prescaler)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_input_capture_3_filter(Filter filter)
+Result Timer::set_input_capture_3_filter(Filter filter)
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
 
@@ -1124,8 +1180,9 @@ Result TIMER_ext::set_input_capture_3_filter(Filter filter)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_input_capture_4_filter(Filter filter)
+Result Timer::set_input_capture_4_filter(Filter filter)
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
 
@@ -1203,8 +1260,9 @@ Result TIMER_ext::set_input_capture_4_filter(Filter filter)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_fast_output_compare_3()
+Result Timer::enable_fast_output_compare_3()
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
 
@@ -1216,7 +1274,7 @@ Result TIMER_ext::enable_fast_output_compare_3()
 	return OK;
 }
 //9,12
-Result TIMER_ext::disable_fast_output_compare_3()
+Result Timer::disable_fast_output_compare_3()
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
 
@@ -1227,8 +1285,9 @@ Result TIMER_ext::disable_fast_output_compare_3()
 	TIM_CCMR2(_timer) &= ~TIM_CCMR2_OC3FE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_fast_output_compare_4()
+Result Timer::enable_fast_output_compare_4()
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
 
@@ -1239,8 +1298,9 @@ Result TIMER_ext::enable_fast_output_compare_4()
 	TIM_CCMR2(_timer) |= TIM_CCMR2_OC4FE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_fast_output_compare_4()
+Result Timer::disable_fast_output_compare_4()
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
 
@@ -1251,8 +1311,9 @@ Result TIMER_ext::disable_fast_output_compare_4()
 	TIM_CCMR2(_timer) &= ~TIM_CCMR2_OC4FE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_output_compare_3_preload()
+Result Timer::enable_output_compare_3_preload()
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
 
@@ -1263,8 +1324,9 @@ Result TIMER_ext::enable_output_compare_3_preload()
 	TIM_CCMR2(_timer) |= TIM_CCMR2_OC3PE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_output_compare_3_preload()
+Result Timer::disable_output_compare_3_preload()
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
 
@@ -1275,8 +1337,9 @@ Result TIMER_ext::disable_output_compare_3_preload()
 	TIM_CCMR2(_timer) &= ~TIM_CCMR2_OC3PE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_output_compare_4_preload()
+Result Timer::enable_output_compare_4_preload()
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
 
@@ -1287,8 +1350,9 @@ Result TIMER_ext::enable_output_compare_4_preload()
 	TIM_CCMR2(_timer) |= TIM_CCMR2_OC4PE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_output_compare_4_preload()
+Result Timer::disable_output_compare_4_preload()
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
 
@@ -1299,8 +1363,9 @@ Result TIMER_ext::disable_output_compare_4_preload()
 	TIM_CCMR2(_timer) &= ~TIM_CCMR2_OC4PE;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_output_compare_3_mode(OC_Mode mode)
+Result Timer::set_output_compare_3_mode(OcMode mode)
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC3S_MASK;
 
@@ -1346,8 +1411,9 @@ Result TIMER_ext::set_output_compare_3_mode(OC_Mode mode)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_output_compare_4_mode(OC_Mode mode)
+Result Timer::set_output_compare_4_mode(OcMode mode)
 {
 	bool channel_is_input = TIM_CCMR2(_timer) & TIM_CCMR2_CC4S_MASK;
 
@@ -1393,20 +1459,23 @@ Result TIMER_ext::set_output_compare_4_mode(OC_Mode mode)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_capture_compare_1()
+Result Timer::enable_capture_compare_1()
 {
 	TIM_CCER(_timer) |= TIM_CCER_CC1E;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_capture_compare_1()
+Result Timer::disable_capture_compare_1()
 {
 	TIM_CCER(_timer) &= ~TIM_CCER_CC1E;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_capture_compare_1_polarity(Polarity polarity)
+Result Timer::set_capture_compare_1_polarity(Polarity polarity)
 {
 	switch (polarity)
 	{
@@ -1420,7 +1489,8 @@ Result TIMER_ext::set_capture_compare_1_polarity(Polarity polarity)
 
 	return OK;
 }
-Result TIMER_ext::set_capture_compare_1_com_polarity(Polarity polarity)
+
+Result Timer::set_capture_compare_1_com_polarity(Polarity polarity)
 {
 	switch (polarity)
 	{
@@ -1434,20 +1504,23 @@ Result TIMER_ext::set_capture_compare_1_com_polarity(Polarity polarity)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_capture_compare_2()
+Result Timer::enable_capture_compare_2()
 {
 	TIM_CCER(_timer) |= TIM_CCER_CC2E;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_capture_compare_2()
+Result Timer::disable_capture_compare_2()
 {
 	TIM_CCER(_timer) &= ~TIM_CCER_CC2E;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_capture_compare_2_polarity(Polarity polarity)
+Result Timer::set_capture_compare_2_polarity(Polarity polarity)
 {
 	switch (polarity)
 	{
@@ -1461,19 +1534,22 @@ Result TIMER_ext::set_capture_compare_2_polarity(Polarity polarity)
 
 	return OK;
 }
-Result TIMER_ext::enable_capture_compare_3()
+
+Result Timer::enable_capture_compare_3()
 {
 	TIM_CCER(_timer) |= TIM_CCER_CC3E;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_capture_compare_3()
+Result Timer::disable_capture_compare_3()
 {
 	TIM_CCER(_timer) &= ~TIM_CCER_CC3E;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_capture_compare_3_polarity(Polarity polarity)
+Result Timer::set_capture_compare_3_polarity(Polarity polarity)
 {
 	switch (polarity)
 	{
@@ -1487,7 +1563,8 @@ Result TIMER_ext::set_capture_compare_3_polarity(Polarity polarity)
 
 	return OK;
 }
-Result TIMER_ext::set_capture_compare_3_com_polarity(Polarity polarity)
+
+Result Timer::set_capture_compare_3_com_polarity(Polarity polarity)
 {
 	switch (polarity)
 	{
@@ -1501,20 +1578,23 @@ Result TIMER_ext::set_capture_compare_3_com_polarity(Polarity polarity)
 
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::enable_capture_compare_4()
+Result Timer::enable_capture_compare_4()
 {
 	TIM_CCER(_timer) |= TIM_CCER_CC4E;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::disable_capture_compare_4()
+Result Timer::disable_capture_compare_4()
 {
 	TIM_CCER(_timer) &= ~TIM_CCER_CC4E;
 	return OK;
 }
+
 //9,12
-Result TIMER_ext::set_capture_compare_4_polarity(Polarity polarity)
+Result Timer::set_capture_compare_4_polarity(Polarity polarity)
 {
 	switch (polarity)
 	{
@@ -1528,7 +1608,8 @@ Result TIMER_ext::set_capture_compare_4_polarity(Polarity polarity)
 
 	return OK;
 }
-Result TIMER_ext::set_capture_compare_4_com_polarity(Polarity polarity)
+
+Result Timer::set_capture_compare_4_com_polarity(Polarity polarity)
 {
 	switch (polarity)
 	{
@@ -1542,73 +1623,91 @@ Result TIMER_ext::set_capture_compare_4_com_polarity(Polarity polarity)
 
 	return OK;
 }
+
 //9,12
-uint16_t TIMER_ext::get_counter_value()
+uint16_t Timer::get_counter_value()
 {
 	return TIM_CNT(_timer);
 }
+
 //9,12
-void TIMER_ext::set_counter_value(uint16_t value)
+void Timer::set_counter_value(uint16_t value)
 {
 	TIM_CNT(_timer) = value;
 }
+
 //9,12
-uint16_t TIMER_ext::get_prescaler_value()
+uint16_t Timer::get_prescaler_value()
 {
 	return TIM_PSC(_timer);
 }
+
 //9,12
-void TIMER_ext::set_prescaler_value(uint32_t value)
+void Timer::set_prescaler_value(uint32_t value)
 {
 	TIM_PSC(_timer) = value;
 }
+
 //9,12
-uint16_t TIMER_ext::get_autoreload_value()
+uint16_t Timer::get_autoreload_value()
 {
 	return TIM_ARR(_timer);
 }
+
 //9,12
-void TIMER_ext::set_autoreload_value(uint32_t value)
+void Timer::set_autoreload_value(uint32_t value)
 {
 	TIM_ARR(_timer) = value;
 }
+
 //9,12
-uint16_t TIMER_ext::get_capture_compare_1_value()
+uint16_t Timer::get_capture_compare_1_value()
 {
 	return TIM_CCR1(_timer);
 }
+
 //9,12
-void TIMER_ext::set_capture_compare_1_value(uint32_t value)
+void Timer::set_capture_compare_1_value(uint32_t value)
 {
 	TIM_CCR1(_timer) = value;
 }
+
 //9,12
-uint16_t TIMER_ext::get_capture_compare_2_value()
+uint16_t Timer::get_capture_compare_2_value()
 {
 	return TIM_CCR2(_timer);
 }
+
 //9,12
-void TIMER_ext::set_capture_compare_2_value(uint32_t value)
+void Timer::set_capture_compare_2_value(uint32_t value)
 {
 	TIM_CCR2(_timer) = value;
 }
 
-uint16_t TIMER_ext::get_capture_compare_3_value()
+uint16_t Timer::get_capture_compare_3_value()
 {
 	return TIM_CCR3(_timer);
 }
+
 //9,12
-void TIMER_ext::set_capture_compare_3_value(uint32_t value)
+void Timer::set_capture_compare_3_value(uint32_t value)
 {
 	TIM_CCR3(_timer) = value;
 }
+
 //9,12
-uint16_t TIMER_ext::get_capture_compare_4_value()
+uint16_t Timer::get_capture_compare_4_value()
 {
 	return TIM_CCR4(_timer);
 }
+
 //9,12
-void TIMER_ext::set_capture_compare_4_value(uint32_t value)
+void Timer::set_capture_compare_4_value(uint32_t value)
 {
 	TIM_CCR4(_timer) = value;
 }
+
+
+}  // namespace cm3ext
+
+}  // namespace tim
