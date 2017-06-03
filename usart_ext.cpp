@@ -23,12 +23,12 @@
 USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#include "usart_ext.h"
+#include <usart_ext.h>
 
 namespace cm3ext {
 
 
-USART_ext::USART_ext(USART_Struct usart, USART_Settings settings,
+Usart::Usart( Struct usart,  Settings settings,
 				     utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size)
 {
 	rb_in = new utils::RoundBuffer(rb_in_size);

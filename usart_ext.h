@@ -27,7 +27,7 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #define USART_EXT_H
 
 
-#include <stdint.h>
+#include <cstdint>
 #include <libopencm3/stm32/usart.h>
 #ifdef STM32F2
 #include <libopencm3/stm32/f2/nvic.h>
@@ -35,6 +35,7 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #ifdef STM32F4
 #include <libopencm3/stm32/f4/nvic.h>
 #endif
+#include <cm3ext_config.h>
 
 #include "round_buffer.h"
 #include "gpio_ext.h"
@@ -43,30 +44,36 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 namespace cm3ext {
 
 
-typedef struct {
-	uint32_t baud_rate;
-	uint16_t word_length;
-	uint16_t stop_bits;
-	uint16_t parity;
-	uint16_t mode;
-	uint16_t flow_control;
-	uint8_t  nvic_priority;
-}USART_Settings;
-
-typedef struct {
-    uint32_t number;
-	gpio::Pinout tx;
-	gpio::Pinout rx;
-}USART_Struct;
-
-class USART_ext
+class Usart
 {
 public:
+	struct Settings {
+		uint32_t baud_rate;
+		uint16_t word_length;
+		uint16_t stop_bits;
+		uint16_t parity;
+		uint16_t mode;
+		uint16_t flow_control;
+		uint8_t  nvic_priority;
+	};
+
+	struct Struct {
+	    uint32_t number;
+		gpio::Pinout tx;
+		gpio::Pinout rx;
+	};
+
 	utils::RoundBuffer *rb_in;
 	utils::RoundBuffer *rb_out;
 
-	USART_ext(USART_Struct usart, USART_Settings settings,
+	Usart( Struct usart,  Settings settings,
 			  utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size);
+#if CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 0
+	~Usart() = delete; // prevent memory leak
+#else
+	~Usart() = default;
+#endif
+
 
 	bool interrupt_source_RXNE() {
 		return (((USART_CR1(_usart) & USART_CR1_RXNEIE) != 0) && usart_get_flag(_usart, USART_SR_RXNE));
