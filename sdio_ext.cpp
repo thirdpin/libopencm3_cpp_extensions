@@ -2,17 +2,17 @@
 
 namespace cm3ext {
 
-namespace SDIO_CPP_Extension {
+namespace sdio {
 
 namespace cfg = config;
 
-void SDIO_ext::_init()
+void Sdio::_init()
 {
 	_init_rcc();
 	_init_gpio();
 }
 
-void SDIO_ext::_init_rcc()
+void Sdio::_init_rcc()
 {
 	rcc_peripheral_enable_clock(&RCC_APB2ENR, RCC_APB2ENR_SDIOEN);
 
@@ -20,7 +20,7 @@ void SDIO_ext::_init_rcc()
 	rcc_periph_clock_enable(cfg::RCC_PERIPH_CMD);
 }
 
-void SDIO_ext::_init_gpio()
+void Sdio::_init_gpio()
 {
     // Pin mappings for STM32F217.
     // PC8  - SDIO_D0
@@ -59,6 +59,6 @@ void SDIO_ext::_init_gpio()
 }
 
 
-}
+} // namespace sdio
 
 } // namespace cm3ext

@@ -7,8 +7,8 @@
 
 namespace cm3ext {
 
+namespace sdio {
 
-namespace SDIO_CPP_Extension {
 
 namespace config {
 constexpr auto RCC_PERIPH_DATA_CLK = rcc_periph_clken::RCC_GPIOC;
@@ -20,17 +20,17 @@ constexpr gpio::Pinout CMD_PIN = PD2;
 constexpr gpio::AltFuncNumber SDIO_ALTERNATIVE_FUNC_NUMBER = gpio::AltFuncNumber::AF12;
 }
 
-struct SDIO_Conf {
-
-};
-
-class SDIO_ext {
+class Sdio {
 public:
-	SDIO_ext() {
+	struct Config {
+
+	};
+	
+	Sdio() {
 		_init();
 	}
 
-	~SDIO_ext() = default;
+	~Sdio() = default;
 
 private:
 	void _init();
