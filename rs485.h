@@ -40,6 +40,7 @@ RS485 implementation, public interface
 
 #include "gpio_ext.h"
 #include "utils/round_buffer.h"
+#include "private/assert.h"
 
 
 namespace cm3ext {
@@ -70,11 +71,7 @@ public:
 	RS485(Struct rs485, Settings settings,
 		  utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size);
 
-#if CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 0
-	~RS485() = delete; // prevent memory leak
-#else
-	~RS485() = default;
-#endif
+	CM3EXT_EXPLISIT_DESTRUCTOR(RS485)
 
 	void usart_enable_tc_interrupt()
 	{

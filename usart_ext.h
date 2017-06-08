@@ -37,6 +37,7 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #endif
 #include <cm3ext_config.h>
 
+#include "private/assert.h"
 #include "utils/round_buffer.h"
 #include "gpio_ext.h"
 
@@ -70,12 +71,7 @@ public:
 	      utils::RoundBuffer rb_in_size,
 		  utils::RoundBuffer rb_out_size);
 
-#if CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 0
-	~Usart() = delete; // prevent memory leak
-#else
-	~Usart() = default;
-#endif
-
+	CM3EXT_EXPLISIT_DESTRUCTOR(Usart)
 
 	bool interrupt_source_RXNE() {
 		return (((USART_CR1(_usart) & USART_CR1_RXNEIE) != 0) &&

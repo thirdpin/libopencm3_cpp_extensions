@@ -30,6 +30,8 @@ ROUND BUFFER implementation, public interface
 #include <cstdint>
 #include <cm3ext_config.h>
 
+#include "private/assert.h"
+
 namespace cm3ext {
 
 namespace utils {
@@ -100,11 +102,7 @@ public:
 	/**
 	@brief Prevent memory leak.
 	*/
-#if CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 0
-	~RoundBuffer() = delete; // prevent memory leak
-#else
-	~RoundBuffer() = default;
-#endif
+	CM3EXT_EXPLISIT_DESTRUCTOR(RoundBuffer) // prevent memory leak
 
 	/**
     @brief Initializes a new instance of the TplRoundBuffer class

@@ -1,7 +1,11 @@
+#ifndef ADC_DMA_EXT_H
+#define ADC_DMA_EXT_H
+
 #include <libopencm3/stm32/dma.h>
 #include <cstring>
 
 #include <cm3ext_config.h>
+#include "private/assert.h"
 #include "adc_ext.h"
 
 namespace cm3ext {
@@ -28,11 +32,7 @@ public:
 
 	AdcDma(DmaConf dma, AdcConf adc, bool is_temp_sensor);
 
-#if CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 0
-	~AdcDma() = delete; // prevent memory leak
-#else
-	~AdcDma() = default;
-#endif
+	CM3EXT_EXPLISIT_DESTRUCTOR(AdcDma)
 
     uint16_t get_value(uint8_t index);
 
@@ -45,3 +45,5 @@ private:
 } // namespace adc
 
 } // namespace cm3ext
+
+#endif

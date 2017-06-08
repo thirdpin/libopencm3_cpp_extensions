@@ -30,6 +30,7 @@ I2C C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #include <libopencm3/stm32/i2c.h>
 
 #include <cm3ext_config.h>
+#include "private/assert.h"
 #include "systick_ext.h"
 #include "gpio_ext.h"
 
@@ -161,11 +162,7 @@ public:
 	I2c();
 	I2c(Config i2c_conf);
 
-#if CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 0
-	~I2c() = delete; // prevent memory leak
-#else
-	~I2c() = default;
-#endif
+	CM3EXT_EXPLISIT_DESTRUCTOR(I2c)
 
 
 	inline void reset() {
