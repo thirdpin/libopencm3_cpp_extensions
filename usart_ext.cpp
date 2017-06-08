@@ -28,8 +28,9 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 namespace cm3ext {
 
 
-Usart::Usart( Struct usart,  Settings settings,
-				     utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size)
+Usart::Usart(Struct usart, Settings settings,
+			 utils::RoundBuffer rb_in_size,
+			 utils::RoundBuffer rb_out_size)
 {
 	rb_in = new utils::RoundBuffer(rb_in_size);
 	rb_out = new utils::RoundBuffer(rb_out_size);
@@ -38,7 +39,8 @@ Usart::Usart( Struct usart,  Settings settings,
 	{
 		gpio::Gpio rx(usart.rx);
 		rx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-		rx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
+		rx.set_output_options(gpio::OutputType::PUSH_PULL,
+				       	      gpio::Speed::MEDIUM_25MHz);
 
 		if ((usart.number >= 1) && (usart.number <= 3)) {
 			rx.set_af(gpio::AltFuncNumber::AF7);
@@ -52,7 +54,8 @@ Usart::Usart( Struct usart,  Settings settings,
 	{
 		gpio::Gpio tx(usart.tx);
 		tx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-		tx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
+		tx.set_output_options(gpio::OutputType::PUSH_PULL,
+				              gpio::Speed::MEDIUM_25MHz);
 		if ((usart.number >= 1) && (usart.number <= 3)) {
 			tx.set_af(gpio::AltFuncNumber::AF7);
 		}

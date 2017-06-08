@@ -66,8 +66,10 @@ public:
 	utils::RoundBuffer *rb_in;
 	utils::RoundBuffer *rb_out;
 
-	Usart( Struct usart,  Settings settings,
-			  utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size);
+	Usart(Struct usart, Settings settings,
+	      utils::RoundBuffer rb_in_size,
+		  utils::RoundBuffer rb_out_size);
+
 #if CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 0
 	~Usart() = delete; // prevent memory leak
 #else
@@ -76,11 +78,13 @@ public:
 
 
 	bool interrupt_source_RXNE() {
-		return (((USART_CR1(_usart) & USART_CR1_RXNEIE) != 0) && usart_get_flag(_usart, USART_SR_RXNE));
+		return (((USART_CR1(_usart) & USART_CR1_RXNEIE) != 0) &&
+				 usart_get_flag(_usart, USART_SR_RXNE));
 	}
 
 	bool interrupt_source_TXE() {
-		return (((USART_CR1(_usart) & USART_CR1_TXEIE) != 0) && usart_get_flag(_usart, USART_SR_TXE));
+		return (((USART_CR1(_usart) & USART_CR1_TXEIE) != 0) &&
+				 usart_get_flag(_usart, USART_SR_TXE));
 	}
 
 	void start_send() {
