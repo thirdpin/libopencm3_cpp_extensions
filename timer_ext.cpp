@@ -23,7 +23,7 @@
 TIM C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#include <timer_ext.h>
+#include "timer_ext.h"
 
 namespace cm3ext {
 
