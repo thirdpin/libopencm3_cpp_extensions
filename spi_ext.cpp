@@ -26,7 +26,7 @@ SPI C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 
 #include "spi_ext.h"
 
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace spi {
 

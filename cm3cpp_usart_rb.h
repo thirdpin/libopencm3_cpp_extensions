@@ -1,0 +1,81 @@
+/*
+ * This file is part of the libopencm3_cpp_extensions project.
+ * hosted at http://github.com/thirdpin/libopencm3_cpp_extensions
+ *
+ * Copyright (C) 2016  Third Pin LLC
+ * Written by Anastasiia Lazareva <a.lazareva@thirdpin.ru>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* 
+USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
+*/
+
+#ifndef CM3CPP_USART_RB_H_
+#define CM3CPP_USART_RB_H_
+
+/**************************************************************************************************
+ * CM3CPP INCLUDES
+ *************************************************************************************************/
+#include "utils/round_buffer.h"
+#include "cm3cpp_usart.h"
+
+namespace cm3cpp {
+
+class UsartRb : public Usart
+{
+public:
+	utils::RoundBuffer *rb_in;
+	utils::RoundBuffer *rb_out;
+
+	UsartRb(LowLevelConfig config, Settings settings,
+	        utils::RoundBuffer rb_in_size,
+		    utils::RoundBuffer rb_out_size);
+
+	CM3CPP_EXPLISIT_DESTRUCTOR(UsartRb)
+
+	void start_send() {
+		usart_enable_tx_interrupt(_usart);
+	}
+
+	void receive_handler()
+	{
+		if (interrupt_source_rx()) {
+			rb_in->push(read());
+		}
+	}
+
+	void transmit_handler()
+	{
+		if (interrupt_source_tx()) {
+			if (rb_out->get_count()) {
+				write(rb_out->pop());
+			}
+			else {
+				usart_disable_tx_interrupt(_usart);
+			}
+		}
+	}
+
+	void inirq()
+	{
+		receive_handler();
+		transmit_handler();
+	}
+};
+
+} // namespace cm3ext
+
+#endif /* CM3CPP_USART_RB_H_ */

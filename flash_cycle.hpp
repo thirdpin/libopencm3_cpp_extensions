@@ -5,7 +5,7 @@
 #include <libopencm3/stm32/f2/flash.h>
 #include <libopencmsis/core_cm3.h>
 
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace flash {
 

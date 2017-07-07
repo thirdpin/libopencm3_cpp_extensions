@@ -1,5 +1,5 @@
-#ifndef CM3EXT_CONFIG_H_
-#define CM3EXT_CONFIG_H_
+#ifndef CM3CPP_CONFIG_H_
+#define CM3CPP_CONFIG_H_
 
 #define CM3EXT_ENABLE_CUSTOM_SYSTICK_SOURCE  0
 
@@ -19,4 +19,4 @@
 //    inside. If you can't destruct an object it prevents a memory leak.
 #define CM3EXT_ENABLE_IMPLISIT_DESTRUCTOR_CALLS     0
 
-#endif /* CM3EXT_CONFIG_H_ */
+#endif /* CM3CPP_CONFIG_H_ */

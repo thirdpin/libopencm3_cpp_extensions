@@ -25,7 +25,7 @@ RS485 implementation, public interface
 
 #include "rs485.h"
 
-namespace cm3ext {
+namespace cm3cpp {
 
 
 RS485::RS485(Struct rs485, Settings settings,

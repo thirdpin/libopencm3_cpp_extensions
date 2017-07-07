@@ -23,11 +23,16 @@
 USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#ifndef USART_EXT_H
-#define USART_EXT_H
+#ifndef CM3CPP_USART_H_
+#define CM3CPP_USART_H_
 
-
+/**************************************************************************************************
+ * GENERAL INCLUDES
+ *************************************************************************************************/
 #include <cstdint>
+/**************************************************************************************************
+ * LIBOPENCM3 INCLUDES
+ *************************************************************************************************/
 #include <libopencm3/stm32/usart.h>
 #ifdef STM32F2
 #include <libopencm3/stm32/f2/nvic.h>
@@ -35,15 +40,14 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #ifdef STM32F4
 #include <libopencm3/stm32/f4/nvic.h>
 #endif
-#include <cm3ext_config.h>
-
+/**************************************************************************************************
+ * CM3CPP INCLUDES
+ *************************************************************************************************/
 #include "private/assert.h"
-#include "utils/round_buffer.h"
-#include "gpio_ext.h"
+#include "cm3cpp_config.h"
+#include "cm3cpp_gpio.h"
 
-
-namespace cm3ext {
-
+namespace cm3cpp {
 
 class Usart
 {
@@ -55,89 +59,76 @@ public:
 		uint16_t parity;
 		uint16_t mode;
 		uint16_t flow_control;
-		uint8_t  nvic_priority;
 	};
 
-	struct Struct {
-	    uint32_t number;
+	struct LowLevelConfig {
+	    uint32_t usart_number;
 		gpio::Pinout tx;
 		gpio::Pinout rx;
+		uint8_t nvic_priority;
 	};
 
-	utils::RoundBuffer *rb_in;
-	utils::RoundBuffer *rb_out;
+	Usart(LowLevelConfig config, Settings settings);
 
-	Usart(Struct usart, Settings settings,
-	      utils::RoundBuffer rb_in_size,
-		  utils::RoundBuffer rb_out_size);
+	CM3CPP_EXPLISIT_DESTRUCTOR(Usart)
 
-	CM3EXT_EXPLISIT_DESTRUCTOR(Usart)
-
-	bool interrupt_source_RXNE() {
+	bool interrupt_source_rx() {
 		return (((USART_CR1(_usart) & USART_CR1_RXNEIE) != 0) &&
 				 usart_get_flag(_usart, USART_SR_RXNE));
 	}
 
-	bool interrupt_source_TXE() {
+	bool interrupt_source_tx() {
 		return (((USART_CR1(_usart) & USART_CR1_TXEIE) != 0) &&
 				 usart_get_flag(_usart, USART_SR_TXE));
 	}
 
-	void start_send() {
-		usart_enable_tx_interrupt(_usart);
-	}
-
     void enable_irq() {
-        nvic_enable_irq(_usart_nvic);
+        //nvic_enable_irq(_usart_nvic);
     }
 
 	void disable_irq() {
-	    nvic_disable_irq(_usart_nvic);
+	    //nvic_disable_irq(_usart_nvic);
 	}
 
-	void receive_handler()
+	void enable_rx_interrupt()
 	{
-		if (interrupt_source_RXNE()) {
-			rb_in->push(uart_read());
-		}
+		usart_enable_rx_interrupt(_usart);
 	}
 
-	void transmit_handler()
+	void enable_tx_interrupt() {
+		usart_enable_tx_interrupt(_usart);
+	}
+
+	void disable_rx_interrupt()
 	{
-		if (interrupt_source_TXE()) {
-			if (rb_out->get_count()) {
-				usart_send(_usart, rb_out->pop());
-			}
-			else {
-				usart_disable_tx_interrupt(_usart);
-			}
-		}
+		usart_disable_rx_interrupt(_usart);
 	}
 
-	void uart_write_blocking(uint16_t data) {
+	void disable_tx_interrupt() {
+		usart_disable_tx_interrupt(_usart);
+	}
+
+	void write_blocking(uint16_t data) {
 	    usart_send_blocking(_usart, data);
 	}
 
-    void uart_write(uint16_t data) {
+    void write(uint16_t data) {
         usart_send(_usart, data);
     }
 
-	uint16_t uart_read() {
+	uint16_t read() {
 	    return usart_recv(_usart);
 	}
 
-	void inirq()
-	{
-		receive_handler();
-		transmit_handler();
+	uint16_t read_blocking() {
+		return usart_recv_blocking(_usart);
 	}
 
-private:
+protected:
 	uint32_t _usart;
 	uint32_t _usart_nvic;
 };
 
-
 } // namespace cm3ext
 
-#endif
+#endif /* CM3CPP_USART_H_ */

@@ -1,6 +1,6 @@
 #include "adc_dma.h"
 
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace adc {
 

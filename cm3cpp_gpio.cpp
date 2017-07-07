@@ -23,12 +23,11 @@
 GPIO C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#include "gpio_ext.h"
+#include "cm3cpp_gpio.h"
 
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace gpio {
-
 
 Gpio::Gpio(Pinout pinout)
 {
@@ -216,7 +215,6 @@ void Gpio::clear_exti_pending_bit()
 {
 	exti_reset_request(_pinout.pin);
 }
-
 
 } // namespace gpio
 

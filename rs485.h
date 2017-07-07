@@ -36,14 +36,14 @@ RS485 implementation, public interface
 #include <libopencm3/stm32/f4/nvic.h>
 #endif
 
-#include <cm3ext_config.h>
+#include <libopencm3_cpp_extensions/cm3cpp_config.h>
 
-#include "gpio_ext.h"
+#include <libopencm3_cpp_extensions/cm3cpp_gpio.h>
 #include "utils/round_buffer.h"
 #include "private/assert.h"
 
 
-namespace cm3ext {
+namespace cm3cpp {
 
 
 class RS485
@@ -71,7 +71,7 @@ public:
 	RS485(Struct rs485, Settings settings,
 		  utils::RoundBuffer rb_in_size, utils::RoundBuffer rb_out_size);
 
-	CM3EXT_EXPLISIT_DESTRUCTOR(RS485)
+	CM3CPP_EXPLISIT_DESTRUCTOR(RS485)
 
 	void usart_enable_tc_interrupt()
 	{

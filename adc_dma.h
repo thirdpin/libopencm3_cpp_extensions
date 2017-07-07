@@ -2,13 +2,13 @@
 #define ADC_DMA_EXT_H
 
 #include <libopencm3/stm32/dma.h>
+#include <libopencm3_cpp_extensions/cm3cpp_config.h>
 #include <cstring>
 
-#include <cm3ext_config.h>
 #include "private/assert.h"
 #include "adc_ext.h"
 
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace adc {
 
@@ -32,7 +32,7 @@ public:
 
 	AdcDma(DmaConf dma, AdcConf adc, bool is_temp_sensor);
 
-	CM3EXT_EXPLISIT_DESTRUCTOR(AdcDma)
+	CM3CPP_EXPLISIT_DESTRUCTOR(AdcDma)
 
     uint16_t get_value(uint8_t index);
 

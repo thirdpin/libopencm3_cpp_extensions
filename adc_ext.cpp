@@ -1,6 +1,6 @@
 #include "adc_ext.h"
 
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace adc {
 

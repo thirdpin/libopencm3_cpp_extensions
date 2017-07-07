@@ -20,51 +20,23 @@
  */
 
 /* 
-SYSTICK implementation, public interface
+USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#ifndef SYSTICK_API_H
-#define SYSTICK_API_H
+#include "cm3cpp_usart_rb.h"
 
-#include <stdint.h>
-#include <libopencm3/cm3/systick.h>
-#include "cm3cpp_config.h"
+namespace cm3cpp {
 
-extern "C" void sys_tick_handler(void);
-extern "C" void delay_nop(uint32_t count);
-
-namespace cm3ext {
-
-namespace systick {
-
-
-void init(uint32_t div = CM3EXT_SYSTEM_CORE_CLOCK_DIV);
-uint32_t get_counter();
-void delay_systick(uint32_t ms);
-
-class Counter
+UsartRb::UsartRb(LowLevelConfig config, Settings settings,
+			     utils::RoundBuffer rb_in_size,
+			     utils::RoundBuffer rb_out_size)
+    : Usart(config, settings)
 {
-public:
-	enum Mode {
-		CYCLE,
-		ONE_SHOT
-	};
+	rb_in = new utils::RoundBuffer(rb_in_size);
+	rb_out = new utils::RoundBuffer(rb_out_size);
 
-	Counter(Mode mode, uint32_t period);
-	void init(Mode mode, uint32_t period);
-	bool timeout();
-	bool start();
-	bool stop();
+	if (settings.mode & USART_MODE_RX)
+		usart_enable_rx_interrupt(_usart);
+}
 
-private:
-	uint32_t _saved;
-	uint32_t _period;
-	Mode _mode;
-	bool _is_active;
-};
-
-
-}  // namespace systick
-
-}  // namespace cm3ext
-#endif
+} // namespace cm3ext

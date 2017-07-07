@@ -27,15 +27,13 @@ ROUND BUFFER implementation, public interface
 #ifndef ROUND_BUFFER_H
 #define ROUND_BUFFER_H
 
-#include <cstdint>
-#include <cm3ext_config.h>
+#include <stdint.h>
+#include <libopencm3_cpp_extensions/cm3cpp_config.h>
+#include <libopencm3_cpp_extensions/private/assert.h>
 
-#include "private/assert.h"
-
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace utils {
-
 
 constexpr uint32_t ROUND_BUFFER_DEFAULT_SIZE = 1000;
 
@@ -102,7 +100,7 @@ public:
 	/**
 	@brief Prevent memory leak.
 	*/
-	CM3EXT_EXPLISIT_DESTRUCTOR(RoundBuffer) // prevent memory leak
+	CM3CPP_EXPLISIT_DESTRUCTOR(RoundBuffer) // prevent memory leak
 
 	/**
     @brief Initializes a new instance of the TplRoundBuffer class

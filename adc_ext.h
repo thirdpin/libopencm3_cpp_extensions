@@ -117,7 +117,7 @@
 #define ADC_CCR_MULTI_MASK              (uint32_t)(0x1F)
 #define ADC_CCR_TSVREFE_MASK            (uint32_t)(0x1 << 23)
 
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace adc {
 

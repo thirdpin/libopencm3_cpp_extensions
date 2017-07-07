@@ -23,48 +23,31 @@
 USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#include "usart_ext.h"
+#include "cm3cpp_usart.h"
 
-namespace cm3ext {
+namespace cm3cpp {
 
-
-Usart::Usart(Struct usart, Settings settings,
-			 utils::RoundBuffer rb_in_size,
-			 utils::RoundBuffer rb_out_size)
+Usart::Usart(LowLevelConfig config, Settings settings)
 {
-	rb_in = new utils::RoundBuffer(rb_in_size);
-	rb_out = new utils::RoundBuffer(rb_out_size);
 
-	if (usart.rx.pin)
-	{
-		gpio::Gpio rx(usart.rx);
-		rx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-		rx.set_output_options(gpio::OutputType::PUSH_PULL,
-				       	      gpio::Speed::MEDIUM_25MHz);
+	gpio::Gpio rx(config.rx);
+	rx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+	rx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
 
-		if ((usart.number >= 1) && (usart.number <= 3)) {
-			rx.set_af(gpio::AltFuncNumber::AF7);
-		}
-		if ((usart.number >= 4) && (usart.number <= 6)) {
-			rx.set_af(gpio::AltFuncNumber::AF8);
-		}
+	gpio::Gpio tx(config.tx);
+	tx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
+	tx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
+
+	if ((config.usart_number >= 1) && (config.usart_number <= 3)) {
+		rx.set_af(gpio::AltFuncNumber::AF7);
+		tx.set_af(gpio::AltFuncNumber::AF7);
+	}
+	if ((config.usart_number >= 4) && (config.usart_number <= 6)) {
+		rx.set_af(gpio::AltFuncNumber::AF8);
+		tx.set_af(gpio::AltFuncNumber::AF8);
 	}
 
-	if (usart.tx.pin)
-	{
-		gpio::Gpio tx(usart.tx);
-		tx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-		tx.set_output_options(gpio::OutputType::PUSH_PULL,
-				              gpio::Speed::MEDIUM_25MHz);
-		if ((usart.number >= 1) && (usart.number <= 3)) {
-			tx.set_af(gpio::AltFuncNumber::AF7);
-		}
-		if ((usart.number >= 4) && (usart.number <= 6)) {
-			tx.set_af(gpio::AltFuncNumber::AF8);
-		}
-	}
-
-	switch (usart.number)
+	switch (config.usart_number)
 	{
 		case 1:
 		    _usart = USART1;
@@ -92,21 +75,15 @@ Usart::Usart(Struct usart, Settings settings,
         break;
 	}
 
-	// USART config
 	usart_set_baudrate(_usart, settings.baud_rate);
 	usart_set_databits(_usart, settings.word_length);
 	usart_set_stopbits(_usart, settings.stop_bits);
 	usart_set_mode(_usart, settings.mode);
 	usart_set_parity(_usart, settings.parity);
 	usart_set_flow_control(_usart, settings.flow_control);
-
-	if (settings.mode & USART_MODE_RX)
-		usart_enable_rx_interrupt(_usart);
-
 	usart_enable(_usart);
 
-    // NVIC config
-    nvic_set_priority(_usart_nvic, settings.nvic_priority);
+    nvic_set_priority(_usart_nvic, config.nvic_priority);
     nvic_enable_irq(_usart_nvic);
 }
 

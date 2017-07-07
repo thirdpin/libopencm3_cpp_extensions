@@ -1,11 +1,11 @@
 #ifndef HW_SDIO_H_
 #define HW_SDIO_H_
 
-#include "gpio_ext.h"
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/sdio.h>
+#include <libopencm3_cpp_extensions/cm3cpp_gpio.h>
 
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace sdio {
 
