@@ -9,7 +9,7 @@
 //#define CM3EXT_SYS_TICK_INT_FUNC			        tim1_isr
 
 //*** User assert function define
-//#define CM3_ASSERT( x ) if( ( x ) == 0 ) user_assert_func( __FILE__, __LINE__ )
+#define CM3_ASSERT( x ) 	configASSERT( x )
 
 //*** Must be changed according to your RCC configuration
 #define CM3EXT_SYSTEM_CORE_CLOCK					(uint32_t)120000000

@@ -27,6 +27,8 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 
 namespace cm3cpp {
 
+namespace usart {
+
 Usart::Usart(LowLevelConfig config, Settings settings)
 {
 
@@ -87,5 +89,6 @@ Usart::Usart(LowLevelConfig config, Settings settings)
     nvic_enable_irq(_usart_nvic);
 }
 
+} // namespace usart
 
-} // namespace cm3ext
+} // namespace cm3cpp

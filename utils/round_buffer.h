@@ -27,8 +27,8 @@ ROUND BUFFER implementation, public interface
 #ifndef ROUND_BUFFER_H
 #define ROUND_BUFFER_H
 
+#include <cm3cpp_config.h>
 #include <stdint.h>
-#include <libopencm3_cpp_extensions/cm3cpp_config.h>
 #include <libopencm3_cpp_extensions/private/assert.h>
 
 namespace cm3cpp {

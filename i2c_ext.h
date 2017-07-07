@@ -27,7 +27,7 @@ I2C C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #define I2C_EXT_H
 
 #include <libopencm3/stm32/i2c.h>
-#include <libopencm3_cpp_extensions/cm3cpp_config.h>
+#include <cm3cpp_config.h>
 #include <libopencm3_cpp_extensions/cm3cpp_gpio.h>
 
 #include "private/assert.h"

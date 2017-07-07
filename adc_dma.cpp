@@ -4,7 +4,6 @@ namespace cm3cpp {
 
 namespace adc {
 
-
 AdcDma::AdcDma(DmaConf dma, AdcConf adc, bool is_temp_sensor)
 {
 	_adc = new Adc(adc.number);

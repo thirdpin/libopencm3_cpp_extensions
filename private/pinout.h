@@ -1,7 +1,7 @@
 #ifndef CM3CPP_PINOUT_H_
 #define CM3CPP_PINOUT_H_
 
-#include <libopencm3_cpp_extensions/cm3cpp_config.h>
+#include <cm3cpp_config.h>
 
 #define PINOUT_CTOR(port, pin)                     	{GPIO##port, GPIO##pin}
 

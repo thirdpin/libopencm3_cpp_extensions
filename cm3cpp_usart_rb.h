@@ -34,6 +34,8 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 
 namespace cm3cpp {
 
+namespace usart {
+
 class UsartRb : public Usart
 {
 public:
@@ -76,6 +78,8 @@ public:
 	}
 };
 
-} // namespace cm3ext
+} // namespace usart
+
+} // namespace cm3cpp
 
 #endif /* CM3CPP_USART_RB_H_ */

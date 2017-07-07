@@ -36,7 +36,7 @@ RS485 implementation, public interface
 #include <libopencm3/stm32/f4/nvic.h>
 #endif
 
-#include <libopencm3_cpp_extensions/cm3cpp_config.h>
+#include <cm3cpp_config.h>
 
 #include <libopencm3_cpp_extensions/cm3cpp_gpio.h>
 #include "utils/round_buffer.h"

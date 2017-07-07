@@ -1,7 +1,7 @@
 #ifndef CM3CPP_ASSERT_H_
 #define CM3CPP_ASSERT_H_
 
-#include <libopencm3_cpp_extensions/cm3cpp_config.h>
+#include <cm3cpp_config.h>
 
 #ifndef CM3CPP_ASSERT
 #define CM3CPP_ASSERT( x ) if( ( x ) ) { while(true) { asm(""); } }

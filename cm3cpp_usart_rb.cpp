@@ -27,6 +27,8 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 
 namespace cm3cpp {
 
+namespace usart {
+
 UsartRb::UsartRb(LowLevelConfig config, Settings settings,
 			     utils::RoundBuffer rb_in_size,
 			     utils::RoundBuffer rb_out_size)
@@ -39,4 +41,6 @@ UsartRb::UsartRb(LowLevelConfig config, Settings settings,
 		usart_enable_rx_interrupt(_usart);
 }
 
-} // namespace cm3ext
+} // usart
+
+} // namespace cm3cpp

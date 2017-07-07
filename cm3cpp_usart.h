@@ -44,33 +44,71 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
  * CM3CPP INCLUDES
  *************************************************************************************************/
 #include "private/assert.h"
-#include "cm3cpp_config.h"
+#include <cm3cpp_config.h>
 #include "cm3cpp_gpio.h"
 
 namespace cm3cpp {
 
+namespace usart {
+
+enum DataBits : uint8_t
+{
+	_8 = 8,
+	_9 = 9
+};
+
+enum Mode : uint16_t
+{
+	RX    = USART_MODE_RX,
+	TX    = USART_MODE_TX,
+	RX_TX = USART_MODE_TX_RX
+};
+
+enum StopBits : uint16_t
+{
+	_0_5 = USART_STOPBITS_0_5,
+	_1   = USART_STOPBITS_1,
+	_1_5 = USART_STOPBITS_1_5,
+	_2   = USART_STOPBITS_2
+};
+
+enum Parity : uint16_t
+{
+	PAR_NONE = USART_PARITY_NONE,
+	PAR_EVEN = USART_PARITY_EVEN,
+	PAR_ODD  = USART_PARITY_ODD
+};
+
+enum FlowControl : uint16_t
+{
+	NONE    = USART_FLOWCONTROL_NONE,
+	RTS     = USART_FLOWCONTROL_RTS,
+	CTS     = USART_FLOWCONTROL_CTS,
+	RTS_CTS = USART_FLOWCONTROL_RTS_CTS
+};
+
 class Usart
 {
 public:
-	struct Settings {
+	struct Settings
+	{
 		uint32_t baud_rate;
-		uint16_t word_length;
-		uint16_t stop_bits;
-		uint16_t parity;
-		uint16_t mode;
-		uint16_t flow_control;
+		DataBits word_length;
+		StopBits stop_bits;
+		Parity parity;
+		Mode mode;
+		FlowControl flow_control;
 	};
 
-	struct LowLevelConfig {
-	    uint32_t usart_number;
+	struct LowLevelConfig
+	{
+	    uint8_t usart_number;
 		gpio::Pinout tx;
 		gpio::Pinout rx;
 		uint8_t nvic_priority;
 	};
 
 	Usart(LowLevelConfig config, Settings settings);
-
-	CM3CPP_EXPLISIT_DESTRUCTOR(Usart)
 
 	bool interrupt_source_rx() {
 		return (((USART_CR1(_usart) & USART_CR1_RXNEIE) != 0) &&
@@ -83,11 +121,11 @@ public:
 	}
 
     void enable_irq() {
-        //nvic_enable_irq(_usart_nvic);
+        nvic_enable_irq(_usart_nvic);
     }
 
 	void disable_irq() {
-	    //nvic_disable_irq(_usart_nvic);
+	    nvic_disable_irq(_usart_nvic);
 	}
 
 	void enable_rx_interrupt()
@@ -129,6 +167,8 @@ protected:
 	uint32_t _usart_nvic;
 };
 
-} // namespace cm3ext
+} // namespace usart
+
+} // namespace cm3cpp
 
 #endif /* CM3CPP_USART_H_ */
