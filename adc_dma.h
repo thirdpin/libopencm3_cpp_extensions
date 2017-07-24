@@ -2,7 +2,7 @@
 #define ADC_DMA_EXT_H
 
 #include <libopencm3/stm32/dma.h>
-#include <libopencm3_cpp_extensions/cm3cpp_config_template.h>
+#include <cm3cpp_config.h>
 #include <cstring>
 
 #include "private/assert.h"
