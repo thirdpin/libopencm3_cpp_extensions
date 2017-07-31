@@ -154,6 +154,12 @@ public:
 	*/
 	uint32_t pop(void *buffer, uint32_t count);
 	/**
+	@brief Removes a range of bytes from the beginning of the TplRoundBuffer.
+	@param count The number of bytes to remove.
+	@return The number of actually removed bytes.
+	*/
+	uint32_t pop(uint32_t count);
+	/**
 	@brief
 	@param
 	@param

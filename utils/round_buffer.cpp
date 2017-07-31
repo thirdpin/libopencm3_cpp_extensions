@@ -96,6 +96,17 @@ uint32_t RoundBuffer::pop(void *buffer, uint32_t count)
 	return(cnt_out);
 }
 
+uint32_t RoundBuffer::pop(uint32_t count)
+{
+	uint32_t cnt = get_count();
+	uint32_t cnt_out = (count <= cnt) ? count : cnt;
+
+	for(uint32_t i = 0; i < cnt_out; i++)
+		pop();
+
+	return(cnt_out);
+}
+
 int RoundBuffer::memcmp(  void *buffer, uint32_t sizebuf)
 {
 	uint8_t *buf = (uint8_t*)buffer;
