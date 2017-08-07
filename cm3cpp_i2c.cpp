@@ -53,8 +53,7 @@ I2c::I2c(Config i2c_conf)
 #ifndef FREERTOS
 	_config.counter_ms->init(systick::Counter::Mode::ONE_SHOT, MAX_TRANSMIT_TIME_MS);
 #else
-	_config.counter_ms = new timers::I2cTimer();
-	_config.counter_ms->set_period_ms(MAX_TRANSMIT_TIME_MS);
+	_config.counter_ms = new timers::I2cTimer(MAX_TRANSMIT_TIME_MS);
 #endif
 }
 
