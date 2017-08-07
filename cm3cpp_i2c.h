@@ -141,11 +141,6 @@ public:
 		uint8_t number;
 		gpio::Pinout scl_pin;
 		gpio::Pinout sda_pin;
-	#ifndef FREERTOS
-		systick::Counter* counter_ms;
-	#else
-		timers::I2cTimer *counter_ms;
-	#endif
 	};
 
 	struct MasterTransferCfg
@@ -199,15 +194,21 @@ private:
 	uint32_t _i2c;
 	Config _config;
 
-	void send_start();
-	void send_stop();
-	void clear_stop();
-	void send_data(uint8_t data);
-	uint8_t get_data();
-	void send_7bit_address(uint8_t slave, Command readwrite);
-	void enable_ack();
-	void disable_ack();
-	Result get_flag_status(Event event);
+#ifndef FREERTOS
+	systick::Counter *_counter_ms;
+#else
+	timers::I2cTimer *_counter_ms;
+#endif
+
+	void _send_start();
+	void _send_stop();
+	void _clear_stop();
+	void _send_data(uint8_t data);
+	uint8_t _get_data();
+	void _send_7bit_address(uint8_t slave, Command readwrite);
+	void _enable_ack();
+	void _disable_ack();
+	Result _get_flag_status(Event event);
 };
 
 

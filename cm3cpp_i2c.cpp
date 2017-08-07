@@ -23,7 +23,7 @@
 I2C C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#include <libopencm3_cpp_extensions/cm3cpp_i2c.h>
+#include "cm3cpp_i2c.h"
 
 namespace cm3cpp {
 
@@ -51,9 +51,9 @@ I2c::I2c(Config i2c_conf)
 	sda.set_af(gpio::AltFuncNumber::AF4);
 
 #ifndef FREERTOS
-	_config.counter_ms->init(systick::Counter::Mode::ONE_SHOT, MAX_TRANSMIT_TIME_MS);
+	_counter_ms->init(systick::Counter::Mode::ONE_SHOT, MAX_TRANSMIT_TIME_MS);
 #else
-	_config.counter_ms = new timers::I2cTimer(MAX_TRANSMIT_TIME_MS);
+	_counter_ms = new timers::I2cTimer(MAX_TRANSMIT_TIME_MS);
 #endif
 }
 
@@ -168,19 +168,19 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
 	uint32_t reg __attribute__((unused));
 	Result result = OK;
 
-	_config.counter_ms->start();
+	_counter_ms->start();
 
-	send_start();
-	while (!(get_flag_status(MASTER_MODE_SELECTED))) {
-		if(_config.counter_ms->timeout()) {
+	_send_start();
+	while (!(_get_flag_status(MASTER_MODE_SELECTED))) {
+		if(_counter_ms->timeout()) {
 			result = TIMEOUT;
 		    break;
 		}
 	}
 
-	send_7bit_address(cfg.device_address, WRITE);
-	while (!get_flag_status(MASTER_TRANSMITTER_MODE_SELECTED)) {
-		if(_config.counter_ms->timeout()) {
+	_send_7bit_address(cfg.device_address, WRITE);
+	while (!_get_flag_status(MASTER_TRANSMITTER_MODE_SELECTED)) {
+		if(_counter_ms->timeout()) {
 			result = TIMEOUT;
 		   break;
 		}
@@ -190,10 +190,10 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
 
     while(cfg.write_len > 0)
     {
-    	send_data(cfg.write_buf[index]);
+    	_send_data(cfg.write_buf[index]);
 
-    	while (!(get_flag_status(MASTER_BYTE_TRANSMITTED))) {
-    		if(_config.counter_ms->timeout()) {
+    	while (!(_get_flag_status(MASTER_BYTE_TRANSMITTED))) {
+    		if(_counter_ms->timeout()) {
     			result = TIMEOUT;
     			break;
     		}
@@ -205,19 +205,19 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
 
     uint16_t temp;
     if(cfg.read_len != 0) {
-    	send_start();
-    	while (!(get_flag_status(MASTER_MODE_SELECTED))) {
-    		if(_config.counter_ms->timeout()) {
+    	_send_start();
+    	while (!(_get_flag_status(MASTER_MODE_SELECTED))) {
+    		if(_counter_ms->timeout()) {
     			result = TIMEOUT;
     			break;
     		}
     	}
 
-    	enable_ack();
+    	_enable_ack();
 
-    	send_7bit_address(cfg.device_address, READ);
-    	while (!get_flag_status(MASTER_RECEIVER_MODE_SELECTED)) {
-    		if(_config.counter_ms->timeout()) {
+    	_send_7bit_address(cfg.device_address, READ);
+    	while (!_get_flag_status(MASTER_RECEIVER_MODE_SELECTED)) {
+    		if(_counter_ms->timeout()) {
     			result = TIMEOUT;
     			break;
     		}
@@ -230,59 +230,59 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
     	{
     		size_to_read--;
     		if (!size_to_read)
-    			disable_ack();
-    		while (!get_flag_status(MASTER_BYTE_RECEIVED)) {
-    			if(_config.counter_ms->timeout()) {
+    			_disable_ack();
+    		while (!_get_flag_status(MASTER_BYTE_RECEIVED)) {
+    			if(_counter_ms->timeout()) {
     				result = TIMEOUT;
     				break;
     			}
     		}
 
-    		uint8_t data = get_data();
+    		uint8_t data = _get_data();
     		cfg.read_buf[index] = data;
     		index++;
     	}
     }
 
-    send_stop();
-    _config.counter_ms->stop();
+    _send_stop();
+    _counter_ms->stop();
 
     return result;
 }
 
-void I2c::send_start() {
+void I2c::_send_start() {
 	i2c_send_start(_i2c);
 }
 
-void I2c::send_stop() {
+void I2c::_send_stop() {
 	i2c_send_stop(_i2c);
 }
 
-void I2c::clear_stop() {
+void I2c::_clear_stop() {
 	i2c_clear_stop(_i2c);
 }
 
-void I2c::send_data(uint8_t data) {
+void I2c::_send_data(uint8_t data) {
 	i2c_send_data(_i2c, data);
 }
 
-uint8_t I2c::get_data() {
+uint8_t I2c::_get_data() {
 	return i2c_get_data(_i2c);
 }
 
-void I2c::send_7bit_address(uint8_t slave, Command readwrite) {
+void I2c::_send_7bit_address(uint8_t slave, Command readwrite) {
 	i2c_send_7bit_address(_i2c, slave, readwrite);
 }
 
-void I2c::enable_ack() {
+void I2c::_enable_ack() {
 	i2c_enable_ack(_i2c);
 }
 
-void I2c::disable_ack() {
+void I2c::_disable_ack() {
 	i2c_disable_ack(_i2c);
 }
 
-auto I2c::get_flag_status(Event event) -> Result
+auto I2c::_get_flag_status(Event event) -> Result
 {
 	Result result = ERROR;
 	uint32_t reg_sr1 = I2C_SR1(_i2c);
