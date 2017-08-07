@@ -117,8 +117,9 @@ public:
 	void mode_setup(Mode mode, PullMode pull_mode);
 	void set_output_options(OutputType type, Speed speed);
 	void set_af(AltFuncNumber af_num);
-	void set_exti_irq(enum exti_trigger_type trigger, uint8_t nvic);
+	void setup_exti(enum exti_trigger_type trigger);
 	void clear_exti_pending_bit();
+	bool get_exti_flag_status();
 
 private:
 	Pinout _pinout;

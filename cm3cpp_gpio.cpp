@@ -203,9 +203,8 @@ void Gpio::set_af(AltFuncNumber af_num)
 	gpio_set_af(_pinout.port, _af, _pinout.pin);
 }
 
-void Gpio::set_exti_irq(exti_trigger_type trigger, uint8_t nvic)
+void Gpio::setup_exti(exti_trigger_type trigger)
 {
-	nvic_enable_irq(nvic);
 	exti_select_source(_pinout.pin, _pinout.port);
 	exti_set_trigger(_pinout.pin, trigger);
 	exti_enable_request(_pinout.pin);
@@ -214,6 +213,14 @@ void Gpio::set_exti_irq(exti_trigger_type trigger, uint8_t nvic)
 void Gpio::clear_exti_pending_bit()
 {
 	exti_reset_request(_pinout.pin);
+}
+
+bool Gpio::get_exti_flag_status()
+{
+	uint32_t flag = exti_get_flag_status(_pinout.pin);
+	if (flag != 0)
+		return true;
+	return false;
 }
 
 } // namespace gpio
