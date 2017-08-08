@@ -43,8 +43,7 @@ public:
 	utils::RoundBuffer *rb_out;
 
 	UsartRb(LowLevelConfig config, Settings settings,
-	        utils::RoundBuffer rb_in_size,
-		    utils::RoundBuffer rb_out_size);
+	        uint32_t rb_in_size, uint32_t rb_out_size);
 
 	CM3CPP_EXPLISIT_DESTRUCTOR(UsartRb)
 

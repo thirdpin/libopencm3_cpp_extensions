@@ -30,8 +30,7 @@ namespace cm3cpp {
 namespace usart {
 
 UsartRb::UsartRb(LowLevelConfig config, Settings settings,
-			     utils::RoundBuffer rb_in_size,
-			     utils::RoundBuffer rb_out_size)
+			     uint32_t rb_in_size, uint32_t rb_out_size)
     : Usart(config, settings)
 {
 	rb_in = new utils::RoundBuffer(rb_in_size);
