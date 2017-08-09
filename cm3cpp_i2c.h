@@ -35,7 +35,7 @@ I2C C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #ifndef FREERTOS
 #include "systick_ext.h"
 #else
-#include <timers/I2cTimer.hpp>
+#include <timers/OneShotTimer.hpp>
 #endif
 
 namespace cm3cpp {
@@ -197,7 +197,7 @@ private:
 #ifndef FREERTOS
 	systick::Counter *_counter_ms;
 #else
-	timers::I2cTimer *_counter_ms;
+	timers::OneShotTimer *_counter_ms;
 #endif
 
 	void _send_start();

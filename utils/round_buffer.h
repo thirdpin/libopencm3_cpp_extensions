@@ -24,8 +24,8 @@
 ROUND BUFFER implementation, public interface
 */
 
-#ifndef ROUND_BUFFER_H
-#define ROUND_BUFFER_H
+#ifndef UTILS_ROUND_BUFFER_H_
+#define UTILS_ROUND_BUFFER_H_
 
 #include <cm3cpp_config.h>
 #include <stdint.h>
@@ -267,9 +267,8 @@ private:
 	}
 };
 
-
 }  // namespace utils
 
 }  // namespace cm3ext
 
-#endif
+#endif /* UTILS_ROUND_BUFFER_H_ */
