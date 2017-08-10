@@ -116,11 +116,13 @@ enum StdMode{
 class Spi
 {
 public:
+	using Gpio = gpio::Gpio;
+
 	struct Config {
 		uint8_t spi_number;
-		gpio::Pinout mosi_pin;
-		gpio::Pinout miso_pin;
-		gpio::Pinout scl_pin;
+		Gpio::Pinout mosi_pin;
+		Gpio::Pinout miso_pin;
+		Gpio::Pinout scl_pin;
 	};
 
 

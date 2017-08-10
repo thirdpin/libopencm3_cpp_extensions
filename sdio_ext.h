@@ -9,19 +9,21 @@ namespace cm3cpp {
 
 namespace sdio {
 
-
 namespace config {
 constexpr auto RCC_PERIPH_DATA_CLK = rcc_periph_clken::RCC_GPIOC;
 constexpr auto RCC_PERIPH_CMD = rcc_periph_clken::RCC_GPIOD;
 constexpr uint8_t COUNT_OF_DATA_PINS = 4;
-constexpr gpio::Pinout DATA_PINS[COUNT_OF_DATA_PINS] = {PC8, PC9, PC10, PC11};
-constexpr gpio::Pinout CLK_PIN = PC12;
-constexpr gpio::Pinout CMD_PIN = PD2;
-constexpr gpio::AltFuncNumber SDIO_ALTERNATIVE_FUNC_NUMBER = gpio::AltFuncNumber::AF12;
+constexpr gpio::Gpio::Pinout DATA_PINS[COUNT_OF_DATA_PINS] = {PC8, PC9, PC10, PC11};
+constexpr gpio::Gpio::Pinout CLK_PIN = PC12;
+constexpr gpio::Gpio::Pinout CMD_PIN = PD2;
+constexpr gpio::Gpio::AltFuncNumber SDIO_ALTERNATIVE_FUNC_NUMBER = gpio::Gpio::AltFuncNumber::AF12;
 }
 
-class Sdio {
+class Sdio
+{
 public:
+	using Gpio = cm3cpp::gpio::Gpio;
+
 	struct Config {
 
 	};

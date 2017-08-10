@@ -90,6 +90,8 @@ enum FlowControl : uint16_t
 class Usart
 {
 public:
+	using Gpio = gpio::Gpio;
+
 	struct Settings
 	{
 		uint32_t baud_rate;
@@ -103,8 +105,8 @@ public:
 	struct LowLevelConfig
 	{
 	    uint8_t usart_number;
-		gpio::Pinout tx;
-		gpio::Pinout rx;
+		gpio::Gpio::Pinout tx;
+		gpio::Gpio::Pinout rx;
 		uint8_t nvic_priority;
 	};
 

@@ -40,15 +40,15 @@ I2c::I2c(Config i2c_conf)
 		default: break;
 	}
 
-	gpio::Gpio scl(_config.scl_pin);
-	scl.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-	scl.set_output_options(gpio::OutputType::OPEN_DRAIN, gpio::Speed::LOW_2MHz);
-	scl.set_af(gpio::AltFuncNumber::AF4);
+	Gpio scl(_config.scl_pin);
+	scl.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+	scl.set_output_options(Gpio::OutputType::OPEN_DRAIN, Gpio::Speed::LOW_2MHz);
+	scl.set_af(Gpio::AltFuncNumber::AF4);
 
-	gpio::Gpio sda(_config.sda_pin);
-	sda.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-	sda.set_output_options(gpio::OutputType::OPEN_DRAIN, gpio::Speed::LOW_2MHz);
-	sda.set_af(gpio::AltFuncNumber::AF4);
+	Gpio sda(_config.sda_pin);
+	sda.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+	sda.set_output_options(Gpio::OutputType::OPEN_DRAIN, Gpio::Speed::LOW_2MHz);
+	sda.set_af(Gpio::AltFuncNumber::AF4);
 
 #ifndef FREERTOS
 	_counter_ms->init(systick::Counter::Mode::ONE_SHOT, MAX_TRANSMIT_TIME_MS);

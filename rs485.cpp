@@ -36,23 +36,23 @@ RS485::RS485(Struct rs485, Settings settings,
 
 	if (rs485.rx.pin)
 	{
-		gpio::Gpio rx(rs485.rx);
-		rx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-		rx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
-		rx.set_af(gpio::AltFuncNumber::AF7);
+		Gpio rx(rs485.rx);
+		rx.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+		rx.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::MEDIUM_25MHz);
+		rx.set_af(Gpio::AltFuncNumber::AF7);
 	}
 
 	if (rs485.tx.pin)
 	{
-		gpio::Gpio tx(rs485.tx);
-		tx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-		tx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
-		tx.set_af(gpio::AltFuncNumber::AF7);
+		Gpio tx(rs485.tx);
+		tx.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+		tx.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::MEDIUM_25MHz);
+		tx.set_af(Gpio::AltFuncNumber::AF7);
 	}
 
-	_de = new gpio::Gpio(rs485.de);
-	_de->mode_setup(gpio::Mode::OUTPUT, gpio::PullMode::NO_PULL);
-	_de->set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
+	_de = new Gpio(rs485.de);
+	_de->mode_setup(Gpio::Mode::OUTPUT, Gpio::PullMode::NO_PULL);
+	_de->set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::MEDIUM_25MHz);
 	_de->clear();
 
 	switch (rs485.number)

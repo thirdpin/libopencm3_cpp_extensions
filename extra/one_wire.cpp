@@ -4,7 +4,7 @@ namespace cm3cpp {
 
 namespace extra {
 
-OneWire::OneWire(gpio::Pinout p, uint8_t tim_number, uint32_t tim_presc) :
+OneWire::OneWire(Gpio::Pinout p, uint8_t tim_number, uint32_t tim_presc) :
 	_pinout(p), _timer(new Timer(tim_number))
 {
 	_timer->set_counter_direction(Timer::CounterDirection::UP);
@@ -27,13 +27,13 @@ uint8_t OneWire::read_byte(void)
     for (uint8_t bit_count = 0; bit_count < 8; bit_count++)
     {
         /*pull low to initiate read*/
-    	_pinout.mode_setup(gpio::Mode::OUTPUT, gpio::PullMode::PULL_UP);
-    	_pinout.set_output_options(gpio::OutputType::OPEN_DRAIN, gpio::Speed::FAST_50MHz);
+    	_pinout.mode_setup(Gpio::Mode::OUTPUT, Gpio::PullMode::PULL_UP);
+    	_pinout.set_output_options(Gpio::OutputType::OPEN_DRAIN, Gpio::Speed::FAST_50MHz);
     	_pinout.clear();
     	_wait(_LOW_PULSE_TIME_US);
 
         /*float high*/
-        _pinout.mode_setup(gpio::Mode::INPUT, gpio::PullMode::PULL_UP);
+        _pinout.mode_setup(Gpio::Mode::INPUT, Gpio::PullMode::PULL_UP);
         _wait(_READ_SAMPLE_WAIT_US);
 
         /*sample bus and shift into msb*/
@@ -53,8 +53,8 @@ void OneWire::write_byte(uint8_t data)
     for (uint8_t bit_count = 0; bit_count < 8; bit_count++)
     {
         /*pull low to initiate write*/
-    	_pinout.mode_setup(gpio::Mode::OUTPUT, gpio::PullMode::PULL_UP);
-    	_pinout.set_output_options(gpio::OutputType::OPEN_DRAIN, gpio::Speed::FAST_50MHz);
+    	_pinout.mode_setup(Gpio::Mode::OUTPUT, Gpio::PullMode::PULL_UP);
+    	_pinout.set_output_options(Gpio::OutputType::OPEN_DRAIN, Gpio::Speed::FAST_50MHz);
     	_pinout.clear();
     	_wait(_LOW_PULSE_TIME_US);
 
@@ -66,7 +66,7 @@ void OneWire::write_byte(uint8_t data)
         _wait(_WRITE_SLOT_WAIT_US);
 
         /*float high and let device recover*/
-        _pinout.mode_setup(gpio::Mode::INPUT, gpio::PullMode::PULL_UP);
+        _pinout.mode_setup(Gpio::Mode::INPUT, Gpio::PullMode::PULL_UP);
         _wait(_RECOVERY_TIME_US);
     }
 }
@@ -76,14 +76,14 @@ bool OneWire::read_bit(void)
     bool bit;
 
     /*pull low to initiate read*/
-	_pinout.mode_setup(gpio::Mode::OUTPUT, gpio::PullMode::PULL_UP);
-	_pinout.set_output_options(gpio::OutputType::OPEN_DRAIN, gpio::Speed::FAST_50MHz);
+	_pinout.mode_setup(Gpio::Mode::OUTPUT, Gpio::PullMode::PULL_UP);
+	_pinout.set_output_options(Gpio::OutputType::OPEN_DRAIN, Gpio::Speed::FAST_50MHz);
 	_pinout.clear();
 
 	_wait(_LOW_PULSE_TIME_US);
 
     /*float high*/
-    _pinout.mode_setup(gpio::Mode::INPUT, gpio::PullMode::PULL_UP);
+    _pinout.mode_setup(Gpio::Mode::INPUT, Gpio::PullMode::PULL_UP);
     _wait(_READ_SAMPLE_WAIT_US);
 
     /*sample bus*/
@@ -101,8 +101,8 @@ bool OneWire::read_bit(void)
 void OneWire::write_bit(bool bit)
 {
     /*pull low to initiate write*/
-	_pinout.mode_setup(gpio::Mode::OUTPUT, gpio::PullMode::PULL_UP);
-	_pinout.set_output_options(gpio::OutputType::OPEN_DRAIN, gpio::Speed::FAST_50MHz);
+	_pinout.mode_setup(Gpio::Mode::OUTPUT, Gpio::PullMode::PULL_UP);
+	_pinout.set_output_options(Gpio::OutputType::OPEN_DRAIN, Gpio::Speed::FAST_50MHz);
 	_pinout.clear();
 
 	_wait(_LOW_PULSE_TIME_US);
@@ -114,7 +114,7 @@ void OneWire::write_bit(bool bit)
     _wait(_WRITE_SLOT_WAIT_US);
 
     /*float high and let device recover*/
-    _pinout.mode_setup(gpio::Mode::INPUT, gpio::PullMode::PULL_UP);
+    _pinout.mode_setup(Gpio::Mode::INPUT, Gpio::PullMode::PULL_UP);
     _wait(_RECOVERY_TIME_US);
 }
 
@@ -124,13 +124,13 @@ bool OneWire::touch_reset(void)
     char sample_count = (_RESET_PULSE_TIME_US / 8);
 
     /*low reset pulse*/
-	_pinout.mode_setup(gpio::Mode::OUTPUT, gpio::PullMode::PULL_UP);
-	_pinout.set_output_options(gpio::OutputType::OPEN_DRAIN, gpio::Speed::FAST_50MHz);
+	_pinout.mode_setup(Gpio::Mode::OUTPUT, Gpio::PullMode::PULL_UP);
+	_pinout.set_output_options(Gpio::OutputType::OPEN_DRAIN, Gpio::Speed::FAST_50MHz);
 	_pinout.clear();
 	_wait(_RESET_PULSE_TIME_US);
 
     /*float high*/
-    _pinout.mode_setup(gpio::Mode::INPUT, gpio::PullMode::PULL_UP);
+    _pinout.mode_setup(Gpio::Mode::INPUT, Gpio::PullMode::PULL_UP);
 
     while (sample_count-- != 0)
     {

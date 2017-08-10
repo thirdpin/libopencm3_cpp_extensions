@@ -34,30 +34,29 @@ void Sdio::_init_gpio()
 	gpio::Gpio data_pins[cfg::COUNT_OF_DATA_PINS];
 	for (int i = 0; i < cfg::COUNT_OF_DATA_PINS; ++i) {
 		data_pins[i].init(cfg::DATA_PINS[i]);
-		data_pins[i].mode_setup(gpio::Mode::ALTERNATE_FUNCTION,
-							    gpio::PullMode::NO_PULL);
-		data_pins[i].set_output_options(gpio::OutputType::PUSH_PULL,
-									    gpio::Speed::FAST_50MHz);
+		data_pins[i].mode_setup(Gpio::Mode::ALTERNATE_FUNCTION,
+				                Gpio::PullMode::NO_PULL);
+		data_pins[i].set_output_options(Gpio::OutputType::PUSH_PULL,
+				                        Gpio::Speed::FAST_50MHz);
 		data_pins[i].set_af(cfg::SDIO_ALTERNATIVE_FUNC_NUMBER);
 	}
 
 	// Command pin
 	gpio::Gpio cmd_pin(cfg::CMD_PIN);
-	cmd_pin.mode_setup(gpio::Mode::ALTERNATE_FUNCTION,
-					   gpio::PullMode::NO_PULL);
-	cmd_pin.set_output_options(gpio::OutputType::PUSH_PULL,
-							   gpio::Speed::FAST_50MHz);
+	cmd_pin.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION,
+			           Gpio::PullMode::NO_PULL);
+	cmd_pin.set_output_options(Gpio::OutputType::PUSH_PULL,
+			                   Gpio::Speed::FAST_50MHz);
 	cmd_pin.set_af(cfg::SDIO_ALTERNATIVE_FUNC_NUMBER);
 
 	// Clock pin
 	gpio::Gpio clk_pin(cfg::CLK_PIN);
-	clk_pin.mode_setup(gpio::Mode::ALTERNATE_FUNCTION,
-					   gpio::PullMode::NO_PULL);
-	clk_pin.set_output_options(gpio::OutputType::PUSH_PULL,
-							   gpio::Speed::FAST_50MHz);
+	clk_pin.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION,
+			           Gpio::PullMode::NO_PULL);
+	clk_pin.set_output_options(Gpio::OutputType::PUSH_PULL,
+			                   Gpio::Speed::FAST_50MHz);
 	clk_pin.set_af(cfg::SDIO_ALTERNATIVE_FUNC_NUMBER);
 }
-
 
 } // namespace sdio
 

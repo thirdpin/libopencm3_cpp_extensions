@@ -31,22 +31,21 @@ namespace usart {
 
 Usart::Usart(LowLevelConfig config, Settings settings)
 {
+	Gpio rx(config.rx);
+	rx.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+	rx.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::MEDIUM_25MHz);
 
-	gpio::Gpio rx(config.rx);
-	rx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-	rx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
-
-	gpio::Gpio tx(config.tx);
-	tx.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-	tx.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::MEDIUM_25MHz);
+	Gpio tx(config.tx);
+	tx.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+	tx.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::MEDIUM_25MHz);
 
 	if ((config.usart_number >= 1) && (config.usart_number <= 3)) {
-		rx.set_af(gpio::AltFuncNumber::AF7);
-		tx.set_af(gpio::AltFuncNumber::AF7);
+		rx.set_af(Gpio::AltFuncNumber::AF7);
+		tx.set_af(Gpio::AltFuncNumber::AF7);
 	}
 	if ((config.usart_number >= 4) && (config.usart_number <= 6)) {
-		rx.set_af(gpio::AltFuncNumber::AF8);
-		tx.set_af(gpio::AltFuncNumber::AF8);
+		rx.set_af(Gpio::AltFuncNumber::AF8);
+		tx.set_af(Gpio::AltFuncNumber::AF8);
 	}
 
 	switch (config.usart_number)

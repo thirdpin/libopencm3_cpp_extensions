@@ -45,6 +45,8 @@ namespace i2c {
 class I2c
 {
 public:
+	using Gpio = gpio::Gpio;
+
 	enum Mode {
 		STANDARD = 0,
 		FAST
@@ -139,8 +141,8 @@ public:
 	struct Config
 	{
 		uint8_t number;
-		gpio::Pinout scl_pin;
-		gpio::Pinout sda_pin;
+		Gpio::Pinout scl_pin;
+		Gpio::Pinout sda_pin;
 	};
 
 	struct MasterTransferCfg

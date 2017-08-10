@@ -41,31 +41,31 @@ Spi::Spi(Config spi_conf)
 		default: break;
 	}
 
-	gpio::Gpio mosi(spi_conf.mosi_pin);
-	mosi.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-	mosi.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::HIGH_SPEED_100MHz);
+	Gpio mosi(spi_conf.mosi_pin);
+	mosi.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+	mosi.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::HIGH_SPEED_100MHz);
 
-	gpio::Gpio miso(spi_conf.miso_pin);
-	miso.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-	miso.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::HIGH_SPEED_100MHz);
+	Gpio miso(spi_conf.miso_pin);
+	miso.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+	miso.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::HIGH_SPEED_100MHz);
 
-	gpio::Gpio scl(spi_conf.scl_pin);
-	scl.mode_setup(gpio::Mode::ALTERNATE_FUNCTION, gpio::PullMode::NO_PULL);
-	scl.set_output_options(gpio::OutputType::PUSH_PULL, gpio::Speed::HIGH_SPEED_100MHz);
+	Gpio scl(spi_conf.scl_pin);
+	scl.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+	scl.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::HIGH_SPEED_100MHz);
 
 	switch(_spi)
 	{
 		case SPI1:
 		case SPI2:
-			mosi.set_af(gpio::AltFuncNumber::AF5);
-			miso.set_af(gpio::AltFuncNumber::AF5);
-			scl.set_af(gpio::AltFuncNumber::AF5);
+			mosi.set_af(Gpio::AltFuncNumber::AF5);
+			miso.set_af(Gpio::AltFuncNumber::AF5);
+			scl.set_af(Gpio::AltFuncNumber::AF5);
 			break;
 
 		case SPI3 :
-			mosi.set_af(gpio::AltFuncNumber::AF6);
-			miso.set_af(gpio::AltFuncNumber::AF6);
-			scl.set_af(gpio::AltFuncNumber::AF6);
+			mosi.set_af(Gpio::AltFuncNumber::AF6);
+			miso.set_af(Gpio::AltFuncNumber::AF6);
+			scl.set_af(Gpio::AltFuncNumber::AF6);
 			break;
 
 		default: break;

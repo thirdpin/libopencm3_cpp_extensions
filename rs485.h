@@ -49,6 +49,8 @@ namespace cm3cpp {
 class RS485
 {
 public:
+	using Gpio = gpio::Gpio;
+
 	struct Settings {
 		uint32_t baud_rate;
 		uint16_t word_length;
@@ -60,9 +62,9 @@ public:
 
 	struct Struct {
 		uint32_t number;
-		gpio::Pinout tx;
-		gpio::Pinout rx;
-		gpio::Pinout de;
+		Gpio::Pinout tx;
+		Gpio::Pinout rx;
+		Gpio::Pinout de;
 	};
 
 	utils::RoundBuffer *rb_in;

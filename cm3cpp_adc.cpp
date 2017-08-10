@@ -1,9 +1,8 @@
-#include "adc_ext.h"
+#include "cm3cpp_adc.h"
 
 namespace cm3cpp {
 
 namespace adc {
-
 
 Adc::Adc(Number adc)
 {
@@ -202,4 +201,4 @@ void Adc::disable_temp_sensor()
 
 }  // namespace adc
 
-}  // namespace cm3ext
+}  // namespace cm3cpp

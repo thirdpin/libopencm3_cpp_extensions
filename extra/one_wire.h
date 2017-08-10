@@ -9,15 +9,15 @@ namespace cm3cpp {
 
 namespace extra {
 
-namespace gpio = cm3cpp::gpio;
 namespace timer = cm3cpp::tim;
 
 class OneWire
 {
 public:
 	using Timer = cm3cpp::tim::Timer;
+	using Gpio = cm3cpp::gpio::Gpio;
 
-	OneWire(gpio::Pinout p, uint8_t tim_number, uint32_t tim_presc);
+	OneWire(Gpio::Pinout p, uint8_t tim_number, uint32_t tim_presc);
 	~OneWire() = default;
 
 	uint8_t read_byte(void);
@@ -43,7 +43,7 @@ private:
 	static constexpr uint8_t  _SEARCH                = 0xF0;
 	static constexpr uint8_t  _SEARCH_ALARM          = 0xEC;
 
-	gpio::Gpio _pinout;
+	Gpio _pinout;
 	Timer *_timer;
     uint8_t _serial[_SERIAL_LENGTH];
 

@@ -51,58 +51,58 @@ namespace cm3cpp {
 
 namespace gpio {
 
-struct Pinout {
-	uint32_t port;
-	uint16_t pin;
-};
-
-enum Mode {
-	INPUT,
-	OUTPUT,
-	ALTERNATE_FUNCTION,
-	ANALOG
-};
-
-enum PullMode {
-	NO_PULL,
-	PULL_UP,
-	PULL_DOWN
-};
-
-enum OutputType {
-	PUSH_PULL,
-	OPEN_DRAIN
-};
-
-enum Speed {
-	LOW_2MHz,
-	MEDIUM_25MHz,
-	FAST_50MHz,
-	HIGH_SPEED_100MHz
-};
-
-enum AltFuncNumber {
-	AF0,
-	AF1,
-	AF2,
-	AF3,
-	AF4,
-	AF5,
-	AF6,
-	AF7,
-	AF8,
-	AF9,
-	AF10,
-	AF11,
-	AF12,
-	AF13,
-	AF14,
-	AF15
-};
-
 class Gpio
 {
 public:
+	struct Pinout {
+		uint32_t port;
+		uint16_t pin;
+	};
+
+	enum Mode {
+		INPUT,
+		OUTPUT,
+		ALTERNATE_FUNCTION,
+		ANALOG
+	};
+
+	enum PullMode {
+		NO_PULL,
+		PULL_UP,
+		PULL_DOWN
+	};
+
+	enum OutputType {
+		PUSH_PULL,
+		OPEN_DRAIN
+	};
+
+	enum Speed {
+		LOW_2MHz,
+		MEDIUM_25MHz,
+		FAST_50MHz,
+		HIGH_SPEED_100MHz
+	};
+
+	enum AltFuncNumber {
+		AF0,
+		AF1,
+		AF2,
+		AF3,
+		AF4,
+		AF5,
+		AF6,
+		AF7,
+		AF8,
+		AF9,
+		AF10,
+		AF11,
+		AF12,
+		AF13,
+		AF14,
+		AF15
+	};
+
 	Gpio() {}
 	Gpio(Pinout pinout);
 
@@ -127,6 +127,6 @@ private:
 
 } // namespace gpio
 
-} // namespace cm3ext
+} // namespace cm3cpp
 
 #endif /* CM3CPP_GPIO_H_ */

@@ -1,17 +1,16 @@
-#ifndef ADC_DMA_EXT_H
-#define ADC_DMA_EXT_H
+#ifndef CM3CPP_ADC_DMA_H_
+#define CM3CPP_ADC_DMA_H_
 
 #include <libopencm3/stm32/dma.h>
 #include <cm3cpp_config.h>
 #include <cstring>
 
 #include "private/assert.h"
-#include "adc_ext.h"
+#include "cm3cpp_adc.h"
 
 namespace cm3cpp {
 
 namespace adc {
-
 
 class AdcDma
 {
@@ -25,8 +24,8 @@ public:
 
 	struct AdcConf
 	{
-		Number number;
-		Channel *channels;
+		Adc::Number number;
+		Adc::Channel *channels;
 		uint8_t channels_count;
 	};
 
@@ -41,9 +40,8 @@ private:
 	uint16_t *_data;
 };
 
-
 } // namespace adc
 
-} // namespace cm3ext
+} // namespace cm3cpp
 
-#endif
+#endif /* CM3CPP_ADC_DMA_H_ */
