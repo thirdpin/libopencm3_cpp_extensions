@@ -24,7 +24,7 @@
 SPI C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#include "spi_ext.h"
+#include "cm3cpp_spi.h"
 
 namespace cm3cpp {
 
@@ -232,4 +232,4 @@ bool Spi::get_flag_status(Flag flag)
 
 } // namespace spi
 
-} // namespace cm3ext
+} // namespace cm3cpp

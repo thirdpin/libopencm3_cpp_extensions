@@ -28,13 +28,11 @@ SPI C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #define SPI_EXT_H
 
 #include <libopencm3/stm32/spi.h>
-
-#include <libopencm3_cpp_extensions/cm3cpp_gpio.h>
+#include "cm3cpp_gpio.h"
 
 namespace cm3cpp {
 
 namespace spi {
-
 
 constexpr bool OK									= true;
 constexpr bool ERROR       							= false;
@@ -277,9 +275,8 @@ private:
 
 };
 
-
 } // namespace spi
 
-} // namespace cm3ext
+} // namespace cm3cpp
 
 #endif
