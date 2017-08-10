@@ -3,7 +3,7 @@
 
 #include <string.h>
 #include <libopencm3_cpp_extensions/cm3cpp_gpio.h>
-#include <libopencm3_cpp_extensions/timer_ext.h>
+#include <libopencm3_cpp_extensions/cm3cpp_timer.h>
 
 namespace cm3cpp {
 
@@ -15,6 +15,8 @@ namespace timer = cm3cpp::tim;
 class OneWire
 {
 public:
+	using Timer = cm3cpp::tim::Timer;
+
 	OneWire(gpio::Pinout p, uint8_t tim_number, uint32_t tim_presc);
 	~OneWire() = default;
 
@@ -42,7 +44,7 @@ private:
 	static constexpr uint8_t  _SEARCH_ALARM          = 0xEC;
 
 	gpio::Gpio _pinout;
-	tim::Timer *_timer;
+	Timer *_timer;
     uint8_t _serial[_SERIAL_LENGTH];
 
     int8_t _last_discrepancy;

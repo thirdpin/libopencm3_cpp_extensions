@@ -5,13 +5,13 @@ namespace cm3cpp {
 namespace extra {
 
 OneWire::OneWire(gpio::Pinout p, uint8_t tim_number, uint32_t tim_presc) :
-	_pinout(p), _timer(new tim::Timer(tim_number))
+	_pinout(p), _timer(new Timer(tim_number))
 {
-	_timer->set_counter_direction(tim::CounterDirection::UP);
-	_timer->set_alignment(tim::Alignment::EDGE);
-	_timer->set_clock_division(tim::ClockDivision::TIMER_CLOCK_MUL_1);
+	_timer->set_counter_direction(Timer::CounterDirection::UP);
+	_timer->set_alignment(Timer::Alignment::EDGE);
+	_timer->set_clock_division(Timer::ClockDivision::TIMER_CLOCK_MUL_1);
 	_timer->set_prescaler_value(tim_presc);
-	_timer->set_counter_mode(tim::CounterMode::CONTINUOUS);
+	_timer->set_counter_mode(Timer::CounterMode::CONTINUOUS);
 	_timer->disable_autoreload_preload();
 	_timer->set_counter_value(0);
 

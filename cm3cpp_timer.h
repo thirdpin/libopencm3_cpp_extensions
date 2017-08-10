@@ -23,8 +23,8 @@
 TIM C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
 */
 
-#ifndef TIMER_EXT_H
-#define TIMER_EXT_H
+#ifndef CM3CPP_TIMER_H_
+#define CM3CPP_TIMER_H_
 
 #include <libopencm3/stm32/timer.h>
 #include <libopencm3/stm32/rcc.h>
@@ -33,135 +33,134 @@ namespace cm3cpp {
 
 namespace tim {
 
-
-enum Result {
-	OK,
-	USAGE_ERROR,
-	NOT_SUPPORTED
-};
-
-enum UevSource {
-	COUNTER_OVERFLOW_AND_UG,
-	COUNTER_OVERFLOW,
-};
-
-enum CounterMode {
-	ONE_SHOT,
-	CONTINUOUS
-};
-
-enum CounterDirection {
-	UP,
-	DOWN
-};
-
-enum Alignment {
-	EDGE,
-	CENTER_DOWN,
-	CENTER_UP,
-	CENTER_UP_DOWN
-};
-
-enum ClockDivision {
-	TIMER_CLOCK_MUL_1,
-	TIMER_CLOCK_MUL_2,
-	TIMER_CLOCK_MUL_4
-};
-
-enum MasterMode {
-	MASTER_RESET,
-	ENABLE,
-	UPDATE,
-	COMPARE_PULSE,
-	COMPARE_OC1REF,
-	COMPARE_OC2REF
-};
-
-enum SlaveMode {
-	DISABLED,
-	SLAVE_RESET,
-	GATED,
-	TRIGGER,
-	EXTERNAL_CLOCK
-};
-
-enum Trigger {
-	INTERNAL_TRIGGER_0,
-	INTERNAL_TRIGGER_1,
-	INTERNAL_TRIGGER_2,
-	INTERNAL_TRIGGER_3,
-	EDGE_DETECTOR,
-	FILTERED_TIMER_INPUT_1,
-	FILTERED_TIMER_INPUT_2
-};
-
-enum Flag {
-	UPDATE_INTERRUPT,
-	CAPTURE_COMPARE_1_INTERRUPT,
-	CAPTURE_COMPARE_2_INTERRUPT,
-	CAPTURE_COMPARE_3_INTERRUPT,
-	CAPTURE_COMPARE_4_INTERRUPT,
-	TRIGGER_INTERRUPT,
-	CAPTURE_COMPARE_1_OVERCAPTURE,
-	CAPTURE_COMPARE_2_OVERCAPTURE,
-	CAPTURE_COMPARE_3_OVERCAPTURE,
-	CAPTURE_COMPARE_4_OVERCAPTURE
-};
-
-enum CcMode {
-	OUTPUT,
-	INPUT_MAPPED_TI1,
-	INPUT_MAPPED_TI2,
-	INPUT_MAPPED_TI3,
-	INPUT_MAPPED_TI4,
-	INPUT_MAPPED_TRC
-};
-
-enum Prescaler {
-	NO_PRESCALER,
-	CAPTURE_EVERY_2_EVENTS,
-	CAPTURE_EVERY_4_EVENTS,
-	CAPTURE_EVERY_8_EVENTS
-};
-
-enum Filter {
-	NO_FILTER,
-	CK_INT_N_2,
-	CK_INT_N_4,
-	CK_INT_N_8,
-	DTF_DIV_2_N_6,
-	DTF_DIV_2_N_8,
-	TF_DIV_4_N_6,
-	DTF_DIV_4_N_8,
-	DTF_DIV_8_N_6,
-	DTF_DIV_8_N_8,
-	DTF_DIV_16_N_5,
-	DTF_DIV_16_N_6,
-	DTF_DIV_16_N_8,
-	DTF_DIV_32_N_5,
-	DTF_DIV_32_N_6,
-	DTF_DIV_32_N_8,
-};
-
-enum OcMode {
-	FROZEN,
-	ACTIVE_LEVEL_ON_MATCH,
-	INACTIVE_LEVEL_ON_MATCH,
-	TOGGLE,
-	FORCE_INACTIVE_LEVEL,
-	FORCE_ACTIVE_LEVEL,
-	PWM_MODE_1,
-	PWM_MODE_2
-};
-
-enum Polarity {
-	LO_FALLING_EDGE,
-	HI_RISING_EDGE
-};
-
 class Timer
 {
 public:
+	enum Result {
+		OK,
+		USAGE_ERROR,
+		NOT_SUPPORTED
+	};
+
+	enum UevSource {
+		COUNTER_OVERFLOW_AND_UG,
+		COUNTER_OVERFLOW,
+	};
+
+	enum CounterMode {
+		ONE_SHOT,
+		CONTINUOUS
+	};
+
+	enum CounterDirection {
+		UP,
+		DOWN
+	};
+
+	enum Alignment {
+		EDGE,
+		CENTER_DOWN,
+		CENTER_UP,
+		CENTER_UP_DOWN
+	};
+
+	enum ClockDivision {
+		TIMER_CLOCK_MUL_1,
+		TIMER_CLOCK_MUL_2,
+		TIMER_CLOCK_MUL_4
+	};
+
+	enum MasterMode {
+		MASTER_RESET,
+		ENABLE,
+		UPDATE,
+		COMPARE_PULSE,
+		COMPARE_OC1REF,
+		COMPARE_OC2REF
+	};
+
+	enum SlaveMode {
+		DISABLED,
+		SLAVE_RESET,
+		GATED,
+		TRIGGER,
+		EXTERNAL_CLOCK
+	};
+
+	enum Trigger {
+		INTERNAL_TRIGGER_0,
+		INTERNAL_TRIGGER_1,
+		INTERNAL_TRIGGER_2,
+		INTERNAL_TRIGGER_3,
+		EDGE_DETECTOR,
+		FILTERED_TIMER_INPUT_1,
+		FILTERED_TIMER_INPUT_2
+	};
+
+	enum Flag {
+		UPDATE_INTERRUPT,
+		CAPTURE_COMPARE_1_INTERRUPT,
+		CAPTURE_COMPARE_2_INTERRUPT,
+		CAPTURE_COMPARE_3_INTERRUPT,
+		CAPTURE_COMPARE_4_INTERRUPT,
+		TRIGGER_INTERRUPT,
+		CAPTURE_COMPARE_1_OVERCAPTURE,
+		CAPTURE_COMPARE_2_OVERCAPTURE,
+		CAPTURE_COMPARE_3_OVERCAPTURE,
+		CAPTURE_COMPARE_4_OVERCAPTURE
+	};
+
+	enum CcMode {
+		OUTPUT,
+		INPUT_MAPPED_TI1,
+		INPUT_MAPPED_TI2,
+		INPUT_MAPPED_TI3,
+		INPUT_MAPPED_TI4,
+		INPUT_MAPPED_TRC
+	};
+
+	enum Prescaler {
+		NO_PRESCALER,
+		CAPTURE_EVERY_2_EVENTS,
+		CAPTURE_EVERY_4_EVENTS,
+		CAPTURE_EVERY_8_EVENTS
+	};
+
+	enum Filter {
+		NO_FILTER,
+		CK_INT_N_2,
+		CK_INT_N_4,
+		CK_INT_N_8,
+		DTF_DIV_2_N_6,
+		DTF_DIV_2_N_8,
+		TF_DIV_4_N_6,
+		DTF_DIV_4_N_8,
+		DTF_DIV_8_N_6,
+		DTF_DIV_8_N_8,
+		DTF_DIV_16_N_5,
+		DTF_DIV_16_N_6,
+		DTF_DIV_16_N_8,
+		DTF_DIV_32_N_5,
+		DTF_DIV_32_N_6,
+		DTF_DIV_32_N_8,
+	};
+
+	enum OcMode {
+		FROZEN,
+		ACTIVE_LEVEL_ON_MATCH,
+		INACTIVE_LEVEL_ON_MATCH,
+		TOGGLE,
+		FORCE_INACTIVE_LEVEL,
+		FORCE_ACTIVE_LEVEL,
+		PWM_MODE_1,
+		PWM_MODE_2
+	};
+
+	enum Polarity {
+		LO_FALLING_EDGE,
+		HI_RISING_EDGE
+	};
+
 	Timer(uint8_t timer_num)
 	{
 #if defined(STM32F2) || defined(STM32F4)
@@ -334,6 +333,7 @@ public:
 	//CCR4/////////////////////////////////////////////////////
 	uint16_t get_capture_compare_4_value();
 	void set_capture_compare_4_value(uint32_t value);
+
 private:
 	uint32_t _timer;
 };
@@ -342,4 +342,5 @@ private:
 }  // namespace cm3ext
 
 }  // namespace tim
-#endif
+
+#endif /* CM3CPP_TIMER_H_ */
