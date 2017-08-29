@@ -168,10 +168,10 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
 	uint32_t reg __attribute__((unused));
 	Result result = OK;
 
-	_counter_ms->start();
+	//_counter_ms->start();
 
 	_send_start();
-	while (!(_get_flag_status(MASTER_MODE_SELECTED))) {
+	while (_get_flag_status(MASTER_MODE_SELECTED) == Result::ERROR) {
 		if(_counter_ms->timeout()) {
 			result = TIMEOUT;
 		    break;
@@ -179,7 +179,7 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
 	}
 
 	_send_7bit_address(cfg.device_address, WRITE);
-	while (!_get_flag_status(MASTER_TRANSMITTER_MODE_SELECTED)) {
+	while (_get_flag_status(MASTER_TRANSMITTER_MODE_SELECTED) == Result::ERROR) {
 		if(_counter_ms->timeout()) {
 			result = TIMEOUT;
 		   break;
@@ -192,7 +192,7 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
     {
     	_send_data(cfg.write_buf[index]);
 
-    	while (!(_get_flag_status(MASTER_BYTE_TRANSMITTED))) {
+    	while (_get_flag_status(MASTER_BYTE_TRANSMITTED) == Result::ERROR) {
     		if(_counter_ms->timeout()) {
     			result = TIMEOUT;
     			break;
@@ -206,7 +206,7 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
     uint16_t temp;
     if(cfg.read_len != 0) {
     	_send_start();
-    	while (!(_get_flag_status(MASTER_MODE_SELECTED))) {
+    	while (_get_flag_status(MASTER_MODE_SELECTED) == Result::ERROR) {
     		if(_counter_ms->timeout()) {
     			result = TIMEOUT;
     			break;
@@ -216,7 +216,7 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
     	_enable_ack();
 
     	_send_7bit_address(cfg.device_address, READ);
-    	while (!_get_flag_status(MASTER_RECEIVER_MODE_SELECTED)) {
+    	while (_get_flag_status(MASTER_RECEIVER_MODE_SELECTED) == Result::ERROR) {
     		if(_counter_ms->timeout()) {
     			result = TIMEOUT;
     			break;
@@ -231,7 +231,7 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
     		size_to_read--;
     		if (!size_to_read)
     			_disable_ack();
-    		while (!_get_flag_status(MASTER_BYTE_RECEIVED)) {
+    		while (_get_flag_status(MASTER_BYTE_RECEIVED) == Result::ERROR) {
     			if(_counter_ms->timeout()) {
     				result = TIMEOUT;
     				break;
