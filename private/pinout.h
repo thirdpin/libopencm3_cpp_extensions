@@ -5,6 +5,9 @@
 
 #define PINOUT_CTOR(port, pin)                     	{GPIO##port, GPIO##pin}
 
+
+#define PNULL										{0, 0}
+
 #define PA0										   	PINOUT_CTOR(A, 0)
 #define PA1											PINOUT_CTOR(A, 1)
 #define PA2											PINOUT_CTOR(A, 2)
