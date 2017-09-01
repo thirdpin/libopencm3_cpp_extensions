@@ -122,6 +122,12 @@ public:
 				 usart_get_flag(_usart, USART_SR_TXE));
 	}
 
+	bool interrupt_source_TC()
+	{
+		return (((USART_CR1(_usart) & USART_CR1_TCIE) != 0) &&
+				usart_get_flag(_usart, USART_SR_TC));
+	}
+
     void enable_irq() {
         nvic_enable_irq(_usart_nvic);
     }
@@ -139,6 +145,11 @@ public:
 		usart_enable_tx_interrupt(_usart);
 	}
 
+	void enable_tc_interrupt()
+	{
+		USART_CR1(_usart) |= USART_CR1_TCIE;
+	}
+
 	void disable_rx_interrupt()
 	{
 		usart_disable_rx_interrupt(_usart);
@@ -146,6 +157,11 @@ public:
 
 	void disable_tx_interrupt() {
 		usart_disable_tx_interrupt(_usart);
+	}
+
+	void disable_tc_interrupt()
+	{
+		USART_CR1(_usart) &= ~USART_CR1_TCIE;
 	}
 
 	void write_blocking(uint16_t data) {
