@@ -83,16 +83,21 @@ Usart::Usart(LowLevelConfig config, Settings settings)
         break;
 	}
 
+	set_settings(settings);
+	usart_enable(_usart);
+
+    nvic_set_priority(_usart_nvic, config.nvic_priority);
+    nvic_enable_irq(_usart_nvic);
+}
+
+void Usart::set_settings(Settings settings)
+{
 	usart_set_baudrate(_usart, settings.baud_rate);
 	usart_set_databits(_usart, settings.word_length);
 	usart_set_stopbits(_usart, settings.stop_bits);
 	usart_set_mode(_usart, settings.mode);
 	usart_set_parity(_usart, settings.parity);
 	usart_set_flow_control(_usart, settings.flow_control);
-	usart_enable(_usart);
-
-    nvic_set_priority(_usart_nvic, config.nvic_priority);
-    nvic_enable_irq(_usart_nvic);
 }
 
 } // namespace usart

@@ -112,6 +112,8 @@ public:
 
 	Usart(LowLevelConfig config, Settings settings);
 
+	void set_settings(Settings settings);
+
 	bool interrupt_source_rx() {
 		return (((USART_CR1(_usart) & USART_CR1_RXNEIE) != 0) &&
 				 usart_get_flag(_usart, USART_SR_RXNE));
