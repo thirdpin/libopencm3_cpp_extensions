@@ -33,7 +33,7 @@ SYSTICK implementation, public interface
 extern "C" void sys_tick_handler(void);
 extern "C" void delay_nop(uint32_t count);
 
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace systick {
 
@@ -66,5 +66,5 @@ private:
 
 }  // namespace systick
 
-}  // namespace cm3ext
+}  // namespace cm3cpp
 #endif

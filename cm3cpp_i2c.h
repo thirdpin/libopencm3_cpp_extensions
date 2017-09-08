@@ -28,12 +28,12 @@ I2C C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 
 #include <libopencm3/stm32/i2c.h>
 #include <cm3cpp_config.h>
-#include <libopencm3_cpp_extensions/cm3cpp_gpio.h>
 
+#include "cm3cpp_gpio.h"
 #include "private/assert.h"
 
 #ifndef FREERTOS
-#include "systick_ext.h"
+#include "cm3cpp_systick.h"
 #else
 #include <timers/OneShotTimer.hpp>
 #endif

@@ -45,7 +45,7 @@ GPIO C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 /**************************************************************************************************
  * CM3CPP INCLUDES
  *************************************************************************************************/
-#include <libopencm3_cpp_extensions/private/pinout.h>
+#include "private/pinout.h"
 
 namespace cm3cpp {
 

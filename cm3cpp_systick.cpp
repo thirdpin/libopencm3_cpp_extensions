@@ -23,7 +23,7 @@
 SYSTICK implementation, public interface
 */
 
-#include "systick_ext.h"
+#include "cm3cpp_systick.h"
 #if CM3EXT_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
 extern "C" {
     void CM3EXT_SYS_TICK_INT_FUNC(void);
@@ -35,7 +35,7 @@ extern "C" {
 
 volatile uint32_t counter;
 
-void SYS_TICK_INT_FUNC(void)
+void CM3EXT_SYS_TICK_INT_FUNC(void)
 {
 #if CM3EXT_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
     if (timer_get_flag(CM3EXT_INT_SOURCE, TIM_SR_UIF)) {
@@ -54,7 +54,7 @@ void delay_nop(uint32_t count)
 	}
 }
 
-namespace cm3ext {
+namespace cm3cpp {
 
 namespace systick {
 
@@ -139,4 +139,4 @@ bool Counter::stop()
 
 }  // namespace systick
 
-}  // namespace cm3ext
+}  // namespace cm3cpp

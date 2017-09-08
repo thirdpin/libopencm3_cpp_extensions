@@ -2,8 +2,8 @@
 #define EXTRA_ONE_WIRE_H_
 
 #include <string.h>
-#include <libopencm3_cpp_extensions/cm3cpp_gpio.h>
-#include <libopencm3_cpp_extensions/cm3cpp_timer.h>
+#include "../cm3cpp_gpio.h"
+#include "../cm3cpp_timer.h"
 
 namespace cm3cpp {
 
