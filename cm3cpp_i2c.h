@@ -199,7 +199,7 @@ private:
 #ifndef FREERTOS
 	systick::Counter *_counter_ms;
 #else
-	timers::OneShotTimer *_counter_ms;
+	//timers::OneShotTimer *_counter_ms;
 #endif
 
 	void _send_start();
