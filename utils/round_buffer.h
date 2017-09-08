@@ -29,7 +29,8 @@ ROUND BUFFER implementation, public interface
 
 #include <cm3cpp_config.h>
 #include <stdint.h>
-#include <libopencm3_cpp_extensions/private/assert.h>
+
+#include "../private/assert.h"
 
 namespace cm3cpp {
 
