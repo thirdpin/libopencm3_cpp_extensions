@@ -10,7 +10,7 @@
 #if CM3CPP_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 1
 #define CM3CPP_EXPLISIT_DESTRUCTOR(c) ~c() = default;
 #else
-#define CM3CPP_EXPLISIT_DESTRUCTOR(c) ~c() { CM3CPP_ASSERT(false) }
+#define CM3CPP_EXPLISIT_DESTRUCTOR(c) ~c() { CM3CPP_ASSERT(false); }
 #endif
 
 #endif /* CM3CPP_ASSERT_H_ */
