@@ -331,6 +331,9 @@ namespace TIMER_CPP_Extension
 		//CCR4/////////////////////////////////////////////////////
 		uint16_t get_capture_compare_4_value();
 		void set_capture_compare_4_value(uint32_t value);
+		//BDTR/////////////////////////////////////////////////////
+		void enable_ctrl_pwm_outputs();
+		void disable_ctrl_pwm_outputs();
 	private:
 		uint32_t _timer;
 	};

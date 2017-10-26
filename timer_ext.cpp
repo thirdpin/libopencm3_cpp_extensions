@@ -1612,3 +1612,13 @@ void TIMER_ext::set_capture_compare_4_value(uint32_t value)
 {
 	TIM_CCR4(_timer) = value;
 }
+
+void TIMER_ext::enable_ctrl_pwm_outputs()
+{
+	TIM_BDTR(_timer) |= TIM_BDTR_MOE;
+}
+
+void TIMER_ext::disable_ctrl_pwm_outputs()
+{
+	TIM_BDTR(_timer) &= ~TIM_BDTR_MOE;
+}
