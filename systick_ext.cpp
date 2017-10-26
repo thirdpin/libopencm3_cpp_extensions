@@ -33,7 +33,7 @@ extern "C" {
 
 volatile uint32_t counter_ms;
 
-void SYS_TICK_INT_FUNC(void)
+void sys_tick_handler(void)
 {
 #if ENABLE_CUSTOM_SYSTICK_SOURCE == 1
     if (timer_get_flag(INT_SOURCE, TIM_SR_UIF)) {
