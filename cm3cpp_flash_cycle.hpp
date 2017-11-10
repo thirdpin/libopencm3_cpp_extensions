@@ -1,14 +1,13 @@
-#ifndef FLASH_CYCLE_H
-#define FLASH_CYCLE_H
+#ifndef CM3CPP_FLASH_CYCLE_H_
+#define CM3CPP_FLASH_CYCLE_H_
 
 #include <libopencm3/cm3/common.h>
-#include <libopencm3/stm32/f2/flash.h>
+#include <libopencm3/stm32/flash.h>
 #include <libopencmsis/core_cm3.h>
 
 namespace cm3cpp {
 
 namespace flash {
-
 
 enum FlashSector : uint32_t {
 	SECTOR_0 = 0x08000000,
@@ -144,9 +143,8 @@ private:
 	}
 };
 
+}  /* namespace flash */
 
-}  // namespace flash
+}  /* namespace cm3ext */
 
-}  // namespace cm3ext
-
-#endif
+#endif /* CM3CPP_FLASH_CYCLE_H_ */

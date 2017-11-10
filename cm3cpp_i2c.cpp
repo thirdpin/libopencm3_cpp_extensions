@@ -206,7 +206,6 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
         index++;
     }
 
-    uint16_t temp;
     if(cfg.read_len != 0) {
     	_send_start();
     	while (_get_flag_status(MASTER_MODE_SELECTED) == Result::ERROR);

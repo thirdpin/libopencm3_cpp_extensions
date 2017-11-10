@@ -510,6 +510,8 @@ auto Timer::set_capture_compare_1_mode(CcMode mode) -> Result
 			TIM_CCMR1(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR1_CC1S_MASK) |
 			                     TIM_CCMR1_CC1S_IN_TRC;
 			break;
+
+		default: break;
 	}
 
 	return OK;
@@ -542,6 +544,8 @@ auto Timer::set_capture_compare_2_mode(CcMode mode) -> Result
 			TIM_CCMR1(_timer) = (TIM_CCMR1(_timer) & ~TIM_CCMR1_CC2S_MASK) |
 								 TIM_CCMR1_CC2S_IN_TRC;
 			break;
+
+		default: break;
 	}
 
 	return OK;
@@ -999,6 +1003,10 @@ auto Timer::set_capture_compare_3_mode(CcMode mode) -> Result
 			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_CC3S_MASK) |
 			                     TIM_CCMR2_CC3S_IN_TRC;
 			break;
+
+		case INPUT_MAPPED_TI1:
+		case INPUT_MAPPED_TI2:
+			break;
 	}
 
 	return OK;
@@ -1030,6 +1038,10 @@ auto Timer::set_capture_compare_4_mode(CcMode mode) -> Result
 		case INPUT_MAPPED_TRC:
 			TIM_CCMR2(_timer) = (TIM_CCMR2(_timer) & ~TIM_CCMR2_CC4S_MASK) |
 								 TIM_CCMR2_CC4S_IN_TRC;
+			break;
+
+		case INPUT_MAPPED_TI1:
+		case INPUT_MAPPED_TI2:
 			break;
 	}
 
