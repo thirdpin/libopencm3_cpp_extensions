@@ -28,7 +28,10 @@ SPI C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #define SPI_EXT_H
 
 #include <libopencm3/stm32/spi.h>
+#include <cm3cpp_config.h>
+
 #include "cm3cpp_gpio.h"
+#include "irq/cm3cpp_irq.h"
 
 namespace cm3cpp {
 
@@ -36,26 +39,17 @@ namespace spi {
 
 constexpr bool OK									= true;
 constexpr bool ERROR       							= false;
-constexpr uint16_t RECEIVE_BUFFER_NOT_EMPTY_MASK  	= 0x0001;
-constexpr uint16_t TRANSMIT_BUFFER_EMPTY_MASK       = 0x0002;
-constexpr uint16_t CHANEL_SIDE_MASK                 = 0x0004;
-constexpr uint16_t UNDERRUN_FLAG_MASK               = 0x0008;
-constexpr uint16_t CRC_ERROR_MASK                   = 0x0010;
-constexpr uint16_t MODE_FAULT_MASK                  = 0x0020;
-constexpr uint16_t OVERRUN_FLAG_MASK                = 0x0040;
-constexpr uint16_t BUSY_FLAG_MASK                   = 0x0080;
-constexpr uint16_t TI_FRAME_FORMAT_ERROR_MASK       = 0x0100;
 
-enum Flag {
-	RECEIVE_BUFFER_NOT_EMPTY,
-	TRANSMIT_BUFFER_EMPTY,
-	CHANEL_SIDE,
-	UNDERRUN_FLAG,
-	CRC_ERROR,
-	MODE_FAULT,
-	OVERRUN_FLAG,
-	BUSY_FLAG,
-	TI_FRAME_FORMAT_ERROR
+enum Flag : uint32_t {
+	RECEIVE_BUFFER_NOT_EMPTY = 0x0001,
+	TRANSMIT_BUFFER_EMPTY    = 0x0002,
+	CHANEL_SIDE              = 0x0004,
+	UNDERRUN_FLAG            = 0x0008,
+	CRC_ERROR                = 0x0010,
+	MODE_FAULT               = 0x0020,
+	OVERRUN_FLAG             = 0x0040,
+	BUSY_FLAG                = 0x0080,
+	TI_FRAME_FORMAT_ERROR    = 0x0100,
 };
 
 enum BaudRate : uint8_t {
@@ -111,7 +105,7 @@ enum StdMode{
 	MODE_3
 };
 
-class Spi
+class Spi : public IInterruptable
 {
 public:
 	using Gpio = gpio::Gpio;
@@ -123,9 +117,12 @@ public:
 		Gpio::Pinout scl_pin;
 	};
 
-
 	Spi();
 	Spi(Config spi_conf);
+
+	void call();
+
+	bool get_flag_status(Flag flag) const;
 
 	void reset() {
 		spi_reset(_spi);
@@ -216,6 +213,8 @@ public:
 	void set_clock_polarity(Polarity polarity);
 	void set_clock_phase(Phase phase);
 
+	void enable_nvic();
+
 	void enable_tx_buffer_empty_interrupt() {
 		spi_enable_tx_buffer_empty_interrupt(_spi);
 	}
@@ -268,11 +267,9 @@ public:
 		spi_set_standard_mode(_spi, mode);
 	}
 
-	bool get_flag_status(Flag flag);
-
 private:
 	uint32_t _spi;
-
+	Interrupt _irq;
 };
 
 } // namespace spi

@@ -82,5 +82,5 @@ RS485::RS485(Struct rs485, Settings settings,
 }
 
 
-} // namespace cm3ext
+} // namespace cm3cpp
 

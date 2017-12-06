@@ -345,4 +345,4 @@ auto I2c::_get_flag_status(Event event) -> Result
 
 }  // namespace i2c
 
-}  // namespace cm3ext
+}  // namespace cm3cpp

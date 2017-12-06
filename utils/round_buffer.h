@@ -270,6 +270,6 @@ private:
 
 }  // namespace utils
 
-}  // namespace cm3ext
+}  // namespace cm3cpp
 
 #endif /* UTILS_ROUND_BUFFER_H_ */

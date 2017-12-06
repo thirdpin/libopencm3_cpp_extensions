@@ -127,6 +127,6 @@ static constexpr uint32_t _OTP_SIZE			   =(_OTP_BLOCKS * _OTP_BYTES_IN_BLOCK);
 
 }  /* namespace flash */
 
-}  /* namespace cm3ext */
+}  /* namespace cm3cpp */
 
 #endif /* CM3CPP_FLASH_OTP_HPP_ */

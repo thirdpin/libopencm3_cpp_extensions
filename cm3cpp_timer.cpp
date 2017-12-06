@@ -1724,6 +1724,6 @@ void Timer::set_capture_compare_4_value(uint32_t value)
 }
 
 
-}  // namespace cm3ext
+}  // namespace cm3cpp
 
 }  // namespace tim

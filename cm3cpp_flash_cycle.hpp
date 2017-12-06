@@ -145,6 +145,6 @@ private:
 
 }  /* namespace flash */
 
-}  /* namespace cm3ext */
+}  /* namespace cm3cpp */
 
 #endif /* CM3CPP_FLASH_CYCLE_H_ */

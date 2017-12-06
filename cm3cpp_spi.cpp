@@ -30,16 +30,26 @@ namespace cm3cpp {
 
 namespace spi {
 
-
 Spi::Spi(Config spi_conf)
 {
 	switch(spi_conf.spi_number)
 	{
-		case 1: _spi = SPI1; break;
-		case 2: _spi = SPI2; break;
-		case 3: _spi = SPI3; break;
+		case 1:
+		    _spi = SPI1;
+		    _irq = Interrupt::ISR_SPI1;
+		break;
+		case 2:
+            _spi = SPI2;
+            _irq = Interrupt::ISR_SPI2;
+		break;
+        case 3:
+            _spi = SPI3;
+            _irq = Interrupt::ISR_SPI3;
+        break;
 		default: break;
 	}
+
+	this->register_isr(_irq, this);
 
 	Gpio mosi(spi_conf.mosi_pin);
 	mosi.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
@@ -164,70 +174,21 @@ void Spi::set_clock_phase(Phase phase)
 	}
 }
 
-bool Spi::get_flag_status(Flag flag)
+bool Spi::get_flag_status(Flag flag) const
 {
-	bool result = ERROR;
-	uint32_t reg_sr = SPI_SR(_spi);
+	const uint32_t reg_sr = SPI_SR(_spi);
+	const uint32_t flag_state = reg_sr & static_cast<uint32_t>(flag);
 
-	switch (flag)
-	{
-		case RECEIVE_BUFFER_NOT_EMPTY :
-			if ((reg_sr & RECEIVE_BUFFER_NOT_EMPTY_MASK) ==
-					         RECEIVE_BUFFER_NOT_EMPTY_MASK) {
-				result = OK;
-			}
-			break;
-		case TRANSMIT_BUFFER_EMPTY :
-			if ((reg_sr & TRANSMIT_BUFFER_EMPTY_MASK) ==
-					         TRANSMIT_BUFFER_EMPTY_MASK) {
-				result = OK;
-			}
-			break;
-		case CHANEL_SIDE :
-			if ((reg_sr & CHANEL_SIDE_MASK) ==
-					         CHANEL_SIDE_MASK) {
-				result = OK;
-			}
-			break;
-		case UNDERRUN_FLAG :
-			if ((reg_sr & UNDERRUN_FLAG_MASK) ==
-					         UNDERRUN_FLAG_MASK) {
-				result = OK;
-			}
-			break;
-		case CRC_ERROR :
-			if ((reg_sr & CRC_ERROR_MASK) ==
-					         CRC_ERROR_MASK) {
-				result = OK;
-			}
-			break;
-		case MODE_FAULT :
-			if ((reg_sr & MODE_FAULT_MASK) ==
-					         MODE_FAULT_MASK) {
-				result = OK;
-			}
-			break;
-		case OVERRUN_FLAG :
-			if ((reg_sr & OVERRUN_FLAG_MASK) ==
-					         OVERRUN_FLAG_MASK) {
-				result = OK;
-			}
-			break;
-		case BUSY_FLAG :
-			if ((reg_sr & BUSY_FLAG_MASK) ==
-							 BUSY_FLAG_MASK) {
-				result = OK;
-			}
-			break;
-		case TI_FRAME_FORMAT_ERROR :
-			if ((reg_sr & TI_FRAME_FORMAT_ERROR_MASK) ==
-							 TI_FRAME_FORMAT_ERROR_MASK) {
-				result = OK;
-			}
-			break;
-	}
-	return (result);
+	return flag == static_cast<Flag>(flag_state);
 }
+
+inline void Spi::enable_nvic()
+{
+    nvic_enable_irq(static_cast<uint8_t>(_irq));
+}
+
+void Spi::call()
+{ }
 
 
 } // namespace spi

@@ -24,22 +24,22 @@ SYSTICK implementation, public interface
 */
 
 #include "cm3cpp_systick.h"
-#if CM3EXT_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
+#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
 extern "C" {
-    void CM3EXT_SYS_TICK_INT_FUNC(void);
+    void CM3CPP_SYS_TICK_INT_FUNC(void);
 }
 #include "libopencm3/stm32/timer.h"
 #else
-#define CM3EXT_SYS_TICK_INT_FUNC sys_tick_handler
+#define CM3CPP_SYS_TICK_INT_FUNC sys_tick_handler
 #endif
 
 volatile uint32_t counter;
 
-void CM3EXT_SYS_TICK_INT_FUNC(void)
+void CM3CPP_SYS_TICK_INT_FUNC(void)
 {
-#if CM3EXT_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
-    if (timer_get_flag(CM3EXT_INT_SOURCE, TIM_SR_UIF)) {
-        timer_clear_flag(CM3EXT_INT_SOURCE, TIM_SR_UIF);
+#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
+    if (timer_get_flag(CM3CPP_INT_SOURCE, TIM_SR_UIF)) {
+        timer_clear_flag(CM3CPP_INT_SOURCE, TIM_SR_UIF);
         counter++;
     }
 #else
@@ -70,7 +70,7 @@ void delay_systick(uint32_t ms)
 void init(uint32_t div)
 {
 	counter = 0;
-	systick_set_reload(CM3EXT_SYSTEM_CORE_CLOCK / div);
+	systick_set_reload(CM3CPP_SYSTEM_CORE_CLOCK / div);
 	systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
 	systick_counter_enable();
 	systick_interrupt_enable();

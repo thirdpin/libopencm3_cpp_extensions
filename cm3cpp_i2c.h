@@ -216,6 +216,6 @@ private:
 
 }  // namespace i2c
 
-}  // namespace cm3ext
+}  // namespace cm3cpp
 
 #endif

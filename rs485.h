@@ -145,5 +145,5 @@ private:
 };
 
 
-} // namespace cm3ext
+} // namespace cm3cpp
 #endif

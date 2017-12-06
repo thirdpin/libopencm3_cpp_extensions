@@ -225,4 +225,4 @@ bool Gpio::get_exti_flag_status()
 
 } // namespace gpio
 
-} // namespace cm3ext
+} // namespace cm3cpp

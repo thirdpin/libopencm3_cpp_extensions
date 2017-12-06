@@ -149,4 +149,4 @@ int RoundBuffer::mem_search(  void *buffer, uint32_t sizebuf)
 
 }  // namespace utils
 
-}  // namespace cm3ext
+}  // namespace cm3cpp
