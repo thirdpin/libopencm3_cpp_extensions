@@ -31,29 +31,32 @@ namespace usart {
 
 Usart::Usart(LowLevelConfig config, Settings settings)
 {
-	if( config.rx.port)
+	init(config, settings);
+}
+
+void Usart::init(LowLevelConfig config, Settings settings)
+{
+	if (config.rx.port)
 	{
-		Gpio rx(config.rx);
-		rx.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
-		rx.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::MEDIUM_25MHz);
+		_rx.init(config.rx);
+		_rx.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+		_rx.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::MEDIUM_25MHz);
 		if ((config.usart_number >= 1) && (config.usart_number <= 3))
-			rx.set_af(Gpio::AltFuncNumber::AF7);
+			_rx.set_af(Gpio::AltFuncNumber::AF7);
 		else //if ((config.usart_number >= 4) && (config.usart_number <= 6))
-			rx.set_af(Gpio::AltFuncNumber::AF8);
+			_rx.set_af(Gpio::AltFuncNumber::AF8);
 	}
 
-	if( config.tx.port)
+	if (config.tx.port)
 	{
-		Gpio tx(config.tx);
-		tx.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
-		tx.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::MEDIUM_25MHz);
+		_tx.init(config.tx);
+		_tx.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
+		_tx.set_output_options(Gpio::OutputType::PUSH_PULL, Gpio::Speed::MEDIUM_25MHz);
 		if ((config.usart_number >= 1) && (config.usart_number <= 3))
-			tx.set_af(Gpio::AltFuncNumber::AF7);
+			_tx.set_af(Gpio::AltFuncNumber::AF7);
 		else //if ((config.usart_number >= 4) && (config.usart_number <= 6))
-			tx.set_af(Gpio::AltFuncNumber::AF8);
+			_tx.set_af(Gpio::AltFuncNumber::AF8);
 	}
-
-
 
 	switch (config.usart_number)
 	{
@@ -88,6 +91,13 @@ Usart::Usart(LowLevelConfig config, Settings settings)
 
     nvic_set_priority(_usart_nvic, config.nvic_priority);
     nvic_enable_irq(_usart_nvic);
+}
+
+void Usart::deinit()
+{
+	usart_disable(_usart);
+	nvic_disable_irq(_usart_nvic);
+	_tx.mode_setup(Gpio::Mode::INPUT, Gpio::PullMode::NO_PULL);
 }
 
 void Usart::set_settings(Settings settings)

@@ -112,6 +112,10 @@ public:
 
 	Usart(LowLevelConfig config, Settings settings);
 
+	void init(LowLevelConfig config, Settings settings);
+
+	void deinit();
+
 	void set_settings(Settings settings);
 
 	bool interrupt_source_rx() {
@@ -183,6 +187,8 @@ public:
 	}
 
 protected:
+	Gpio     _rx;
+	Gpio     _tx;
 	uint32_t _usart;
 	uint32_t _usart_nvic;
 };
