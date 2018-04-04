@@ -1641,11 +1641,6 @@ uint16_t Timer::get_counter_value()
 	return TIM_CNT(_timer);
 }
 
-uint32_t Timer::get_counter_value32()
-{
-	return TIM_CNT(_timer);
-}
-
 //9,12
 void Timer::set_counter_value(uint16_t value)
 {
