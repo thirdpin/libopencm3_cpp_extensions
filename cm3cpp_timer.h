@@ -314,6 +314,7 @@ public:
 	Result set_capture_compare_4_com_polarity(Polarity polarity);
 	//CNT//////////////////////////////////////////////////////
 	uint16_t get_counter_value();
+	uint32_t get_counter_value32();
 	void set_counter_value(uint16_t value);
 	//PSC//////////////////////////////////////////////////////
 	uint16_t get_prescaler_value();
