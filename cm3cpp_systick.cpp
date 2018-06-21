@@ -29,6 +29,8 @@ extern "C" {
     void CM3CPP_SYS_TICK_INT_FUNC(void);
 }
 #include "libopencm3/stm32/timer.h"
+#include <libopencm3/stm32/rcc.h>
+#include <libopencm3_cpp_extensions/irq/cm3cpp_irq.h>
 #else
 #define CM3CPP_SYS_TICK_INT_FUNC sys_tick_handler
 #endif
@@ -38,10 +40,10 @@ volatile uint32_t counter;
 void CM3CPP_SYS_TICK_INT_FUNC(void)
 {
 #if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
-    if (timer_get_flag(CM3CPP_INT_SOURCE, TIM_SR_UIF)) {
-        timer_clear_flag(CM3CPP_INT_SOURCE, TIM_SR_UIF);
-        counter++;
-    }
+//    if (timer_get_flag(CM3CPP_INT_SOURCE, TIM_SR_UIF)) {
+//        timer_clear_flag(CM3CPP_INT_SOURCE, TIM_SR_UIF);
+//        counter++;
+//    }
 #else
     counter++;
 #endif
@@ -61,24 +63,43 @@ namespace systick {
 
 void delay_systick(uint32_t ms)
 {
-	uint32_t time = counter;
-	while((counter - time) < ms);
+	uint32_t time = get_counter();
+	while((get_counter() - time) < ms);
 }
 
-//by default sets up a timer to create 1ms ticks (div = 1000)
-//at system clock 120mhz.
+
 void init(uint32_t div)
 {
+#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
+
+	timer_reset(CM3CPP_INT_SOURCE);
+	timer_set_mode(CM3CPP_INT_SOURCE, TIM_CR1_CKD_CK_INT, TIM_CR1_CMS_EDGE, TIM_CR1_DIR_UP);
+	timer_set_prescaler(CM3CPP_INT_SOURCE, ((rcc_apb1_frequency * 2) / 1000) - 1); // 1 kHz
+	timer_disable_preload(CM3CPP_INT_SOURCE);
+	timer_continuous_mode(CM3CPP_INT_SOURCE);
+	timer_set_period(CM3CPP_INT_SOURCE, 0xffff); // 65535 or (UINT32_MAX - 1)
+	timer_enable_counter(CM3CPP_INT_SOURCE);
+//	nvic_enable_irq(NVIC_TIM1_CC_IRQ);
+//	timer_enable_irq(TIM1, TIM_DIER_UIE);
+
+#else
+	//by default sets up a timer to create 1ms ticks (div = 1000)
+	//at system clock 120mhz.
 	counter = 0;
 	systick_set_reload(CM3CPP_SYSTEM_CORE_CLOCK / div);
 	systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
 	systick_counter_enable();
 	systick_interrupt_enable();
+#endif
 }
 
 uint32_t get_counter()
 {
+#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
+	return timer_get_counter(CM3CPP_INT_SOURCE);
+#else
 	return counter;
+#endif
 }
 
 Counter::Counter(Mode mode, uint32_t period)
@@ -105,11 +126,11 @@ void Counter::init(Mode mode, uint32_t period)
 
 bool Counter::timeout()
 {
-	if (_is_active && ((counter - _saved) >= _period)) {
+	if (_is_active && ((get_counter() - _saved) >= _period)) {
 		switch (_mode)
 		{
 			case CYCLE:
-				_saved = counter;
+				_saved = get_counter();
 				return true;
 			case ONE_SHOT:
 				return true;
@@ -123,7 +144,7 @@ bool Counter::start()
 {
 	if(_mode == CYCLE)
 		return false;
-	_saved = counter;
+	_saved = get_counter();
 	_is_active = true;
 	return true;
 }

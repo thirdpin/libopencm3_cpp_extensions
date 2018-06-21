@@ -29,7 +29,7 @@ namespace cm3cpp {
 
 namespace i2c {
 
-I2c::I2c(Config i2c_conf)
+I2c::I2c(Config i2c_conf) : _counter_ms(new systick::Counter(systick::Counter::Mode::ONE_SHOT, MAX_TRANSMIT_TIME_MS))
 {
 	_config = i2c_conf;
 
@@ -49,12 +49,6 @@ I2c::I2c(Config i2c_conf)
 	sda.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
 	sda.set_output_options(Gpio::OutputType::OPEN_DRAIN, Gpio::Speed::LOW_2MHz);
 	sda.set_af(Gpio::AltFuncNumber::AF4);
-
-#ifndef FREERTOS
-	_counter_ms->init(systick::Counter::Mode::ONE_SHOT, MAX_TRANSMIT_TIME_MS);
-#else
-	//_counter_ms = new timers::OneShotTimer(MAX_TRANSMIT_TIME_MS);
-#endif
 }
 
 void I2c::reset() {
@@ -168,25 +162,25 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
 	uint32_t reg __attribute__((unused));
 	Result result = OK;
 
-	//_counter_ms->start();
+	_counter_ms->start();
 
 	_send_start();
-	while (_get_flag_status(MASTER_MODE_SELECTED) == Result::ERROR);
-//	{
-//		if(_counter_ms->timeout()) {
-//			result = TIMEOUT;
-//		    break;
-//		}
-//	}
+	while (_get_flag_status(MASTER_MODE_SELECTED) == Result::ERROR)
+	{
+		if(_counter_ms->timeout()) {
+			result = TIMEOUT;
+		    break;
+		}
+	}
 
 	_send_7bit_address(cfg.device_address, WRITE);
-	while (_get_flag_status(MASTER_TRANSMITTER_MODE_SELECTED) == Result::ERROR);
-//	{
-//		if(_counter_ms->timeout()) {
-//			result = TIMEOUT;
-//		   break;
-//		}
-//	}
+	while (_get_flag_status(MASTER_TRANSMITTER_MODE_SELECTED) == Result::ERROR)
+	{
+		if(_counter_ms->timeout()) {
+			result = TIMEOUT;
+		   break;
+		}
+	}
 
     uint8_t index = 0;
 
@@ -194,13 +188,13 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
     {
     	_send_data(cfg.write_buf[index]);
 
-    	while (_get_flag_status(MASTER_BYTE_TRANSMITTED) == Result::ERROR);
-//    	{
-//    		if(_counter_ms->timeout()) {
-//    			result = TIMEOUT;
-//    			break;
-//    		}
-//    	}
+    	while (_get_flag_status(MASTER_BYTE_TRANSMITTED) == Result::ERROR)
+    	{
+    		if(_counter_ms->timeout()) {
+    			result = TIMEOUT;
+    			break;
+    		}
+    	}
 
     	cfg.write_len--;
         index++;
@@ -208,24 +202,24 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
 
     if(cfg.read_len != 0) {
     	_send_start();
-    	while (_get_flag_status(MASTER_MODE_SELECTED) == Result::ERROR);
-//    	{
-//    		if(_counter_ms->timeout()) {
-//    			result = TIMEOUT;
-//    			break;
-//    		}
-//    	}
+    	while (_get_flag_status(MASTER_MODE_SELECTED) == Result::ERROR)
+    	{
+    		if(_counter_ms->timeout()) {
+    			result = TIMEOUT;
+    			break;
+    		}
+    	}
 
     	_enable_ack();
 
     	_send_7bit_address(cfg.device_address, READ);
-    	while (_get_flag_status(MASTER_RECEIVER_MODE_SELECTED) == Result::ERROR);
-//    	{
-//    		if(_counter_ms->timeout()) {
-//    			result = TIMEOUT;
-//    			break;
-//    		}
-//    	}
+    	while (_get_flag_status(MASTER_RECEIVER_MODE_SELECTED) == Result::ERROR)
+    	{
+    		if(_counter_ms->timeout()) {
+    			result = TIMEOUT;
+    			break;
+    		}
+    	}
 
     	uint8_t size_to_read = cfg.read_len;
     	index = 0;
@@ -235,13 +229,13 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
     		size_to_read--;
     		if (!size_to_read)
     			_disable_ack();
-    		while (_get_flag_status(MASTER_BYTE_RECEIVED) == Result::ERROR);
-//    		{
-//    			if(_counter_ms->timeout()) {
-//    				result = TIMEOUT;
-//    				break;
-//    			}
-//    		}
+    		while (_get_flag_status(MASTER_BYTE_RECEIVED) == Result::ERROR)
+    		{
+    			if(_counter_ms->timeout()) {
+    				result = TIMEOUT;
+    				break;
+    			}
+    		}
 
     		uint8_t data = _get_data();
     		cfg.read_buf[index] = data;
@@ -250,7 +244,7 @@ auto I2c::master_transfer(MasterTransferCfg cfg) -> Result
     }
 
     _send_stop();
-    //_counter_ms->stop();
+    _counter_ms->stop();
 
     return result;
 }
