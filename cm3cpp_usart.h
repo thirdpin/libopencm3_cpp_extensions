@@ -170,7 +170,10 @@ public:
 		USART_CR1(_usart) &= ~USART_CR1_TCIE;
 	}
 
-	void write_blocking(uint16_t data) {
+    bool is_data_received() { return (USART_SR(_usart) & USART_SR_RXNE) == 0; }
+    bool is_data_sended() { return (USART_SR(_usart) & USART_SR_TXE) == 0; }
+
+    void write_blocking(uint16_t data) {
 	    usart_send_blocking(_usart, data);
 	}
 
