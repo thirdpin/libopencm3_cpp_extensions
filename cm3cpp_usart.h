@@ -194,6 +194,8 @@ protected:
 	Gpio     _tx;
 	uint32_t _usart;
 	uint32_t _usart_nvic;
+
+	Mode _mode;
 };
 
 } // namespace usart

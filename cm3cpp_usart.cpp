@@ -36,7 +36,9 @@ Usart::Usart(LowLevelConfig config, Settings settings)
 
 void Usart::init(LowLevelConfig config, Settings settings)
 {
-	if (config.rx.port)
+	_mode = settings.mode;
+
+	if (_mode == Mode::RX or _mode == Mode::RX_TX)
 	{
 		_rx.init(config.rx);
 		_rx.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
@@ -47,7 +49,7 @@ void Usart::init(LowLevelConfig config, Settings settings)
 			_rx.set_af(Gpio::AltFuncNumber::AF8);
 	}
 
-	if (config.tx.port)
+	if (_mode == Mode::TX or _mode == Mode::RX_TX)
 	{
 		_tx.init(config.tx);
 		_tx.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
@@ -97,11 +99,17 @@ void Usart::deinit()
 {
 	usart_disable(_usart);
 	nvic_disable_irq(_usart_nvic);
-	_tx.mode_setup(Gpio::Mode::INPUT, Gpio::PullMode::NO_PULL);
+
+	if (_mode == Mode::RX or _mode == Mode::RX_TX)
+		_rx.mode_setup(Gpio::Mode::INPUT, Gpio::PullMode::NO_PULL);
+
+	if (_mode == Mode::TX or _mode == Mode::RX_TX)
+		_tx.mode_setup(Gpio::Mode::INPUT, Gpio::PullMode::NO_PULL);
 }
 
 void Usart::set_settings(Settings settings)
 {
+	_mode = settings.mode;
 	usart_set_baudrate(_usart, settings.baud_rate);
 	usart_set_databits(_usart, settings.word_length);
 	usart_set_stopbits(_usart, settings.stop_bits);
