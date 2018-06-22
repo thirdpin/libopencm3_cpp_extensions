@@ -26,28 +26,23 @@ SYSTICK implementation, public interface
 #include "cm3cpp_systick.h"
 #if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
 extern "C" {
-    void CM3CPP_SYS_TICK_INT_FUNC(void);
+    void CM3CPP_SYSTICK_INT_FUNC(void);
 }
 #include "libopencm3/stm32/timer.h"
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3_cpp_extensions/irq/cm3cpp_irq.h>
 #else
-#define CM3CPP_SYS_TICK_INT_FUNC sys_tick_handler
+#define CM3CPP_SYSTICK_INT_FUNC sys_tick_handler
 #endif
 
 volatile uint32_t counter;
 
-void CM3CPP_SYS_TICK_INT_FUNC(void)
+#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE != 1
+void CM3CPP_SYSTICK_INT_FUNC(void)
 {
-#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
-//    if (timer_get_flag(CM3CPP_INT_SOURCE, TIM_SR_UIF)) {
-//        timer_clear_flag(CM3CPP_INT_SOURCE, TIM_SR_UIF);
-//        counter++;
-//    }
-#else
     counter++;
-#endif
 }
+#endif
 
 void delay_nop(uint32_t count)
 {
@@ -68,25 +63,19 @@ void delay_systick(uint32_t ms)
 }
 
 
-void init(uint32_t div)
+void init(uint32_t clock_div)
 {
 #if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
-
 	timer_reset(CM3CPP_INT_SOURCE);
 	timer_set_mode(CM3CPP_INT_SOURCE, TIM_CR1_CKD_CK_INT, TIM_CR1_CMS_EDGE, TIM_CR1_DIR_UP);
-	timer_set_prescaler(CM3CPP_INT_SOURCE, ((rcc_apb1_frequency * 2) / 1000) - 1); // 1 kHz
+	timer_set_prescaler(CM3CPP_INT_SOURCE, (CM3CPP_SYSTICK_CLOCK / clock_div) - 1);
 	timer_disable_preload(CM3CPP_INT_SOURCE);
 	timer_continuous_mode(CM3CPP_INT_SOURCE);
-	timer_set_period(CM3CPP_INT_SOURCE, 0xffff); // 65535 or (UINT32_MAX - 1)
+	timer_set_period(CM3CPP_INT_SOURCE, CM3CPP_SYSTICK_PERIOD);
 	timer_enable_counter(CM3CPP_INT_SOURCE);
-//	nvic_enable_irq(NVIC_TIM1_CC_IRQ);
-//	timer_enable_irq(TIM1, TIM_DIER_UIE);
-
 #else
-	//by default sets up a timer to create 1ms ticks (div = 1000)
-	//at system clock 120mhz.
 	counter = 0;
-	systick_set_reload(CM3CPP_SYSTEM_CORE_CLOCK / div);
+	systick_set_reload(CM3CPP_SYSTEM_CORE_CLOCK / clock_div);
 	systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
 	systick_counter_enable();
 	systick_interrupt_enable();
