@@ -165,13 +165,35 @@ public:
 		usart_disable_tx_interrupt(_usart);
 	}
 
-	void disable_tc_interrupt()
-	{
+	void disable_tc_interrupt() {
 		USART_CR1(_usart) &= ~USART_CR1_TCIE;
 	}
 
-    bool is_data_received() { return (USART_SR(_usart) & USART_SR_RXNE) == 0; }
-    bool is_data_sended() { return (USART_SR(_usart) & USART_SR_TXE) == 0; }
+    bool is_framing_error() {
+        return (USART_SR(_usart) & USART_SR_FE)  != 0;
+    }
+
+    bool is_overrun_error() {
+        return (USART_SR(_usart) & USART_SR_IDLE) != 0;
+    }
+
+    bool is_any_error_occurred()
+    {
+        return (USART_SR(_usart) &
+                (USART_SR_ORE | USART_SR_FE | USART_SR_PE | USART_SR_NE)) != 0;
+    }
+
+    uint32_t get_sr_reg() {
+    	return USART_SR(_usart);
+    }
+
+    bool is_data_received() {
+        return (USART_SR(_usart) & USART_SR_RXNE) != 0;
+    }
+
+    bool is_data_sended() {
+    	return (USART_SR(_usart) & USART_SR_TXE) != 0;
+    }
 
     void write_blocking(uint16_t data) {
 	    usart_send_blocking(_usart, data);
