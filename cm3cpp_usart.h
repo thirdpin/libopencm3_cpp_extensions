@@ -47,6 +47,8 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #include <cm3cpp_config.h>
 #include "cm3cpp_gpio.h"
 
+#include "irq/cm3cpp_irq.h"
+
 namespace cm3cpp {
 
 namespace usart {
@@ -209,6 +211,10 @@ public:
 
 	uint16_t read_blocking() {
 		return usart_recv_blocking(_usart);
+	}
+
+	auto get_irq() {
+		return static_cast<Interrupt>(_usart_nvic);
 	}
 
 protected:
