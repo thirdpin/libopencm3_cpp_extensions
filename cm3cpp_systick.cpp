@@ -24,6 +24,18 @@ SYSTICK implementation, public interface
 */
 
 #include "cm3cpp_systick.h"
+
+#define __EXPAND2(a,b) a ## b
+#define __EXPAND3(a,b,c) a ## b ## c
+
+#define __INT_SOURCE(n)          __EXPAND2(TIM, n)
+#define __RCC(n)			     __EXPAND2(rcc_periph_clken::RCC_TIM, n)
+#define __SYSTICK_INT_FUNC(n)    __EXPAND3(tim, n, _isr)
+
+#define CM3CPP_INT_SOURCE        __INT_SOURCE(CM3CPP_TIMER_N)
+#define CM3CPP_INT_SOURCE_RCC    __RCC(CM3CPP_TIMER_N)
+#define CM3CPP_SYSTICK_INT_FUNC  __SYSTICK_INT_FUNC(CM3CPP_TIMER_N)
+
 #if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
 extern "C" {
     void CM3CPP_SYSTICK_INT_FUNC(void);
@@ -62,10 +74,10 @@ void delay_systick(uint32_t ms)
 	while((get_counter() - time) < ms);
 }
 
-
 void init(uint32_t clock_div)
 {
 #if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
+	rcc_periph_clock_enable(CM3CPP_INT_SOURCE_RCC);
 	timer_reset(CM3CPP_INT_SOURCE);
 	timer_set_mode(CM3CPP_INT_SOURCE, TIM_CR1_CKD_CK_INT, TIM_CR1_CMS_EDGE, TIM_CR1_DIR_UP);
 	timer_set_prescaler(CM3CPP_INT_SOURCE, (CM3CPP_SYSTICK_CLOCK / clock_div) - 1);
