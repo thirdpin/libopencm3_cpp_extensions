@@ -40,9 +40,9 @@ SYSTICK implementation, public interface
 extern "C" {
     void CM3CPP_SYSTICK_INT_FUNC(void);
 }
-#include "libopencm3/stm32/timer.h"
+#include <libopencm3/stm32/timer.h>
 #include <libopencm3/stm32/rcc.h>
-#include <libopencm3_cpp_extensions/irq/cm3cpp_irq.h>
+#include "irq/cm3cpp_irq.h"
 #else
 #define CM3CPP_SYSTICK_INT_FUNC sys_tick_handler
 #endif
