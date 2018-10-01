@@ -78,7 +78,6 @@ void init(uint32_t clock_div)
 {
 #if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
 	rcc_periph_clock_enable(CM3CPP_INT_SOURCE_RCC);
-	timer_reset(CM3CPP_INT_SOURCE);
 	timer_set_mode(CM3CPP_INT_SOURCE, TIM_CR1_CKD_CK_INT, TIM_CR1_CMS_EDGE, TIM_CR1_DIR_UP);
 	timer_set_prescaler(CM3CPP_INT_SOURCE, (CM3CPP_SYSTICK_CLOCK / clock_div) - 1);
 	timer_disable_preload(CM3CPP_INT_SOURCE);
