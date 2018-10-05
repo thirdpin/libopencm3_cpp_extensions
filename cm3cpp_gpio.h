@@ -109,7 +109,7 @@ public:
 	void init(Pinout pinout);
 	void set();
 	void clear();
-	uint16_t get();
+	bool get();
 	void toggle();
 	uint16_t port_read();
 	void port_write(uint16_t data);

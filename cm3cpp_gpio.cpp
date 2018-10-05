@@ -49,7 +49,7 @@ void Gpio::clear()
 	gpio_clear(_pinout.port, _pinout.pin);
 }
 
-uint16_t Gpio::get()
+bool Gpio::get()
 {
 	return gpio_get(_pinout.port, _pinout.pin);
 }
