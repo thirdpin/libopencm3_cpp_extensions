@@ -3,10 +3,15 @@
 
 #include <cm3cpp_config.h>
 
-#define PINOUT_CTOR(port, pin)                     	{GPIO##port, GPIO##pin}
+#define PINOUT_CTOR(port, pin)                                                 \
+    {                                                                          \
+        GPIO##port, GPIO##pin, pin                                             \
+    }
 
-
-#define PNULL										{0, 0}
+#define PNULL                                                                  \
+    {                                                                          \
+        0, 0, 0                                                                \
+    }
 
 #define PA0										   	PINOUT_CTOR(A, 0)
 #define PA1											PINOUT_CTOR(A, 1)

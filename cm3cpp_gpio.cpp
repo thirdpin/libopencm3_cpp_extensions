@@ -49,7 +49,7 @@ void Gpio::clear()
 	gpio_clear(_pinout.port, _pinout.pin);
 }
 
-bool Gpio::get()
+bool Gpio::get() const
 {
 	return gpio_get(_pinout.port, _pinout.pin);
 }
@@ -59,7 +59,7 @@ void Gpio::toggle()
 	gpio_toggle(_pinout.port, _pinout.pin);
 }
 
-uint16_t Gpio::port_read()
+uint16_t Gpio::port_read() const
 {
 	return gpio_port_read(_pinout.port);
 }
@@ -205,22 +205,21 @@ void Gpio::set_af(AltFuncNumber af_num)
 
 void Gpio::setup_exti(exti_trigger_type trigger)
 {
-	exti_select_source(_pinout.pin, _pinout.port);
-	exti_set_trigger(_pinout.pin, trigger);
-	exti_enable_request(_pinout.pin);
+    exti_select_source(_pinout.pin, _pinout.port);
+    exti_set_trigger(_pinout.pin, trigger);
+    exti_enable_request(_pinout.pin);
 }
 
 void Gpio::clear_exti_pending_bit()
 {
-	exti_reset_request(_pinout.pin);
+    exti_reset_request(_pinout.pin);
 }
 
-bool Gpio::get_exti_flag_status()
+bool Gpio::get_exti_flag_status() const
 {
-	uint32_t flag = exti_get_flag_status(_pinout.pin);
-	if (flag != 0)
-		return true;
-	return false;
+    uint32_t flag = exti_get_flag_status(_pinout.pin);
+    if (flag != 0) return true;
+    return false;
 }
 
 } // namespace gpio
