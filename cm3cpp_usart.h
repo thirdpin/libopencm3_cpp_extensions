@@ -150,6 +150,8 @@ public:
 				usart_get_flag(_usart, USART_SR_TC));
 	}
 
+    void clear_tc_flag() { USART_SR(_usart) = ~USART_SR_TC; }
+
     void enable_irq() {
         nvic_enable_irq(_usart_nvic);
     }
