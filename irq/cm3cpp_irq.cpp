@@ -20,8 +20,12 @@ static IInterruptable* isr_vector_table[INTERRUPTS_COUNT];
 struct InterruptInitializer {
     InterruptInitializer() {
         for (uint32_t i = 0; i < INTERRUPTS_COUNT; ++i) {
-            isr_vector_table[i] = &_empty_interrupt;  // init an irq table with
-        }                                             // empty functions for safe
+            if (isr_vector_table[i] == nullptr)
+              {
+                /* init an irq table with empty functions for safe */
+                isr_vector_table[i] = &_empty_interrupt;
+              }
+        }
     }
 } _init;
 
