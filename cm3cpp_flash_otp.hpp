@@ -101,6 +101,12 @@ public:
 		return *(uint8_t*)address;
 	}
 
+	static const uint8_t* const get_pointer(OtpBlock block, OtpByte byte)
+	{
+		uint32_t address = _OTP_START_ADDR + ((uint32_t)block * _OTP_BYTES_IN_BLOCK) + (uint32_t)byte;
+		return (uint8_t*)address;
+	}
+
 	static bool get_flag(Flag flag)
 	{
 		uint32_t status = FLASH_SR | (uint32_t)flag;
