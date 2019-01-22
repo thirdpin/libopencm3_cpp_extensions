@@ -94,6 +94,13 @@ class Usart
 public:
 	using Gpio = gpio::Gpio;
 
+	enum class Flag : uint16_t
+	{
+		TRANSMIT_COMPLETE = USART_SR_TC,
+		TX_BUFFER_EMPTY   = USART_SR_TXE,
+		RX_NOT_EMPTY      = USART_SR_RXNE,
+	};
+
 	struct Settings
 	{
 		uint32_t baud_rate;
@@ -112,6 +119,8 @@ public:
 		uint8_t nvic_priority;
 	};
 
+	Usart() = default;
+
 	Usart(LowLevelConfig config, Settings settings);
 
 	void init(LowLevelConfig config, Settings settings);
@@ -119,6 +128,11 @@ public:
 	void deinit();
 
 	void set_settings(Settings settings);
+
+	bool get_flag_status(Flag flag)
+	{
+		return usart_get_flag(_usart, (uint16_t)flag);
+	}
 
 	bool interrupt_source_rx() {
 		return (((USART_CR1(_usart) & USART_CR1_RXNEIE) != 0) &&
@@ -135,6 +149,8 @@ public:
 		return (((USART_CR1(_usart) & USART_CR1_TCIE) != 0) &&
 				usart_get_flag(_usart, USART_SR_TC));
 	}
+
+    void clear_tc_flag() { USART_SR(_usart) = ~USART_SR_TC; }
 
     void enable_irq() {
         nvic_enable_irq(_usart_nvic);

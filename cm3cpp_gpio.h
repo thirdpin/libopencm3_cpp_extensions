@@ -57,7 +57,8 @@ public:
 	struct Pinout {
 		uint32_t port;
 		uint16_t pin;
-	};
+        uint8_t pin_number;
+    };
 
 	enum Mode {
 		INPUT,
@@ -109,19 +110,19 @@ public:
 	void init(Pinout pinout);
 	void set();
 	void clear();
-	uint16_t get();
-	void toggle();
-	uint16_t port_read();
-	void port_write(uint16_t data);
+    bool get() const;
+    void toggle();
+    uint16_t port_read() const;
+    void port_write(uint16_t data);
 	void port_config_lock();
 	void mode_setup(Mode mode, PullMode pull_mode);
 	void set_output_options(OutputType type, Speed speed);
 	void set_af(AltFuncNumber af_num);
 	void setup_exti(enum exti_trigger_type trigger);
 	void clear_exti_pending_bit();
-	bool get_exti_flag_status();
+    bool get_exti_flag_status() const;
 
-private:
+ private:
 	Pinout _pinout;
 };
 
