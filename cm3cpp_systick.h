@@ -19,16 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* 
+/*
 SYSTICK implementation, public interface
 */
 
 #ifndef SYSTICK_API_H
 #define SYSTICK_API_H
 
-#include <stdint.h>
-#include <libopencm3/cm3/systick.h>
 #include "cm3cpp_config.h"
+#include <libopencm3/cm3/systick.h>
+#include <stdint.h>
 
 extern "C" void sys_tick_handler(void);
 extern "C" void delay_nop(uint32_t count);
@@ -37,32 +37,31 @@ namespace cm3cpp {
 
 namespace systick {
 
-
 void init(uint32_t div = CM3CPP_SYSTICK_CLOCK_DIV);
 uint32_t get_counter();
 void delay_systick(uint32_t ms);
 
 class Counter
 {
-public:
-	enum Mode {
-		CYCLE,
-		ONE_SHOT
-	};
+ public:
+    enum Mode
+    {
+        CYCLE,
+        ONE_SHOT
+    };
 
-	Counter(Mode mode, uint32_t period);
-	void init(Mode mode, uint32_t period);
-	bool timeout();
-	bool start();
-	bool stop();
+    Counter(Mode mode, uint32_t period);
+    void init(Mode mode, uint32_t period);
+    bool timeout();
+    bool start();
+    bool stop();
 
-private:
-	uint32_t _saved;
-	uint32_t _period;
-	Mode _mode;
-	bool _is_active;
+ private:
+    uint32_t _saved;
+    uint32_t _period;
+    Mode _mode;
+    bool _is_active;
 };
-
 
 }  // namespace systick
 
