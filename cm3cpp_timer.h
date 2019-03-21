@@ -70,16 +70,19 @@ public:
 		TIMER_CLOCK_MUL_4
 	};
 
-	enum MasterMode {
-		MASTER_RESET,
-		ENABLE,
-		UPDATE,
-		COMPARE_PULSE,
-		COMPARE_OC1REF,
-		COMPARE_OC2REF
-	};
+    enum MasterMode
+    {
+        MASTER_RESET,
+        ENABLE,
+        UPDATE,
+        COMPARE_PULSE,
+        COMPARE_OC1REF,
+        COMPARE_OC2REF,
+        COMPARE_OC3REF,
+        COMPARE_OC4REF,
+    };
 
-	enum SlaveMode {
+    enum SlaveMode {
 		DISABLED,
 		SLAVE_RESET,
 		GATED,

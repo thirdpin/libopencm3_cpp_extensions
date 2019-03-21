@@ -223,7 +223,15 @@ auto Timer::set_master_mode(MasterMode mode) -> Result
 			TIM_CR2(_timer) = (TIM_CR2(_timer) & ~TIM_CR2_MMS_MASK) |
 			                   TIM_CR2_MMS_COMPARE_OC2REF ;
 			break;
-	}
+        case COMPARE_OC3REF:
+            TIM_CR2(_timer) = (TIM_CR2(_timer) & ~TIM_CR2_MMS_MASK) |
+                              TIM_CR2_MMS_COMPARE_OC3REF;
+            break;
+        case COMPARE_OC4REF:
+            TIM_CR2(_timer) = (TIM_CR2(_timer) & ~TIM_CR2_MMS_MASK) |
+                              TIM_CR2_MMS_COMPARE_OC4REF;
+            break;
+    }
 
 	return OK;
 }
