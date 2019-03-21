@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* 
-USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
+/*
+USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 */
 
 #ifndef CM3CPP_USART_RB_H_
@@ -29,8 +29,8 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 /**************************************************************************************************
  * CM3CPP INCLUDES
  *************************************************************************************************/
-#include "utils/round_buffer.h"
 #include "cm3cpp_usart.h"
+#include "utils/round_buffer.h"
 
 namespace cm3cpp {
 
@@ -38,47 +38,47 @@ namespace usart {
 
 class UsartRb : public Usart
 {
-public:
-	utils::RoundBuffer *rb_in;
-	utils::RoundBuffer *rb_out;
+ public:
+    utils::RoundBuffer* rb_in;
+    utils::RoundBuffer* rb_out;
 
-	UsartRb(LowLevelConfig config, Settings settings,
-	        uint32_t rb_in_size, uint32_t rb_out_size);
+    UsartRb(LowLevelConfig config,
+            Settings settings,
+            uint32_t rb_in_size,
+            uint32_t rb_out_size);
 
-	CM3CPP_EXPLISIT_DESTRUCTOR(UsartRb)
+    CM3CPP_EXPLISIT_DESTRUCTOR(UsartRb)
 
-	void start_send() {
-		usart_enable_tx_interrupt(_usart);
-	}
+    void start_send() { usart_enable_tx_interrupt(_usart); }
 
-	void receive_handler()
-	{
-		if (interrupt_source_rx()) {
-			rb_in->push(read());
-		}
-	}
+    void receive_handler()
+    {
+        if (interrupt_source_rx()) {
+            rb_in->push(read());
+        }
+    }
 
-	void transmit_handler()
-	{
-		if (interrupt_source_tx()) {
-			if (rb_out->get_count()) {
-				write(rb_out->pop());
-			}
-			else {
-				usart_disable_tx_interrupt(_usart);
-			}
-		}
-	}
+    void transmit_handler()
+    {
+        if (interrupt_source_tx()) {
+            if (rb_out->get_count()) {
+                write(rb_out->pop());
+            }
+            else {
+                usart_disable_tx_interrupt(_usart);
+            }
+        }
+    }
 
-	void inirq()
-	{
-		receive_handler();
-		transmit_handler();
-	}
+    void inirq()
+    {
+        receive_handler();
+        transmit_handler();
+    }
 };
 
-} // namespace usart
+}  // namespace usart
 
-} // namespace cm3cpp
+}  // namespace cm3cpp
 
 #endif /* CM3CPP_USART_RB_H_ */

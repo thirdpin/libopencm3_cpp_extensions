@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* 
-USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4 
+/*
+USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 */
 
 #include "cm3cpp_usart_rb.h"
@@ -29,17 +29,19 @@ namespace cm3cpp {
 
 namespace usart {
 
-UsartRb::UsartRb(LowLevelConfig config, Settings settings,
-			     uint32_t rb_in_size, uint32_t rb_out_size)
-    : Usart(config, settings)
+UsartRb::UsartRb(LowLevelConfig config,
+                 Settings settings,
+                 uint32_t rb_in_size,
+                 uint32_t rb_out_size) :
+  Usart(config, settings)
 {
-	rb_in = new utils::RoundBuffer(rb_in_size);
-	rb_out = new utils::RoundBuffer(rb_out_size);
+    rb_in = new utils::RoundBuffer(rb_in_size);
+    rb_out = new utils::RoundBuffer(rb_out_size);
 
-	if (settings.mode & USART_MODE_RX)
-		usart_enable_rx_interrupt(_usart);
+    if (settings.mode & USART_MODE_RX)
+        usart_enable_rx_interrupt(_usart);
 }
 
-} // usart
+}  // namespace usart
 
-} // namespace cm3cpp
+}  // namespace cm3cpp

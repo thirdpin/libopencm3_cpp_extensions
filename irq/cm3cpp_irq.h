@@ -10,7 +10,8 @@
 namespace cm3cpp {
 
 #ifdef STM32F2
-enum class Interrupt : uint32_t {
+enum class Interrupt : uint32_t
+{
     ISR_NVIC_WWDG = 0,
     ISR_PVD,
     ISR_TAMP_STAMP,
@@ -96,7 +97,8 @@ enum class Interrupt : uint32_t {
 #endif
 
 #ifdef STM32F4
-enum Interrupt : uint32_t {
+enum Interrupt : uint32_t
+{
     ISR_NVIC_WWDG = 0,
     ISR_PVD,
     ISR_TAMP_STAMP,
@@ -193,11 +195,12 @@ enum Interrupt : uint32_t {
 
 class IInterruptable
 {
-public:
+ public:
     IInterruptable() = default;
     virtual ~IInterruptable() = default;
 
-    static void register_isr(Interrupt interrupt, IInterruptable* interrupt_owner);
+    static void register_isr(Interrupt interrupt,
+                             IInterruptable* interrupt_owner);
     virtual void call() = 0;
 };
 
