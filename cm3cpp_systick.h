@@ -56,6 +56,9 @@ class Counter
     bool start();
     bool stop();
 
+    void set_period(uint32_t const period) { _period = period; }
+    uint32_t period() const { return _period; }
+
  private:
     uint32_t _saved;
     uint32_t _period;
