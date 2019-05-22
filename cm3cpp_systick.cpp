@@ -47,7 +47,7 @@ void CM3CPP_SYSTICK_INT_FUNC(void);
 #define CM3CPP_SYSTICK_INT_FUNC sys_tick_handler
 #endif
 
-volatile uint32_t counter;
+static volatile uint32_t counter;
 
 #if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE != 1
 void CM3CPP_SYSTICK_INT_FUNC(void)
@@ -93,6 +93,16 @@ void init(uint32_t clock_div)
     systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
     systick_counter_enable();
     systick_interrupt_enable();
+#endif
+}
+
+void deinit()
+{
+#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
+    timer_disable_counter(CM3CPP_INT_SOURCE);
+#else
+    systick_interrupt_disable();
+    systick_counter_disable();
 #endif
 }
 

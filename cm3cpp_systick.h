@@ -38,6 +38,7 @@ namespace cm3cpp {
 namespace systick {
 
 void init(uint32_t div = CM3CPP_SYSTICK_CLOCK_DIV);
+void deinit();
 uint32_t get_counter();
 void delay_systick(uint32_t ms);
 
