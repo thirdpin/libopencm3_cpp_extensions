@@ -19,47 +19,55 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* 
+/*
 SYSTICK implementation, public interface
 */
 
 #ifndef SYSTICK_API_H
 #define SYSTICK_API_H
 
-#include <stdint.h>
+#include "cm3cpp_config.h"
 #include <libopencm3/cm3/systick.h>
-//#include <Cm3ExtConfig.h>
-
-//must be changed according to your RCC configuration
-#define SYSTEM_CORE_CLOCK						(uint32_t)120000000
-#define SYSTEM_CORE_CLOCK_DIV                   (uint32_t)1000
+#include <stdint.h>
 
 extern "C" void sys_tick_handler(void);
 extern "C" void delay_nop(uint32_t count);
 
-typedef enum {
-	CYCLE,
-	ONE_SHOT
-}TimerMode;
+namespace cm3cpp {
 
-void systick_init(uint32_t div = SYSTEM_CORE_CLOCK_DIV);
-uint32_t get_counter_ms();
-void delay_ms(uint32_t ms);
+namespace systick {
 
-class TimerMs
+void init(uint32_t div = CM3CPP_SYSTICK_CLOCK_DIV);
+void deinit();
+uint32_t get_counter();
+void delay_systick(uint32_t ms);
+
+class Counter
 {
-public:
-	TimerMs(TimerMode mode, uint32_t period_ms);
-	bool timeout();
-	bool start();
-	bool stop();
+ public:
+    enum Mode
+    {
+        CYCLE,
+        ONE_SHOT
+    };
 
-private:
-	uint32_t _saved_ms;
-	uint32_t _period_ms;
-	TimerMode _mode;
-	bool _is_active;
+    Counter(Mode mode, uint32_t period);
+    void init(Mode mode, uint32_t period);
+    bool timeout();
+    bool start();
+    bool stop();
+
+    void set_period(uint32_t const period) { _period = period; }
+    uint32_t period() const { return _period; }
+
+ private:
+    uint32_t _saved;
+    uint32_t _period;
+    Mode _mode;
+    bool _is_active;
 };
 
+}  // namespace systick
 
+}  // namespace cm3cpp
 #endif
