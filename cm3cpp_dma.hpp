@@ -21,7 +21,7 @@ namespace cm3cpp {
 
 namespace dma {
 
-enum NumDma
+enum DmaNumber
 {
     _1 = DMA1,
     _2 = DMA2,
@@ -30,29 +30,25 @@ enum NumDma
 /// Streams for USARTs
 enum Stream
 {
-	/** For DMA2 **/
-	/// USART1
-    USART1_TX_DMA2_STREAM = DMA_STREAM7,
-    USART1_RX_DMA2_STREAM = DMA_STREAM5,
-	
-	/// USART6
-    USART6_TX_DMA2_STREAM = DMA_STREAM7,
-    USART6_RX_DMA2_STREAM = DMA_STREAM2,
-	/**************/
+    STREAM1 = DMA_STREAM1,
+    STREAM2 = DMA_STREAM2,
+    STREAM3 = DMA_STREAM3,
+    STREAM4 = DMA_STREAM4,
+    STREAM5 = DMA_STREAM5,
+    STREAM6 = DMA_STREAM6,
+    STREAM7 = DMA_STREAM7
 };
 
 /// Channels for USARTs
 enum Channel
 {
-	/** For DMA2 **/
-	/// USART1
-    USART1_TX_DMA2_CHANNEL = DMA_SxCR_CHSEL_4,
-    USART1_RX_DMA2_CHANNEL = DMA_SxCR_CHSEL_4,
-	
-	/// USART6
-    USART6_TX_DMA2_CHANNEL = DMA_SxCR_CHSEL_5,
-    USART6_RX_DMA2_CHANNEL = DMA_SxCR_CHSEL_5,
-	/**************/
+    CHANNEL1 = DMA_SxCR_CHSEL_1,
+    CHANNEL2 = DMA_SxCR_CHSEL_2,
+    CHANNEL3 = DMA_SxCR_CHSEL_3,
+    CHANNEL4 = DMA_SxCR_CHSEL_4,
+    CHANNEL5 = DMA_SxCR_CHSEL_5,
+    CHANNEL6 = DMA_SxCR_CHSEL_6,
+    CHANNEL7 = DMA_SxCR_CHSEL_7
 };
 
 enum DataTransferDirection
@@ -63,10 +59,10 @@ enum DataTransferDirection
 };
 
 /// Shows where or where data will be sent, to the periphery or memory
-enum IncrementedMode
+enum class IncrementedMode
 {
-    INCREMENTED_DISABLE,
-    INCREMENTED_ENABLE
+    DISABLE,
+    ENABLE
 };
 
 /// Shows how much the size will be increased for the periphery
@@ -82,7 +78,7 @@ enum DataSize
 };
 
 /// DMA data recording mode, cyclic or normal
-enum Mode
+enum class Mode
 {
     NORMAL,
     CIRCULAR
@@ -100,7 +96,7 @@ enum Priority
 /// Low level config for DMA
 struct LowLevelConfig
 {
-    NumDma num_dma;
+    DmaNumber dma_num;
     Stream stream;
     Channel channel;
     uint32_t peripheral_base_addr;
@@ -122,6 +118,12 @@ class Dma
  public:
     Dma(const LowLevelConfig& config);
 
+    ~Dma() = default;
+
+    bool get_interrupt_flag() const;
+
+    void clear_interrupt_flag() const;
+
     void set_memory_address(uint32_t address) const;
 
     void enable_stream() const;
@@ -134,20 +136,19 @@ class Dma
 
     void disable_irq() const;
 
-    /* These variables are made global for quick access */
-    Stream _stream;   ///< Shows the stream on which DMA is configured
-    NumDma _num_dma;  ///< Number configured DMA
-
  protected:
     Dma() = delete;                    /// Constructor default is delete
     Dma(const Dma& a) = delete;        /// Constructor copy is delete
-    Dma(const Dma&& a) = delete;       /// Constructor move is delete
+    Dma(Dma&& a) = delete;             /// Constructor move is delete
 
     Dma& operator=(const Dma&) = delete;  /// Operator copy is delete
     Dma& operator=(Dma&&) = delete;       /// Operator move is delete
 
  private:
-    uint8_t _irq;  ///< Number interrupt
+    Stream _stream;      ///< Shows the stream on which DMA is configured
+    DmaNumber _dma_num;  ///< Number configured DMA
+
+    uint8_t _irq;  ///< Interrupt number
 };
 
 }  // namespace dma

@@ -24,12 +24,12 @@ namespace cm3cpp {
 namespace dma {
 
 Dma::Dma(const LowLevelConfig& config) :
-  _num_dma(config.num_dma),
+  _dma_num(config.dma_num),
   _stream(config.stream),
   _irq(config.irq)
 {
     // Enable clock DMA
-    if (_num_dma == _1) {
+    if (_dma_num == DmaNumber::_1) {
         rcc_periph_clock_enable(RCC_DMA1);
     }
     else {
@@ -37,60 +37,60 @@ Dma::Dma(const LowLevelConfig& config) :
 	}
 
 	// Reset channel
-    dma_stream_reset(_num_dma, _stream);
+    dma_stream_reset(_dma_num, _stream);
 
     // Config DMA
-    dma_set_priority(_num_dma, _stream, config.priority);
-    dma_set_memory_size(_num_dma, _stream, config.mem_size);
-    dma_set_peripheral_size(_num_dma, _stream, config.periph_size);
+    dma_set_priority(_dma_num, _stream, config.priority);
+    dma_set_memory_size(_dma_num, _stream, config.mem_size);
+    dma_set_peripheral_size(_dma_num, _stream, config.periph_size);
 
-    if (config.periph_inc_mode == INCREMENTED_ENABLE) {
-        dma_enable_peripheral_increment_mode(_num_dma, _stream);
+    if (config.periph_inc_mode == IncrementedMode::ENABLE) {
+        dma_enable_peripheral_increment_mode(_dma_num, _stream);
     }
     else {
-        dma_disable_peripheral_increment_mode(_num_dma, _stream);
+        dma_disable_peripheral_increment_mode(_dma_num, _stream);
     }
 
-    if (config.mem_inc_mode == INCREMENTED_ENABLE) {
-        dma_enable_memory_increment_mode(_num_dma, _stream);
+    if (config.mem_inc_mode == IncrementedMode::ENABLE) {
+        dma_enable_memory_increment_mode(_dma_num, _stream);
     }
     else {
-        dma_disable_memory_increment_mode(_num_dma, _stream);
+        dma_disable_memory_increment_mode(_dma_num, _stream);
     }
 
-    if (config.mode == CIRCULAR) {
-        dma_enable_circular_mode(_num_dma, _stream);
+    if (config.mode == Mode::CIRCULAR) {
+        dma_enable_circular_mode(_dma_num, _stream);
     }
 
-    dma_set_transfer_mode(_num_dma, _stream, config.direction);
+    dma_set_transfer_mode(_dma_num, _stream, config.direction);
 
-    dma_set_peripheral_address(_num_dma, _stream, config.peripheral_base_addr);
+    dma_set_peripheral_address(_dma_num, _stream, config.peripheral_base_addr);
 
-    dma_channel_select(_num_dma, _stream, config.channel);
+    dma_channel_select(_dma_num, _stream, config.channel);
 
     /// Configure interrupt
-    dma_enable_transfer_complete_interrupt(_num_dma, _stream);
+    dma_enable_transfer_complete_interrupt(_dma_num, _stream);
     enable_irq();
 }
 
 void Dma::set_memory_address(uint32_t address) const
 {
-    dma_set_memory_address(_num_dma, _stream, address);
+    dma_set_memory_address(_dma_num, _stream, address);
 }
 
 void Dma::set_data_counter(uint16_t len) const
 {
-    dma_set_number_of_data(_num_dma, _stream, len);
+    dma_set_number_of_data(_dma_num, _stream, len);
 }
 
 void Dma::enable_stream() const
 {
-    dma_enable_stream(_num_dma, _stream);
+    dma_enable_stream(_dma_num, _stream);
 }
 
 void Dma::disable_stream() const
 {
-    dma_disable_stream(_num_dma, _stream);
+    dma_disable_stream(_dma_num, _stream);
 }
 
 void Dma::enable_irq() const
@@ -102,6 +102,16 @@ void Dma::disable_irq() const
 {
     nvic_disable_irq(_irq);
 }
+
+bool Dma::get_interrupt_flag() const
+{
+    return dma_get_interrupt_flag(_dma_num, _stream, DMA_TCIF);
 }
 
+void Dma::clear_interrupt_flag() const
+{
+    dma_clear_interrupt_flags(_dma_num, _stream, DMA_TCIF);
+}
+
+}  // namespace dma
 }  // namespace cm3cpp
