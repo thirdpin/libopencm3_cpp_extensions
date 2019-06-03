@@ -20,6 +20,7 @@ target_sources(${PROJECT_NAME} INTERFACE
     ${CM3CPP_LOCATION}/cm3cpp_usart_rb.cpp
     ${CM3CPP_LOCATION}/cm3cpp_usart.cpp
     ${CM3CPP_LOCATION}/rs485.cpp
+    ${CM3CPP_LOCATION}/cm3cpp_dma.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
