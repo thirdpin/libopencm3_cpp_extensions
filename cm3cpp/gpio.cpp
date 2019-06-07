@@ -23,7 +23,7 @@
 GPIO C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 */
 
-#include "cm3cpp_gpio.h"
+#include "gpio.hpp"
 
 namespace cm3cpp {
 

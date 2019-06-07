@@ -23,7 +23,7 @@
 RS485 implementation, public interface
 */
 
-#include "rs485.h"
+#include "rs485.hpp"
 
 namespace cm3cpp {
 

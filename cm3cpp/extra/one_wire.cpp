@@ -1,4 +1,4 @@
-#include "one_wire.h"
+#include "one_wire.hpp"
 
 namespace cm3cpp {
 

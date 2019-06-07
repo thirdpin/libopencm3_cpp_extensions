@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file    cm3cpp_dma.hpp
+ * @file    dma.hpp
  * @author
  * @version V1.0
  * @date    05-2019
@@ -131,15 +131,15 @@ class Dma
     void disable_stream() const;
 
     void set_data_counter(uint16_t len) const;
-    
+
     void enable_irq() const;
 
     void disable_irq() const;
 
  protected:
-    Dma() = delete;                    /// Constructor default is delete
-    Dma(const Dma& a) = delete;        /// Constructor copy is delete
-    Dma(Dma&& a) = delete;             /// Constructor move is delete
+    Dma() = delete;              /// Constructor default is delete
+    Dma(const Dma& a) = delete;  /// Constructor copy is delete
+    Dma(Dma&& a) = delete;       /// Constructor move is delete
 
     Dma& operator=(const Dma&) = delete;  /// Operator copy is delete
     Dma& operator=(Dma&&) = delete;       /// Operator move is delete
@@ -153,4 +153,4 @@ class Dma
 
 }  // namespace dma
 
-}  // namespace cm3cpp  // namespace cm3cpp
+}  // namespace cm3cpp

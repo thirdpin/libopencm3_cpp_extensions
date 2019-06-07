@@ -4,7 +4,7 @@
 #include <cstring>
 #include <libopencm3/stm32/dma.h>
 
-#include "cm3cpp_adc.h"
+#include "adc.hpp"
 #include "private/assert.h"
 
 namespace cm3cpp {

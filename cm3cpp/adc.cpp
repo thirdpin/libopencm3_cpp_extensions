@@ -1,4 +1,4 @@
-#include "cm3cpp_adc.h"
+#include "adc.hpp"
 
 namespace cm3cpp {
 

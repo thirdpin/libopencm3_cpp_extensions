@@ -1,4 +1,4 @@
-#include "cm3cpp_adc_dma.h"
+#include "adc_dma.hpp"
 
 namespace cm3cpp {
 
