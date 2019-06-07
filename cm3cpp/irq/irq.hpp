@@ -193,6 +193,7 @@ enum Interrupt : uint32_t
 };
 #endif
 
+#ifndef CM3CPP_CUSTOM_INTERRUPT_SERVICE
 class IInterruptable
 {
  public:
@@ -203,5 +204,6 @@ class IInterruptable
                              IInterruptable* interrupt_owner);
     virtual void call() = 0;
 };
+#endif
 
 } /* namespace cm3cpp */

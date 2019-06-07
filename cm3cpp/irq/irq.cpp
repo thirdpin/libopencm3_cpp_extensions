@@ -11,6 +11,8 @@
 
 namespace cm3cpp {
 
+#ifndef CM3CPP_CUSTOM_INTERRUPT_SERVICE
+
 struct EmptyInterrupt : public IInterruptable
 {
     void call() {}
@@ -222,5 +224,7 @@ DEFINE_CALLBACK(dma2d_isr, ISR_DMA2D)
 #endif
 
 END_DECLS
+
+#endif  // CM3CPP_CUSTOM_INTERRUPT_SERVICE
 
 }  // namespace cm3cpp

@@ -31,3 +31,6 @@ Library defines:
     - ``CM3CPP_ENABLE_IMPLISIT_DESTRUCTOR_CALLS`` — do not call
       ``assert(false)`` if dangerous destructor of library class is
       called.
+
+    - ``CM3CPP_CUSTOM_INTERRUPT_SERVICE`` — disable IInterruptable
+      and leave all opencm3 interrupt functions undeclared.
