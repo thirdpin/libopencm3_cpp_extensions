@@ -27,7 +27,6 @@ ROUND BUFFER implementation, public interface
 #ifndef UTILS_ROUND_BUFFER_H_
 #define UTILS_ROUND_BUFFER_H_
 
-#include <cm3cpp_config.h>
 #include <stdint.h>
 
 #include "../private/assert.h"

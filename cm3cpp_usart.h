@@ -42,7 +42,6 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #include "cm3cpp_gpio.h"
 #include "irq/cm3cpp_irq.h"
 #include "private/assert.h"
-#include <cm3cpp_config.h>
 
 namespace cm3cpp {
 

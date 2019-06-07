@@ -27,7 +27,6 @@ SPI C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #ifndef SPI_EXT_H
 #define SPI_EXT_H
 
-#include <cm3cpp_config.h>
 #include <libopencm3/stm32/spi.h>
 
 #include "cm3cpp_gpio.h"

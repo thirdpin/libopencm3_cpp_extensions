@@ -25,32 +25,10 @@ SYSTICK implementation, public interface
 
 #include "cm3cpp_systick.h"
 
-#define __EXPAND2(a, b) a##b
-#define __EXPAND3(a, b, c) a##b##c
-
-#define __INT_SOURCE(n) __EXPAND2(TIM, n)
-#define __RCC(n) __EXPAND2(rcc_periph_clken::RCC_TIM, n)
-#define __SYSTICK_INT_FUNC(n) __EXPAND3(tim, n, _isr)
-
-#define CM3CPP_INT_SOURCE __INT_SOURCE(CM3CPP_TIMER_N)
-#define CM3CPP_INT_SOURCE_RCC __RCC(CM3CPP_TIMER_N)
-
-#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
-#define CM3CPP_SYSTICK_INT_FUNC __SYSTICK_INT_FUNC(CM3CPP_TIMER_N)
-extern "C" {
-void CM3CPP_SYSTICK_INT_FUNC(void);
-}
-#include "irq/cm3cpp_irq.h"
-#include <libopencm3/stm32/rcc.h>
-#include <libopencm3/stm32/timer.h>
-#else
-#define CM3CPP_SYSTICK_INT_FUNC sys_tick_handler
-#endif
-
+#ifndef CM3CPP_CUSTOM_SYSTICK
 static volatile uint32_t counter;
 
-#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE != 1
-void CM3CPP_SYSTICK_INT_FUNC(void)
+void sys_tick_handler(void)
 {
     counter++;
 }
@@ -67,6 +45,7 @@ namespace cm3cpp {
 
 namespace systick {
 
+#ifndef CM3CPP_CUSTOM_SYSTICK
 void delay_systick(uint32_t ms)
 {
     uint32_t time = get_counter();
@@ -74,45 +53,29 @@ void delay_systick(uint32_t ms)
         __asm("nop");
     }
 }
+#endif  // CM3CPP_CUSTOM_SYSTICK
 
-void init(uint32_t clock_div)
+void init(uint32_t system_core_freq, uint32_t clock_div)
 {
-#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
-    rcc_periph_clock_enable(CM3CPP_INT_SOURCE_RCC);
-    timer_set_mode(CM3CPP_INT_SOURCE, TIM_CR1_CKD_CK_INT, TIM_CR1_CMS_EDGE,
-                   TIM_CR1_DIR_UP);
-    timer_set_prescaler(CM3CPP_INT_SOURCE,
-                        (CM3CPP_SYSTICK_CLOCK / clock_div) - 1);
-    timer_disable_preload(CM3CPP_INT_SOURCE);
-    timer_continuous_mode(CM3CPP_INT_SOURCE);
-    timer_set_period(CM3CPP_INT_SOURCE, CM3CPP_SYSTICK_PERIOD);
-    timer_enable_counter(CM3CPP_INT_SOURCE);
-#else
+#ifndef CM3CPP_CUSTOM_SYSTICK
     counter = 0;
-    systick_set_reload(CM3CPP_SYSTEM_CORE_CLOCK / clock_div);
+#endif
+    systick_set_reload(system_core_freq / clock_div);
     systick_set_clocksource(STK_CSR_CLKSOURCE_AHB);
     systick_counter_enable();
     systick_interrupt_enable();
-#endif
 }
 
 void deinit()
 {
-#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
-    timer_disable_counter(CM3CPP_INT_SOURCE);
-#else
     systick_interrupt_disable();
     systick_counter_disable();
-#endif
 }
 
+#ifndef CM3CPP_CUSTOM_SYSTICK
 uint32_t get_counter()
 {
-#if CM3CPP_ENABLE_CUSTOM_SYSTICK_SOURCE == 1
-    return timer_get_counter(CM3CPP_INT_SOURCE);
-#else
     return counter;
-#endif
 }
 
 Counter::Counter(Mode mode, uint32_t period)
@@ -169,5 +132,6 @@ bool Counter::stop()
 }
 
 }  // namespace systick
+#endif  // CM3CPP_CUSTOM_SYSTICK
 
 }  // namespace cm3cpp

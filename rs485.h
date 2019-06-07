@@ -39,7 +39,6 @@ RS485 implementation, public interface
 #include "cm3cpp_gpio.h"
 #include "private/assert.h"
 #include "utils/round_buffer.h"
-#include <cm3cpp_config.h>
 
 namespace cm3cpp {
 

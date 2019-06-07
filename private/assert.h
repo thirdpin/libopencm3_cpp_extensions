@@ -1,18 +1,16 @@
 #ifndef CM3CPP_ASSERT_H_
 #define CM3CPP_ASSERT_H_
 
-#include <cm3cpp_config.h>
-
 #ifndef CM3CPP_ASSERT
 #define CM3CPP_ASSERT(x)                                                       \
     if ((x)) {                                                                 \
         while (true) {                                                         \
-            asm("");                                                           \
+            asm("nop");                                                        \
         }                                                                      \
     }
 #endif
 
-#if CM3CPP_ENABLE_IMPLISIT_DESTRUCTOR_CALLS == 1
+#ifdef CM3CPP_ENABLE_IMPLISIT_DESTRUCTOR_CALLS
 #define CM3CPP_EXPLISIT_DESTRUCTOR(c) ~c() = default;
 #else
 #define CM3CPP_EXPLISIT_DESTRUCTOR(c)                                          \

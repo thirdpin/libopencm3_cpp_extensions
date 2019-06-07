@@ -1,7 +1,6 @@
 #ifndef CM3CPP_ADC_DMA_H_
 #define CM3CPP_ADC_DMA_H_
 
-#include <cm3cpp_config.h>
 #include <cstring>
 #include <libopencm3/stm32/dma.h>
 

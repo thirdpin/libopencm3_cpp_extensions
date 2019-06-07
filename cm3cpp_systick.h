@@ -26,19 +26,24 @@ SYSTICK implementation, public interface
 #ifndef SYSTICK_API_H
 #define SYSTICK_API_H
 
-#include "cm3cpp_config.h"
 #include <libopencm3/cm3/systick.h>
 #include <stdint.h>
 
+#ifndef CM3CPP_CUSTOM_SYSTICK
 extern "C" void sys_tick_handler(void);
+#endif
+
 extern "C" void delay_nop(uint32_t count);
 
 namespace cm3cpp {
 
 namespace systick {
 
-void init(uint32_t div = CM3CPP_SYSTICK_CLOCK_DIV);
+void init(uint32_t system_core_freq, uint32_t div = 1000);
 void deinit();
+
+#ifndef CM3CPP_CUSTOM_SYSTICK
+
 uint32_t get_counter();
 void delay_systick(uint32_t ms);
 
@@ -66,6 +71,8 @@ class Counter
     Mode _mode;
     bool _is_active;
 };
+
+#endif  // CM3CPP_CUSTOM_SYSTICK
 
 }  // namespace systick
 
