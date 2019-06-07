@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file    cm3cpp_dma
+ * @file    dma
  * @author
  * @version V1.0
  * @date    05-2019
@@ -12,7 +12,7 @@
  */
 
 /* Includes ------------------------------------------------------------------*/
-#include "cm3cpp_dma.hpp"
+#include "dma.hpp"
 
 // LIBOPENCM3 INCLUDES
 #include <libopencm3/cm3/nvic.h>
@@ -33,10 +33,10 @@ Dma::Dma(const LowLevelConfig& config) :
         rcc_periph_clock_enable(RCC_DMA1);
     }
     else {
-		rcc_periph_clock_enable(RCC_DMA2);
-	}
+        rcc_periph_clock_enable(RCC_DMA2);
+    }
 
-	// Reset channel
+    // Reset channel
     dma_stream_reset(_dma_num, _stream);
 
     // Config DMA

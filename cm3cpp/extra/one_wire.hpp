@@ -1,8 +1,8 @@
 #ifndef EXTRA_ONE_WIRE_H_
 #define EXTRA_ONE_WIRE_H_
 
-#include "../cm3cpp_gpio.h"
-#include "../cm3cpp_timer.h"
+#include "../gpio.hpp"
+#include "../timer.hpp"
 #include <string.h>
 
 namespace cm3cpp {

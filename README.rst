@@ -24,7 +24,7 @@ Library supports only F2 and F4 microcontrollers.
 Library defines:
 ================
 
-    - ``CM3CPP_CUSTOM_SYSTICK`` — disable library sysick realization
+    - ``CM3CPP_CUSTOM_SYSTICK`` — disable library systick realization
       (enabled by default). If define enabled you could not use
       :cpp:`systick::Counter` class;
 

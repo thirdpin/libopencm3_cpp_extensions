@@ -29,8 +29,8 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 /**************************************************************************************************
  * CM3CPP INCLUDES
  *************************************************************************************************/
-#include "cm3cpp_usart.h"
-#include "utils/round_buffer.h"
+#include "usart.hpp"
+#include "utils/round_buffer.hpp"
 
 namespace cm3cpp {
 

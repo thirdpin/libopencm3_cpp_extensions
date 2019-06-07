@@ -24,7 +24,7 @@
 SPI C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 */
 
-#include "cm3cpp_spi.h"
+#include "spi.hpp"
 
 namespace cm3cpp {
 

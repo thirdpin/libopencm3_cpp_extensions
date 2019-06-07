@@ -23,7 +23,7 @@
 USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 */
 
-#include "cm3cpp_usart_rb.h"
+#include "usart_rb.hpp"
 
 namespace cm3cpp {
 

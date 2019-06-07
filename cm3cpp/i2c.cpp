@@ -23,7 +23,7 @@
 I2C C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 */
 
-#include "cm3cpp_i2c.h"
+#include "i2c.hpp"
 
 namespace cm3cpp {
 

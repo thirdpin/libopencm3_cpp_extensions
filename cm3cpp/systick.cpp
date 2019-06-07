@@ -23,7 +23,7 @@
 SYSTICK implementation, public interface
 */
 
-#include "cm3cpp_systick.h"
+#include "systick.hpp"
 
 #ifndef CM3CPP_CUSTOM_SYSTICK
 static volatile uint32_t counter;

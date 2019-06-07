@@ -24,7 +24,7 @@
 ROUND BUFFER implementation, public interface
 */
 
-#include "round_buffer.h"
+#include "round_buffer.hpp"
 
 namespace cm3cpp {
 

@@ -28,10 +28,10 @@ I2C C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 
 #include <libopencm3/stm32/i2c.h>
 
-#include "cm3cpp_gpio.h"
+#include "gpio.hpp"
 #include "private/assert.h"
 
-#include "cm3cpp_systick.h"
+#include "systick.hpp"
 
 namespace cm3cpp {
 

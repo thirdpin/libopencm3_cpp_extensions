@@ -1,4 +1,6 @@
-#include "cm3cpp_irq.h"
+#include <cstdint>
+
+#include "irq.hpp"
 
 #define DEFINE_CALLBACK(cfunc, int_enum)                                       \
     void cfunc(void)                                                           \
