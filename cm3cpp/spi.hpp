@@ -114,7 +114,7 @@ enum StdMode
     MODE_3
 };
 
-class Spi : public IInterruptable
+class Spi
 {
  public:
     using Gpio = gpio::Gpio;
@@ -129,8 +129,6 @@ class Spi : public IInterruptable
 
     Spi();
     Spi(Config spi_conf);
-
-    void call();
 
     bool get_flag_status(Flag flag) const;
 

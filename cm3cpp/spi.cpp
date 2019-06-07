@@ -49,8 +49,6 @@ Spi::Spi(Config spi_conf)
             break;
     }
 
-    this->register_isr(_irq, this);
-
     Gpio mosi(spi_conf.mosi_pin);
     mosi.mode_setup(Gpio::Mode::ALTERNATE_FUNCTION, Gpio::PullMode::NO_PULL);
     mosi.set_output_options(Gpio::OutputType::PUSH_PULL,
@@ -181,8 +179,6 @@ inline void Spi::enable_nvic()
 {
     nvic_enable_irq(static_cast<uint8_t>(_irq));
 }
-
-void Spi::call() {}
 
 }  // namespace spi
 
