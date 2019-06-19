@@ -75,7 +75,7 @@ Dma::Dma(const LowLevelConfig& config) :
 
 void Dma::set_memory_address(uint32_t address) const
 {
-    dma_set_memory_address(_dma_num, _stream, address);
+    DMA_SM0AR(_dma_num, _stream) = (uint32_t*)address;
 }
 
 void Dma::set_data_counter(uint16_t len) const
