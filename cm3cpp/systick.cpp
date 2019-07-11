@@ -131,7 +131,8 @@ bool Counter::stop()
     return true;
 }
 
-}  // namespace systick
 #endif  // CM3CPP_CUSTOM_SYSTICK
+}  // namespace systick
+
 
 }  // namespace cm3cpp

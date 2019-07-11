@@ -29,6 +29,8 @@ namespace cm3cpp {
 
 namespace i2c {
 
+#ifndef CM3CPP_CUSTOM_SYSTICK
+
 I2c::I2c(Config i2c_conf) :
   _counter_ms(new systick::Counter(systick::Counter::Mode::ONE_SHOT,
                                    MAX_TRANSMIT_TIME_MS))
@@ -351,6 +353,8 @@ auto I2c::_get_flag_status(Event event) -> Result
 
     return result;
 }
+
+#endif  // CM3CPP_CUSTOM_SYSTICK
 
 }  // namespace i2c
 

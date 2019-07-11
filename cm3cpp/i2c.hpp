@@ -37,6 +37,8 @@ namespace cm3cpp {
 
 namespace i2c {
 
+#ifndef CM3CPP_CUSTOM_SYSTICK
+
 class I2c
 {
  public:
@@ -212,6 +214,8 @@ class I2c
     void _disable_ack();
     Result _get_flag_status(Event event);
 };
+
+#endif  // CM3CPP_CUSTOM_SYSTICK
 
 }  // namespace i2c
 
