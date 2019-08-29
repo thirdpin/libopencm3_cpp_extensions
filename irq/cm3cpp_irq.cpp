@@ -1,7 +1,7 @@
 #include "cm3cpp_irq.h"
 
 #define DEFINE_CALLBACK(cfunc, int_enum)                                       \
-    void cfunc(void)                                                           \
+    [[gnu::weak]] void cfunc(void)                                                           \
     {                                                                          \
         const uint32_t indx = static_cast<uint32_t>(Interrupt::int_enum);      \
         isr_vector_table[indx]->call();                                        \
