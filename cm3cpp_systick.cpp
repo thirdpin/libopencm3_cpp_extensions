@@ -168,6 +168,11 @@ bool Counter::stop()
     return true;
 }
 
+bool Counter::is_active() const
+{
+    return _is_active;
+}
+
 }  // namespace systick
 
 }  // namespace cm3cpp
