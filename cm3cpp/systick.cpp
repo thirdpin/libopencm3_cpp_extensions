@@ -131,6 +131,11 @@ bool Counter::stop()
     return true;
 }
 
+bool Counter::is_active() const
+{
+    return _is_active;
+}
+
 #endif  // CM3CPP_CUSTOM_SYSTICK
 }  // namespace systick
 
