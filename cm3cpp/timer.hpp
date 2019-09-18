@@ -285,7 +285,7 @@ class Timer
     Result enable_trigger_interrupt();
     Result disable_trigger_interrupt();
     // SR///////////////////////////////////////////////////////
-    bool get_flag_status(Flag flag);
+    bool get_flag_status(Flag flag) const;
     Result clear_flag_status(Flag flag);
     // EGR//////////////////////////////////////////////////////
     void update_generation();
@@ -340,26 +340,26 @@ class Timer
     Result set_capture_compare_4_polarity(Polarity polarity);
     Result set_capture_compare_4_com_polarity(Polarity polarity);
     // CNT//////////////////////////////////////////////////////
-    uint16_t get_counter_value();
-    uint32_t get_counter_value32();
+    uint16_t get_counter_value() const;
+    uint32_t get_counter_value32() const;
     void set_counter_value(uint16_t value);
     // PSC//////////////////////////////////////////////////////
-    uint16_t get_prescaler_value();
+    uint16_t get_prescaler_value() const;
     void set_prescaler_value(uint32_t value);
     // ARR//////////////////////////////////////////////////////
-    uint16_t get_autoreload_value();
+    uint16_t get_autoreload_value() const;
     void set_autoreload_value(uint32_t value);
     // CCR1/////////////////////////////////////////////////////
-    uint16_t get_capture_compare_1_value();
+    uint16_t get_capture_compare_1_value() const;
     void set_capture_compare_1_value(uint32_t value);
     // CCR2/////////////////////////////////////////////////////
-    uint16_t get_capture_compare_2_value();
+    uint16_t get_capture_compare_2_value() const;
     void set_capture_compare_2_value(uint32_t value);
     // CCR3/////////////////////////////////////////////////////
-    uint16_t get_capture_compare_3_value();
+    uint16_t get_capture_compare_3_value() const;
     void set_capture_compare_3_value(uint32_t value);
     // CCR4/////////////////////////////////////////////////////
-    uint16_t get_capture_compare_4_value();
+    uint16_t get_capture_compare_4_value() const;
     void set_capture_compare_4_value(uint32_t value);
 
  private:
