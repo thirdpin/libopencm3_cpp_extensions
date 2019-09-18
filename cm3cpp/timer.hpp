@@ -179,6 +179,9 @@ class Timer
     };
 
     Timer(uint8_t timer_num)
+    using ExtTriggerFilter = tim_ic_filter;
+    using ExtTriggerPrescaler = tim_ic_psc;
+    using ExtTriggerPolarity = tim_et_pol;
     {
 #if defined(STM32F2) || defined(STM32F4)
         switch (timer_num) {
@@ -260,6 +263,14 @@ class Timer
     Result set_trigger(Trigger trigger);
     Result enable_master_slave_mode();
     Result disable_master_slave_mode();
+
+    // ETR config (external trigger), TIM 1-8 (F4, F2)
+    void enable_etr_clock();  //!< Enable CNT after ETR clock enabling
+    void disable_etr_clock();
+    void set_etr_filter(ExtTriggerFilter);
+    void set_etr_prescaler(ExtTriggerPrescaler);
+    void set_etr_polarity(ExtTriggerPolarity);
+
     // DIER/////////////////////////////////////////////////////
     Result enable_update_interrupt();
     Result disable_update_interrupt();
