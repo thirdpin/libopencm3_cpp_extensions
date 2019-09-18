@@ -395,7 +395,7 @@ auto Timer::disable_trigger_interrupt() -> Result
 }
 
 // 9,12
-bool Timer::get_flag_status(Flag flag)
+bool Timer::get_flag_status(Flag flag) const
 {
     bool status = false;
 
@@ -1611,12 +1611,12 @@ auto Timer::set_capture_compare_4_com_polarity(Polarity polarity) -> Result
 }
 
 // 9,12
-uint16_t Timer::get_counter_value()
+uint16_t Timer::get_counter_value() const
 {
     return TIM_CNT(_timer);
 }
 
-uint32_t Timer::get_counter_value32()
+uint32_t Timer::get_counter_value32() const
 {
     return TIM_CNT(_timer);
 }
@@ -1628,7 +1628,7 @@ void Timer::set_counter_value(uint16_t value)
 }
 
 // 9,12
-uint16_t Timer::get_prescaler_value()
+uint16_t Timer::get_prescaler_value() const
 {
     return TIM_PSC(_timer);
 }
@@ -1640,7 +1640,7 @@ void Timer::set_prescaler_value(uint32_t value)
 }
 
 // 9,12
-uint16_t Timer::get_autoreload_value()
+uint16_t Timer::get_autoreload_value() const
 {
     return TIM_ARR(_timer);
 }
@@ -1652,7 +1652,7 @@ void Timer::set_autoreload_value(uint32_t value)
 }
 
 // 9,12
-uint16_t Timer::get_capture_compare_1_value()
+uint16_t Timer::get_capture_compare_1_value() const
 {
     return TIM_CCR1(_timer);
 }
@@ -1664,7 +1664,7 @@ void Timer::set_capture_compare_1_value(uint32_t value)
 }
 
 // 9,12
-uint16_t Timer::get_capture_compare_2_value()
+uint16_t Timer::get_capture_compare_2_value() const
 {
     return TIM_CCR2(_timer);
 }
@@ -1675,7 +1675,7 @@ void Timer::set_capture_compare_2_value(uint32_t value)
     TIM_CCR2(_timer) = value;
 }
 
-uint16_t Timer::get_capture_compare_3_value()
+uint16_t Timer::get_capture_compare_3_value() const
 {
     return TIM_CCR3(_timer);
 }
@@ -1687,7 +1687,7 @@ void Timer::set_capture_compare_3_value(uint32_t value)
 }
 
 // 9,12
-uint16_t Timer::get_capture_compare_4_value()
+uint16_t Timer::get_capture_compare_4_value() const
 {
     return TIM_CCR4(_timer);
 }

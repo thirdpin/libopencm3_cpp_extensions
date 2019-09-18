@@ -26,6 +26,8 @@ TIM C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #ifndef CM3CPP_TIMER_H_
 #define CM3CPP_TIMER_H_
 
+#include <cassert>
+
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/timer.h>
 
@@ -178,10 +180,13 @@ class Timer
         HI_RISING_EDGE
     };
 
-    Timer(uint8_t timer_num)
     using ExtTriggerFilter = tim_ic_filter;
     using ExtTriggerPrescaler = tim_ic_psc;
     using ExtTriggerPolarity = tim_et_pol;
+
+    using TimerNumber = uint8_t;
+
+    Timer(TimerNumber timer_num)
     {
 #if defined(STM32F2) || defined(STM32F4)
         switch (timer_num) {
@@ -241,6 +246,8 @@ class Timer
                 _timer = TIM14;
                 rcc_periph_reset_pulse(RST_TIM14);
                 break;
+            default:
+                assert(false);
         }
 #endif
     }
@@ -285,7 +292,7 @@ class Timer
     Result enable_trigger_interrupt();
     Result disable_trigger_interrupt();
     // SR///////////////////////////////////////////////////////
-    bool get_flag_status(Flag flag);
+    bool get_flag_status(Flag flag) const;
     Result clear_flag_status(Flag flag);
     // EGR//////////////////////////////////////////////////////
     void update_generation();
@@ -340,27 +347,29 @@ class Timer
     Result set_capture_compare_4_polarity(Polarity polarity);
     Result set_capture_compare_4_com_polarity(Polarity polarity);
     // CNT//////////////////////////////////////////////////////
-    uint16_t get_counter_value();
-    uint32_t get_counter_value32();
+    uint16_t get_counter_value() const;
+    uint32_t get_counter_value32() const;
     void set_counter_value(uint16_t value);
     // PSC//////////////////////////////////////////////////////
-    uint16_t get_prescaler_value();
+    uint16_t get_prescaler_value() const;
     void set_prescaler_value(uint32_t value);
     // ARR//////////////////////////////////////////////////////
-    uint16_t get_autoreload_value();
+    uint16_t get_autoreload_value() const;
     void set_autoreload_value(uint32_t value);
     // CCR1/////////////////////////////////////////////////////
-    uint16_t get_capture_compare_1_value();
+    uint16_t get_capture_compare_1_value() const;
     void set_capture_compare_1_value(uint32_t value);
     // CCR2/////////////////////////////////////////////////////
-    uint16_t get_capture_compare_2_value();
+    uint16_t get_capture_compare_2_value() const;
     void set_capture_compare_2_value(uint32_t value);
     // CCR3/////////////////////////////////////////////////////
-    uint16_t get_capture_compare_3_value();
+    uint16_t get_capture_compare_3_value() const;
     void set_capture_compare_3_value(uint32_t value);
     // CCR4/////////////////////////////////////////////////////
-    uint16_t get_capture_compare_4_value();
+    uint16_t get_capture_compare_4_value() const;
     void set_capture_compare_4_value(uint32_t value);
+
+    uint32_t periph_address() const { return _timer; }
 
  private:
     uint32_t _timer;
