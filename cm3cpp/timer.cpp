@@ -1698,6 +1698,31 @@ void Timer::set_capture_compare_4_value(uint32_t value)
     TIM_CCR4(_timer) = value;
 }
 
+void Timer::enable_etr_clock()
+{
+    TIM_SMCR(_timer) |= TIM_SMCR_ECE;  // set enable bit
+}
+
+void Timer::disable_etr_clock()
+{
+    TIM_SMCR(_timer) &= ~TIM_SMCR_ECE;  // reset enable bit
+}
+
+void Timer::set_etr_filter(ExtTriggerFilter filter)
+{
+    timer_slave_set_filter(_timer, filter);
+}
+
+void Timer::set_etr_prescaler(ExtTriggerPrescaler prescaler)
+{
+    timer_slave_set_prescaler(_timer, prescaler);
+}
+
+void Timer::set_etr_polarity(ExtTriggerPolarity polarity)
+{
+    timer_slave_set_polarity(_timer, polarity);
+}
+
 }  // namespace tim
 
 }  // namespace cm3cpp
