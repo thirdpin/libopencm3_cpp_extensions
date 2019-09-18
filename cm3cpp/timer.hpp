@@ -26,6 +26,8 @@ TIM C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #ifndef CM3CPP_TIMER_H_
 #define CM3CPP_TIMER_H_
 
+#include <cassert>
+
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/timer.h>
 
@@ -178,10 +180,13 @@ class Timer
         HI_RISING_EDGE
     };
 
-    Timer(uint8_t timer_num)
     using ExtTriggerFilter = tim_ic_filter;
     using ExtTriggerPrescaler = tim_ic_psc;
     using ExtTriggerPolarity = tim_et_pol;
+
+    using TimerNumber = uint8_t;
+
+    Timer(TimerNumber timer_num)
     {
 #if defined(STM32F2) || defined(STM32F4)
         switch (timer_num) {
@@ -241,6 +246,8 @@ class Timer
                 _timer = TIM14;
                 rcc_periph_reset_pulse(RST_TIM14);
                 break;
+            default:
+                assert(false);
         }
 #endif
     }
