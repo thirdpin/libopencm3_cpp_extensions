@@ -362,6 +362,8 @@ class Timer
     uint16_t get_capture_compare_4_value() const;
     void set_capture_compare_4_value(uint32_t value);
 
+    uint32_t periph_address() const { return _timer; }
+
  private:
     uint32_t _timer;
 };
