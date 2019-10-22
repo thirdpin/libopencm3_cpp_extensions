@@ -145,8 +145,8 @@ class Dma
     Dma& operator=(Dma&&) = delete;       /// Operator move is delete
 
  private:
-    Stream _stream;      ///< Shows the stream on which DMA is configured
     DmaNumber _dma_num;  ///< Number configured DMA
+    Stream _stream;      ///< Shows the stream on which DMA is configured
 
     uint8_t _irq;  ///< Interrupt number
 };
