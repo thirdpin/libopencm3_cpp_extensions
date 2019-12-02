@@ -190,6 +190,8 @@ class Usart
 
     auto get_irq() { return static_cast<Interrupt>(_usart_nvic); }
 
+    auto get_uart_periph() { return _usart; }
+
  protected:
     Gpio _rx;
     Gpio _tx;
