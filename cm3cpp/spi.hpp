@@ -125,6 +125,7 @@ class Spi
         Gpio::Pinout mosi_pin;
         Gpio::Pinout miso_pin;
         Gpio::Pinout scl_pin;
+        Gpio::Pinout ss_pin;
     };
 
     Spi();
