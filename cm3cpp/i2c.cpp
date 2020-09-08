@@ -44,6 +44,9 @@ I2c::I2c(Config i2c_conf) :
         case 2:
             _i2c = I2C2;
             break;
+        case 3:
+            _i2c = I2C3;
+            break;
         default:
             break;
     }
