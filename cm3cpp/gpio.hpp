@@ -52,7 +52,57 @@ class Gpio
  public:
     struct Pinout
     {
-        uint32_t port;
+        enum Port
+        {
+// Check preprocessor value is not empty
+// Works for integer values
+// https://stackoverflow.com/questions/4102351/test-for-empty-macro-definition
+#if (GPIOA + 0)
+            PORT_A = GPIOA
+#endif
+#if (GPIOB + 0)
+            ,
+            PORT_B = GPIOC
+#endif
+#if (GPIOC + 0)
+            ,
+            PORT_C = GPIOC
+#endif
+#if (GPIOD + 0)
+            ,
+            PORT_D = GPIOD
+#endif
+#if (GPIOE + 0)
+            ,
+            PORT_E = GPIOE
+#endif
+#if (GPIOF + 0)
+            ,
+            PORT_F = GPIOF
+#endif
+#if (GPIOG + 0)
+            ,
+            PORT_G = GPIOG
+#endif
+#if (GPIOH + 0)
+            ,
+            PORT_H = GPIOH
+#endif
+#if (GPIOI + 0)
+            ,
+            PORT_I = GPIOI
+#endif
+#if (GPIOJ + 0)
+            ,
+            PORT_J = GPIOJ
+#endif
+#if (GPIOK + 0)
+            ,
+            PORT_K = GPIOK
+#endif
+        };
+
+        Port port;
         uint16_t pin;
         uint8_t pin_number;
     };
@@ -126,7 +176,7 @@ class Gpio
 
  private:
     Pinout _pinout;
-};
+};  // namespace gpio
 
 }  // namespace gpio
 

@@ -3,7 +3,7 @@
 
 #define PINOUT_CTOR(port, pin)                                                 \
     {                                                                          \
-        GPIO##port, GPIO##pin, pin                                             \
+        static_cast<Pinout::Port>(GPIO##port), GPIO##pin, pin                  \
     }
 
 #define PNULL                                                                  \
