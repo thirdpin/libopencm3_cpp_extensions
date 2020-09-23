@@ -100,85 +100,85 @@ class Gpio
             ,
             PORT_K = GPIOK
 #endif
+        };
+
+        Port port;
+        uint16_t pin;
+        uint8_t pin_number;
     };
 
-    Port port;
-    uint16_t pin;
-    uint8_t pin_number;
-};
+    enum Mode
+    {
+        INPUT,
+        OUTPUT,
+        ALTERNATE_FUNCTION,
+        ANALOG
+    };
 
-enum Mode
-{
-    INPUT,
-    OUTPUT,
-    ALTERNATE_FUNCTION,
-    ANALOG
-};
+    enum PullMode
+    {
+        NO_PULL,
+        PULL_UP,
+        PULL_DOWN
+    };
 
-enum PullMode
-{
-    NO_PULL,
-    PULL_UP,
-    PULL_DOWN
-};
+    enum OutputType
+    {
+        PUSH_PULL,
+        OPEN_DRAIN
+    };
 
-enum OutputType
-{
-    PUSH_PULL,
-    OPEN_DRAIN
-};
+    enum Speed
+    {
+        LOW_2MHz,
+        MEDIUM_25MHz,
+        FAST_50MHz,
+        HIGH_SPEED_100MHz
+    };
 
-enum Speed
-{
-    LOW_2MHz,
-    MEDIUM_25MHz,
-    FAST_50MHz,
-    HIGH_SPEED_100MHz
-};
+    enum AltFuncNumber
+    {
+        AF0,
+        AF1,
+        AF2,
+        AF3,
+        AF4,
+        AF5,
+        AF6,
+        AF7,
+        AF8,
+        AF9,
+        AF10,
+        AF11,
+        AF12,
+        AF13,
+        AF14,
+        AF15
+    };
 
-enum AltFuncNumber
-{
-    AF0,
-    AF1,
-    AF2,
-    AF3,
-    AF4,
-    AF5,
-    AF6,
-    AF7,
-    AF8,
-    AF9,
-    AF10,
-    AF11,
-    AF12,
-    AF13,
-    AF14,
-    AF15
-};
+    Gpio() {}
+    Gpio(Pinout pinout);
 
-Gpio() {}
-Gpio(Pinout pinout);
+    void init(Pinout pinout);
+    void set();
+    void clear();
+    bool get() const;
+    void toggle();
+    uint16_t port_read() const;
+    void port_write(uint16_t data);
+    void port_config_lock();
+    void mode_setup(Mode mode, PullMode pull_mode);
+    void set_output_options(OutputType type, Speed speed);
+    void set_af(AltFuncNumber af_num);
+    void setup_exti(enum exti_trigger_type trigger);
+    void clear_exti_pending_bit();
+    bool get_exti_flag_status() const;
 
-void init(Pinout pinout);
-void set();
-void clear();
-bool get() const;
-void toggle();
-uint16_t port_read() const;
-void port_write(uint16_t data);
-void port_config_lock();
-void mode_setup(Mode mode, PullMode pull_mode);
-void set_output_options(OutputType type, Speed speed);
-void set_af(AltFuncNumber af_num);
-void setup_exti(enum exti_trigger_type trigger);
-void clear_exti_pending_bit();
-bool get_exti_flag_status() const;
-
-private:
-Pinout _pinout;
+ private:
+    Pinout _pinout;
 };  // namespace gpio
 
-}  // namespace cm3cpp
+}  // namespace gpio
 
 }  // namespace cm3cpp
 
