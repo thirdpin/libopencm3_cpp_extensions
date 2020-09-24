@@ -27,6 +27,8 @@ RS485 implementation, public interface
 #define RS_485_H
 
 #include <stdint.h>
+#include <cassert>
+#include <limits>
 
 #include <libopencm3/stm32/usart.h>
 #ifdef STM32F2
@@ -77,7 +79,10 @@ class RS485
 
     void usart_enable_tc_interrupt() { USART_CR1(_rs485) |= USART_CR1_TCIE; }
 
-    void usart_disable_tc_interrupt() { USART_CR1(_rs485) &= ~USART_CR1_TCIE; }
+    void usart_disable_tc_interrupt()
+    {
+        USART_CR1(_rs485) &= ~static_cast<uint32_t>(USART_CR1_TCIE);
+    }
 
     bool interrupt_source_RXNE()
     {
@@ -106,7 +111,12 @@ class RS485
     void receive_handler()
     {
         if (interrupt_source_RXNE()) {
-            rb_in->push(usart_recv(_rs485));
+            using byte_t = uint8_t;
+
+            const uint16_t byte16 = usart_recv(_rs485);
+            assert(byte16 < std::numeric_limits<byte_t>::max());
+
+            rb_in->push(static_cast<byte_t>(byte16));
         }
     }
 

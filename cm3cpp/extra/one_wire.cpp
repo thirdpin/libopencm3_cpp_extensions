@@ -191,7 +191,7 @@ bool OneWire::search_next(bool do_reset, bool alarm_only)
         // loop to do the search
         do {
             // read a bit and its compliment
-            bit_test = ((uint8_t)read_bit()) << 1;
+            bit_test = static_cast<uint8_t>(uint8_t(read_bit()) << 1);
             bit_test |= ((uint8_t)read_bit());
 
             // check for no devices on 1-wire

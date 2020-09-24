@@ -146,7 +146,9 @@ class Usart
                 usart_get_flag(_usart, USART_SR_TC));
     }
 
-    void clear_tc_flag() { USART_SR(_usart) = ~USART_SR_TC; }
+    void clear_tc_flag() {
+        USART_SR(_usart) = ~static_cast<uint32_t>(USART_SR_TC);
+    }
 
     void enable_irq() { nvic_enable_irq(_usart_nvic); }
 
@@ -162,7 +164,9 @@ class Usart
 
     void disable_tx_interrupt() { usart_disable_tx_interrupt(_usart); }
 
-    void disable_tc_interrupt() { USART_CR1(_usart) &= ~USART_CR1_TCIE; }
+    void disable_tc_interrupt() {
+        USART_CR1(_usart) &= ~static_cast<uint32_t>(USART_CR1_TCIE);
+    }
 
     bool is_framing_error() { return (USART_SR(_usart) & USART_SR_FE) != 0; }
 
@@ -196,7 +200,7 @@ class Usart
     Gpio _rx;
     Gpio _tx;
     uint32_t _usart;
-    uint32_t _usart_nvic;
+    uint8_t _usart_nvic;
 
     Mode _mode;
 };

@@ -108,7 +108,7 @@ void I2c::set_address_mode(AddressMode mode)
 {
     switch (mode) {
         case ADDRESS_MODE_7BIT:
-            I2C_OAR1(_i2c) &= ~I2C_OAR1_ADDMODE;
+            I2C_OAR1(_i2c) &= ~static_cast<uint32_t>(I2C_OAR1_ADDMODE);
             break;
         case ADDRESS_MODE_10BIT:
             I2C_OAR1(_i2c) |= I2C_OAR1_ADDMODE;

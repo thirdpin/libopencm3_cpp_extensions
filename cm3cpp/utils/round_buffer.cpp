@@ -113,9 +113,11 @@ int RoundBuffer::memcmp(void* buffer, uint32_t sizebuf)
     uint32_t i = 0;
     while (i < sizebuf && buf[i] == (*this)[i])
         i++;
+
     if (i == sizebuf)
         return (0);  //???????
-    return (i + 1);
+
+    return (static_cast<int32_t>(i) + 1);
 }
 
 int RoundBuffer::mem_search(void* buffer, uint32_t sizebuf)
@@ -135,9 +137,11 @@ int RoundBuffer::mem_search(void* buffer, uint32_t sizebuf)
                 break;
             }
         }
+
         if (i_word == sizebuf)
-            return (i_begin);
+            return static_cast<int32_t>(i_begin);
     }
+
     return (-2);
 }
 

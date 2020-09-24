@@ -179,12 +179,12 @@ class Adc
         SINGLE_CONV,
     };
 
-    enum MultiMode
+    enum MultiMode : uint32_t
     {
         MODE_INDEPENDENT = 0,
     };
 
-    enum SamplingTime
+    enum SamplingTime: uint8_t
     {
         CYCLES_3 = 0,
         CYCLES_15 = 1,
@@ -196,7 +196,7 @@ class Adc
         CYCLES_480 = 7,
     };
 
-    enum Channel
+    enum Channel: uint8_t
     {
         ADC_CHANNEL0 = 0x00,
         ADC_CHANNEL1 = 0x01,
@@ -239,7 +239,7 @@ class Adc
         RANK_16 = 16,
     };
 
-    enum Prescaler
+    enum Prescaler : uint32_t
     {
         PRESCALER_2 = (uint32_t)(0 << 16),
         PRESCALER_4 = (uint32_t)(1 << 16),
@@ -247,7 +247,7 @@ class Adc
         PRESCALER_8 = (uint32_t)(3 << 16),
     };
 
-    enum DmaMode
+    enum DmaMode : uint32_t
     {
         MODE_NONE = (uint32_t)(0 << 14),
         MODE_1 = (uint32_t)(1 << 14),
@@ -255,7 +255,7 @@ class Adc
         MODE_3 = (uint32_t)(3 << 14),
     };
 
-    enum Delay
+    enum Delay : uint32_t
     {
         DELAY_CYCLES_5 = (uint32_t)(0 << 8),
         DELAY_CYCLES_6 = (uint32_t)(1 << 8),

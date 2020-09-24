@@ -50,8 +50,8 @@ class OneWire
     Timer _timer;
     uint8_t _serial[_SERIAL_LENGTH];
 
-    int8_t _last_discrepancy;
-    int8_t _last_family_discrepancy;
+    uint8_t _last_discrepancy;
+    uint8_t _last_family_discrepancy;
     bool _last_device;
 
     void _wait(uint16_t time);

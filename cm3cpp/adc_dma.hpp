@@ -17,7 +17,7 @@ class AdcDma
     struct DmaConf
     {
         uint32_t number;
-        uint32_t stream;
+        uint8_t stream;
         uint32_t channel;
     };
 
