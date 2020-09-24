@@ -185,65 +185,143 @@ class Timer
     using ExtTriggerPolarity = tim_et_pol;
 
     using TimerNumber = uint8_t;
+    enum TimerRegister
+    {
+#if (TIM1 + 0)
+        TIM_1 = TIM1
+#endif
+#if (TIM2 + 0)
+        ,
+        TIM_2 = TIM2
+#endif
+#if (TIM3 + 0)
+        ,
+        TIM_3 = TIM3
+#endif
+#if (TIM4 + 0)
+        ,
+        TIM_4 = TIM4
+#endif
+#if (TIM5 + 0)
+        ,
+        TIM_5 = TIM5
+#endif
+#if (TIM6 + 0)
+        ,
+        TIM_6 = TIM6
+#endif
+#if (TIM7 + 0)
+        ,
+        TIM_7 = TIM7
+#endif
+#if (TIM8 + 0)
+        ,
+        TIM_8 = TIM8
+#endif
+#if (TIM9 + 0)
+        ,
+        TIM_9 = TIM9
+#endif
+#if (TIM10 + 0)
+        ,
+        TIM_10 = TIM10
+#endif
+#if (TIM11 + 0)
+        ,
+        TIM_11 = TIM11
+#endif
+#if (TIM12 + 0)
+        ,
+        TIM_12 = TIM12
+#endif
+#if (TIM13 + 0)
+        ,
+        TIM_13 = TIM13
+#endif
+#if (TIM14 + 0)
+        ,
+        TIM_14 = TIM14
+#endif
+#if (TIM15 + 0)
+        ,
+        TIM_15 = TIM15
+#endif
+#if (TIM16 + 0)
+        ,
+        TIM_16 = TIM16
+#endif
+#if (TIM17 + 0)
+        ,
+        TIM_17 = TIM17
+#endif
+#if (TIM21 + 0)
+        ,
+        TIM_21 = TIM21
+#endif
+#if (TIM22 + 0)
+        ,
+        TIM_22 = TIM22
+#endif
+    };
 
     Timer(TimerNumber timer_num)
     {
 #if defined(STM32F2) || defined(STM32F4)
         switch (timer_num) {
             case 1:
-                _timer = TIM1;
+                _timer = static_cast<TimerRegister>(TIM1);
                 rcc_periph_reset_pulse(RST_TIM1);
                 break;
             case 2:
-                _timer = TIM2;
+                _timer = static_cast<TimerRegister>(TIM2);
                 rcc_periph_reset_pulse(RST_TIM2);
                 break;
             case 3:
-                _timer = TIM3;
+                _timer = static_cast<TimerRegister>(TIM3);
                 rcc_periph_reset_pulse(RST_TIM3);
                 break;
             case 4:
-                _timer = TIM4;
+                _timer = static_cast<TimerRegister>(TIM4);
                 rcc_periph_reset_pulse(RST_TIM4);
                 break;
             case 5:
-                _timer = TIM5;
+                _timer = static_cast<TimerRegister>(TIM5);
                 rcc_periph_reset_pulse(RST_TIM5);
                 break;
             case 6:
-                _timer = TIM6;
+                _timer = static_cast<TimerRegister>(TIM6);
                 rcc_periph_reset_pulse(RST_TIM6);
                 break;
             case 7:
-                _timer = TIM7;
+                _timer = static_cast<TimerRegister>(TIM7);
                 rcc_periph_reset_pulse(RST_TIM7);
                 break;
             case 8:
-                _timer = TIM8;
+                _timer = static_cast<TimerRegister>(TIM8);
                 rcc_periph_reset_pulse(RST_TIM8);
                 break;
             case 9:
-                _timer = TIM9;
+                _timer = static_cast<TimerRegister>(TIM9);
                 rcc_periph_reset_pulse(RST_TIM9);
                 break;
             case 10:
-                _timer = TIM10;
+                _timer = static_cast<TimerRegister>(TIM10);
                 rcc_periph_reset_pulse(RST_TIM10);
                 break;
             case 11:
-                _timer = TIM11;
+                _timer = static_cast<TimerRegister>(TIM11);
                 rcc_periph_reset_pulse(RST_TIM11);
                 break;
             case 12:
-                _timer = TIM12;
+                _timer = static_cast<TimerRegister>(TIM12);
                 rcc_periph_reset_pulse(RST_TIM12);
                 break;
             case 13:
-                _timer = TIM13;
+                _timer = static_cast<TimerRegister>(TIM13);
                 rcc_periph_reset_pulse(RST_TIM13);
                 break;
             case 14:
-                _timer = TIM14;
+                _timer = static_cast<TimerRegister>(TIM14);
                 rcc_periph_reset_pulse(RST_TIM14);
                 break;
             default:
@@ -372,7 +450,7 @@ class Timer
     uint32_t periph_address() const { return _timer; }
 
  private:
-    uint32_t _timer;
+    TimerRegister _timer;
 };
 
 }  // namespace tim
