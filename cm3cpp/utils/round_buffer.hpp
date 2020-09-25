@@ -132,7 +132,7 @@ class RoundBuffer
     {
         uint32_t pos = _head;
 
-        assert(index <= std::numeric_limits<int32_t>::max());
+        assert(index <= std::size_t(std::numeric_limits<int32_t>::max()));
 
         mrb_plus(&pos, static_cast<int32_t>(index));
 
@@ -225,7 +225,7 @@ class RoundBuffer
             return (false);
         }
 
-        assert(count <= std::numeric_limits<int32_t>::max());
+        assert(count <= std::size_t(std::numeric_limits<int32_t>::max()));
         mrb_plus(&_head, static_cast<int32_t>(count));
 
         return (true);
@@ -244,8 +244,10 @@ class RoundBuffer
             return 0;
         }
 
-        return ((*this)[index] +
-                static_cast<uint16_t>((*this)[index + 1] << 8));
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+        return (*this)[index] + ((*this)[index + 1] << 8);
+#pragma GCC diagnostic pop
     }
 
     bool push(uint8_t byte)

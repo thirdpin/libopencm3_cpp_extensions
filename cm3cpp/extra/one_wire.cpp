@@ -38,7 +38,7 @@ uint8_t OneWire::read_byte(void)
         _wait(_READ_SAMPLE_WAIT_US);
 
         /*sample bus and shift into msb*/
-        data = data >> 1;
+        data = static_cast<uint8_t>(data >> 1);
         if (_pinout.get() != 0)
             data |= 0x80;
 
@@ -61,7 +61,7 @@ void OneWire::write_byte(uint8_t data)
 
         /*write next bit*/
         ((bool)(data & 0x01)) ? _pinout.set() : _pinout.clear();
-        data = data >> 1;
+        data = static_cast<uint8_t>(data >> 1);
 
         /*wait until end of slot*/
         _wait(_WRITE_SLOT_WAIT_US);
@@ -192,7 +192,8 @@ bool OneWire::search_next(bool do_reset, bool alarm_only)
         do {
             // read a bit and its compliment
             bit_test = static_cast<uint8_t>(uint8_t(read_bit()) << 1);
-            bit_test |= ((uint8_t)read_bit());
+            bit_test =
+              static_cast<uint8_t>(bit_test | static_cast<uint8_t>(read_bit()));
 
             // check for no devices on 1-wire
             if (bit_test == 3)
@@ -227,7 +228,8 @@ bool OneWire::search_next(bool do_reset, bool alarm_only)
                 if (search_direction == 1)
                     _serial[serial_byte_number] |= serial_byte_mask;
                 else
-                    _serial[serial_byte_number] &= ~serial_byte_mask;
+                    _serial[serial_byte_number] = static_cast<uint8_t>(
+                      _serial[serial_byte_number] & ~serial_byte_mask);
 
                 // serial number search direction write bit
                 write_bit((bool)search_direction);
@@ -235,7 +237,7 @@ bool OneWire::search_next(bool do_reset, bool alarm_only)
                 // increment the byte counter bit_number
                 // and shift the mask serial_byte_mask
                 bit_number++;
-                serial_byte_mask <<= 1;
+                serial_byte_mask = static_cast<uint8_t>(serial_byte_mask << 1);
 
                 // if the mask is 0 then go to new SerialNum[portnum] byte
                 // serial_byte_number and reset mask
@@ -304,14 +306,14 @@ void OneWire::_crc_check(uint8_t data, uint8_t* crc_byte)
 
     for (uint8_t bit_count = 0; bit_count < 8; bit_count++) {
         if ((data & 0x01) ^ (tmp & 0x01)) {
-            tmp = tmp >> 1;
+            tmp = static_cast<uint8_t>(tmp >> 1);
             tmp = tmp ^ 0x8c;  // 0b10001100;
         }
         else {
-            tmp = tmp >> 1;
+            tmp = static_cast<uint8_t>(tmp >> 1);
         }
 
-        data = data >> 1;
+        data = static_cast<uint8_t>(data >> 1);
     }
 
     *crc_byte = tmp;
