@@ -116,18 +116,16 @@ void Adc::set_number_of_conversions(uint8_t number)
 void Adc::set_channel_sampling_time_selection(SamplingTime time,
                                               Channel channel)
 {
-    uint32_t offset;
-
     if (channel < ADC_CHANNEL10) {
-        offset = ((uint8_t)channel * ADC_SMP_MASK);
+        uint32_t offset = (channel * ADC_SMP_MASK);
         ADC_SMPR2(_adc) &= ~(ADC_SMP_MASK << offset);
-        ADC_SMPR2(_adc) |= ((uint8_t)time << offset);
+        ADC_SMPR2(_adc) |= static_cast<uint32_t>(time << offset);
     }
 
     else {
-        offset = (((uint8_t)channel - ADC_CHANNEL10) * ADC_SMP_MASK);
+        uint32_t offset = ((channel - ADC_CHANNEL10) * ADC_SMP_MASK);
         ADC_SMPR1(_adc) &= ~(ADC_SMP_MASK << offset);
-        ADC_SMPR1(_adc) |= ((uint8_t)time << offset);
+        ADC_SMPR1(_adc) |= static_cast<uint32_t>(time << offset);
     }
 }
 
@@ -146,23 +144,27 @@ void Adc::set_conversion_number_in_sequence(uint8_t length, Channel* channel)
 
     for (i = 1; i <= length; i++) {
         if (i <= 6) {
-            first6 |= (channel[i - 1] << ((i - 1) * 5));
+            first6 |= static_cast<uint32_t>(channel[i - 1] << ((i - 1) * 5));
         }
         if ((i > 6) & (i <= 12)) {
-            second6 |= (channel[i - 1] << ((i - 6 - 1) * 5));
+            second6 |=
+              static_cast<uint32_t>(channel[i - 1] << ((i - 6 - 1) * 5));
         }
         if ((i > 12) & (i <= 18)) {
-            third6 |= (channel[i - 1] << ((i - 12 - 1) * 5));
+            third6 |=
+              static_cast<uint32_t>(channel[i - 1] << ((i - 12 - 1) * 5));
         }
         if ((i > 18) & (i <= 24)) {
-            fourth6 |= (channel[i - 1] << ((i - 18 - 1) * 5));
+            fourth6 |=
+              static_cast<uint32_t>(channel[i - 1] << ((i - 18 - 1) * 5));
         }
         if ((i > 24) & (i <= 28)) {
-            fifth6 |= (channel[i - 1] << ((i - 24 - 1) * 5));
+            fifth6 |=
+              static_cast<uint32_t>(channel[i - 1] << ((i - 24 - 1) * 5));
         }
     }
 
-    ADC_SQR1(_adc) = third6 | ((length - 1) << 20);
+    ADC_SQR1(_adc) = third6 | static_cast<uint32_t>((length - 1) << 20);
     ADC_SQR2(_adc) = second6;
     ADC_SQR3(_adc) = first6;
 }
@@ -170,25 +172,25 @@ void Adc::set_conversion_number_in_sequence(uint8_t length, Channel* channel)
 void Adc::set_prescaler(Prescaler prescaler)
 {
     ADC_CCR &= ~ADC_CCR_ADCPRE_MASK;
-    ADC_CCR |= (uint32_t)prescaler;
+    ADC_CCR |= prescaler;
 }
 
 void Adc::set_dma_mode(DmaMode mode)
 {
     ADC_CCR &= ~ADC_CCR_DMA_MASK;
-    ADC_CCR |= (uint32_t)mode;
+    ADC_CCR |= mode;
 }
 
 void Adc::set_delay_between_two_samples(Delay delay)
 {
     ADC_CCR &= ~ADC_CCR_DELAY_MASK;
-    ADC_CCR |= (uint32_t)delay;
+    ADC_CCR |= delay;
 }
 
 void Adc::set_multi_mode(MultiMode mode)
 {
     ADC_CCR &= ~ADC_CCR_MULTI_MASK;
-    ADC_CCR |= (uint32_t)mode;
+    ADC_CCR |= mode;
 }
 
 void Adc::enable_temp_sensor()

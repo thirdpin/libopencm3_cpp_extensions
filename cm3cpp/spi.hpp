@@ -157,12 +157,17 @@ class Spi
 
     uint16_t read(uint16_t data)
     {
-        while (!get_flag_status(Flag::TRANSMIT_BUFFER_EMPTY))
-            ;
+        while (!get_flag_status(Flag::TRANSMIT_BUFFER_EMPTY)) {
+            __asm__("nop");
+        }
+
         SPI_DR(_spi) = data;
-        while (!get_flag_status(Flag::RECEIVE_BUFFER_NOT_EMPTY))
-            ;
-        return SPI_DR(_spi);
+
+        while (!get_flag_status(Flag::RECEIVE_BUFFER_NOT_EMPTY)) {
+            __asm__("nop");
+        }
+
+        return static_cast<uint16_t>(SPI_DR(_spi));
     }
 
     void set_master_mode() { spi_set_master_mode(_spi); }

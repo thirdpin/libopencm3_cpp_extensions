@@ -27,6 +27,8 @@ ROUND BUFFER implementation, public interface
 #ifndef UTILS_ROUND_BUFFER_H_
 #define UTILS_ROUND_BUFFER_H_
 
+#include <cassert>
+#include <limits>
 #include <stdint.h>
 
 #include "../private/assert.h"
@@ -129,7 +131,10 @@ class RoundBuffer
     uint8_t operator[](uint32_t index)
     {
         uint32_t pos = _head;
-        mrb_plus(&pos, index);
+
+        assert(index <= std::size_t(std::numeric_limits<int32_t>::max()));
+
+        mrb_plus(&pos, static_cast<int32_t>(index));
 
         return (_buffer[pos]);
     }
@@ -219,7 +224,10 @@ class RoundBuffer
             clear();
             return (false);
         }
-        mrb_plus(&_head, count);
+
+        assert(count <= std::size_t(std::numeric_limits<int32_t>::max()));
+        mrb_plus(&_head, static_cast<int32_t>(count));
+
         return (true);
     }
 
@@ -232,9 +240,14 @@ class RoundBuffer
 
     uint16_t get_word_unsafe(uint32_t index)
     {
-        if ((index + 1) >= get_count())
-            return (0);
-        return ((*this)[index] + ((uint16_t)(*this)[index + 1] << 8));
+        if ((index + 1) >= get_count()) {
+            return 0;
+        }
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+        return (*this)[index] + ((*this)[index + 1] << 8);
+#pragma GCC diagnostic pop
     }
 
     bool push(uint8_t byte)
@@ -275,10 +288,10 @@ class RoundBuffer
     void mrb_plus(uint32_t* par, int32_t plus)
     {
         if (plus < 0 && (*par < (uint32_t)-plus)) {
-            *par = *par + _size + plus;
+            *par += static_cast<uint32_t>(static_cast<int32_t>(_size) + plus);
             return;
         }
-        *par = *par + plus;
+        *par += static_cast<uint32_t>(plus);
         if (*par >= _size)
             *par -= _size;
     }

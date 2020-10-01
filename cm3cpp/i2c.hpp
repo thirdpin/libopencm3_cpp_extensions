@@ -152,7 +152,7 @@ class I2c
 
     struct MasterTransferCfg
     {
-        uint16_t device_address;
+        uint8_t device_address;
         uint8_t* write_buf;
         uint8_t write_len;
         uint8_t read_len;

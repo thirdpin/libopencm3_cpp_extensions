@@ -26,6 +26,9 @@ USART C++ Wrapper of libopencm3 library for STM32F2, STM32F4
 #ifndef CM3CPP_USART_RB_H_
 #define CM3CPP_USART_RB_H_
 
+#include <cassert>
+#include <limits>
+
 /**************************************************************************************************
  * CM3CPP INCLUDES
  *************************************************************************************************/
@@ -54,7 +57,12 @@ class UsartRb : public Usart
     void receive_handler()
     {
         if (interrupt_source_rx()) {
-            rb_in->push(read());
+            using byte_t = uint8_t;
+
+            const uint16_t byte16 = read();
+            assert(byte16 < std::numeric_limits<byte_t>::max());
+
+            rb_in->push(static_cast<byte_t>(byte16));
         }
     }
 
