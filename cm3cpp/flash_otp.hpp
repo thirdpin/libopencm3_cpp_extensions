@@ -129,12 +129,30 @@ class FlashOtp
         FLASH_SR |= (uint32_t)flag;
     }
 
+    static void lock_block(OtpBlock block)
+    {
+        flash_unlock();
+        clear_flag(Flag::EOP);
+        clear_flag(Flag::OPERR);
+        clear_flag(Flag::WRPERR);
+        clear_flag(Flag::PGAERR);
+        clear_flag(Flag::PGPERR);
+        clear_flag(Flag::PGSERR);
+        flash_wait_for_last_operation();
+        uint32_t address = _OTP_LOCK_ADDR + static_cast<uint32_t>(block);
+        __disable_irq();
+        flash_program_byte(address, _OTP_LOCK_BLOCK);
+        __enable_irq();
+        flash_lock();
+    }
+
  private:
     static constexpr uint32_t _OTP_START_ADDR = (0x1FFF7800);
     static constexpr uint32_t _OTP_LOCK_ADDR = (0x1FFF7A00);
     static constexpr uint32_t _OTP_BLOCKS = 16;
     static constexpr uint32_t _OTP_BYTES_IN_BLOCK = 32;
     static constexpr uint32_t _OTP_SIZE = (_OTP_BLOCKS * _OTP_BYTES_IN_BLOCK);
+    static constexpr uint8_t _OTP_LOCK_BLOCK = 0x00;
 };
 
 } /* namespace flash */
