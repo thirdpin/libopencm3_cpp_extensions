@@ -62,7 +62,7 @@ class Gpio
 #endif
 #if (GPIOB + 0)
             ,
-            PORT_B = GPIOC
+            PORT_B = GPIOB
 #endif
 #if (GPIOC + 0)
             ,
